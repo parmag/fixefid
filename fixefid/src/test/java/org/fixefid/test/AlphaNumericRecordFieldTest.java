@@ -1,10 +1,10 @@
-package org.fixefid;
+package org.fixefid.test;
 
 import java.util.Calendar;
 
-import org.fixefid.record.AlphaNumericRecordField;
 import org.fixefid.record.Record;
 import org.fixefid.record.RecordWay;
+import org.fixefid.test.record.AlphaNumericRecordField;
 import org.junit.Assert;
 import org.junit.Test;
 

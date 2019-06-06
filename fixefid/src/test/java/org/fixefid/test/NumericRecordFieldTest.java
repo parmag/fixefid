@@ -1,7 +1,7 @@
-package org.fixefid;
+package org.fixefid.test;
 
-import org.fixefid.record.NumericRecordField;
 import org.fixefid.record.Record;
+import org.fixefid.test.record.NumericRecordField;
 import org.junit.Assert;
 import org.junit.Test;
 

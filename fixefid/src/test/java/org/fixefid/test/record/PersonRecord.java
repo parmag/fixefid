@@ -1,4 +1,4 @@
-package org.fixefid.record;
+package org.fixefid.test.record;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import org.fixefid.record.Record;
 import org.fixefid.record.field.FieldExtendedProperty;
 import org.fixefid.record.field.FieldExtendedPropertyType;
 import org.fixefid.record.field.FieldMandatory;

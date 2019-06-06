@@ -1,4 +1,4 @@
-package org.fixefid.record;
+package org.fixefid.test.record;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;

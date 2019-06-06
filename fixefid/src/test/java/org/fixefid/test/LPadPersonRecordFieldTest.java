@@ -1,12 +1,12 @@
-package org.fixefid;
+package org.fixefid.test;
 
 import java.util.Arrays;
 
-import org.fixefid.record.LPadPersonRecordField;
 import org.fixefid.record.Record;
 import org.fixefid.record.RecordWay;
 import org.fixefid.record.field.FieldExtendedProperty;
 import org.fixefid.record.field.FieldExtendedPropertyType;
+import org.fixefid.test.record.LPadPersonRecordField;
 import org.junit.Assert;
 import org.junit.Test;
 

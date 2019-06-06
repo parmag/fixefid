@@ -1,11 +1,11 @@
-package org.fixefid;
+package org.fixefid.test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import org.fixefid.record.DecimalRecordField;
 import org.fixefid.record.Record;
 import org.fixefid.record.field.FieldValidationInfo;
+import org.fixefid.test.record.DecimalRecordField;
 import org.junit.Assert;
 import org.junit.Test;
 

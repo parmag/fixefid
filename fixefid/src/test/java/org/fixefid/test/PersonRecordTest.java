@@ -1,8 +1,8 @@
-package org.fixefid;
+package org.fixefid.test;
 
 import java.util.Calendar;
 
-import org.fixefid.record.PersonRecord;
+import org.fixefid.test.record.PersonRecord;
 import org.junit.Assert;
 import org.junit.Test;
 
