@@ -177,14 +177,15 @@ public class AlphaNumericRecordFieldTest {
 	
 	@Test
 	public void testNormalizeAsString() {
-		ALPHA_NUMERIC_RECORD.setValue(AlphaNumericRecordField.str, "àx@°§12");
+		ALPHA_NUMERIC_RECORD.setValue(AlphaNumericRecordField.str, "Ã x@Â°Â§12");
 		ALPHA_NUMERIC_RECORD.toNormalize(AlphaNumericRecordField.str);
+		System.out.println(ALPHA_NUMERIC_RECORD.getValue(AlphaNumericRecordField.str)); 
 		Assert.assertTrue("AX@??12             ".equals(ALPHA_NUMERIC_RECORD.getValue(AlphaNumericRecordField.str)));
 	}
 	
 	@Test
 	public void testNormalizeAsStringValue() {
-		ALPHA_NUMERIC_RECORD.setValue(AlphaNumericRecordField.str, "àx@°§12");
+		ALPHA_NUMERIC_RECORD.setValue(AlphaNumericRecordField.str, "Ã x@Â°Â§12");
 		ALPHA_NUMERIC_RECORD.toNormalize(AlphaNumericRecordField.str);
 		Assert.assertTrue("AX@??12".equals(ALPHA_NUMERIC_RECORD.getValueAsString(AlphaNumericRecordField.str)));
 	}
