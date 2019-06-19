@@ -6,38 +6,32 @@
 	<packaging>jar</packaging>
 	<version>1.0.0</version>
 	<name>fixefid</name>
+	<description>Fixefid is a Java library for working with flat fixed formatted text files.</description>
+	<url>https://parmag.github.io/fixefid/</url>
+	<licenses>
+		<license>
+	    	<name>GNU GENERAL PUBLIC LICENSE, Version 3.0</name>
+	    	<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+	  	</license>
+	</licenses>
+	<developers>
+    <developer>
+    	<name>Giancarlo Parma</name>
+      	<email>giancarlo.parma@gmail.com</email>
+      	<organization>Giancarlo Parma</organization>
+      	<organizationUrl>https://www.giancarloparma.com/</organizationUrl>
+    	</developer>
+  	</developers>
+  	<scm>
+		<connection>scm:git:git://github.com/parmag/fixefid.git</connection>
+	  	<developerConnection>scm:git:ssh://github.com:parmag/fixefid.git</developerConnection>
+	  	<url>http://github.com/parmag/fixefid</url>
+	</scm>
 	<properties>
+		<java.version>1.6</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
-	<repositories>
-        <repository>
-            <id>spring-maven-release</id>
-            <name>Spring Maven Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </repository>
-        <repository>
-            <id>spring-maven-milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </repository>        
-	<repository>
-            <id>JBoss Repo</id>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-            <name>JBoss Repo</name>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-maven-release</id>
-            <name>Spring Maven Release Repository</name>
-            <url>http://maven.springframework.org/release</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-maven-milestone</id>
-            <name>Spring Maven Milestone Repository</name>
-            <url>http://maven.springframework.org/milestone</url>
-        </pluginRepository>       
-    </pluginRepositories>    
 	<dependencies>
 		<!-- General dependencies for standard applications -->
 		<dependency>
