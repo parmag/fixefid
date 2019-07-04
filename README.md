@@ -94,6 +94,6 @@ String lastName = record.getValueAsString(PersonRecordField.lastName);
 Integer age = record.getValueAsInteger(PersonRecordField.age)
 ```
 
-this is a very simple example for getting started.
+this is a very simple example for getting started. You can create complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
 
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
