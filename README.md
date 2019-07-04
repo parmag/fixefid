@@ -5,7 +5,7 @@ It differs from other tools focusing on:
   <li>Easy-to-use</li>
   <li>Numeric and Alphanumeric data types</li>
   <li>Custom formatters</li>
-  <li>In(read)/Out(write) fields mandatory</li>
+  <li>In/Out fields mandatory awareness</li>
   <li>Fields normalization</li>
 </ul>
 
