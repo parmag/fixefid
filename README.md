@@ -5,9 +5,11 @@ It differs from other tools focusing on:
   <li>Easy-to-use</li>
   <li>Numeric and Alphanumeric data types</li>
   <li>Custom formatters</li>
+  <li>Custom validators</li>
   <li>In/Out fields mandatory awareness</li>
   <li>Fields normalization</li>
-  <li>LPad/RPad</li>
+  <li>LPad/RPad fields</li>
+  <li>Automatic record filler</li>
 </ul>
 
 
@@ -95,6 +97,17 @@ String lastName = record.getValueAsString(PersonRecordField.lastName);
 Integer age = record.getValueAsInteger(PersonRecordField.age)
 ```
 
-this is a very simple example for getting started. You can create complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
+this is a very simple example for getting started. 
 
+You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
+
+## Record Len
+The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class, 100);
+
+```
+in this case a default filler of 47 space will be added at the end of the record. If you set the value of a field with a len greater than the field len, an exception is thrown.
+
+## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
