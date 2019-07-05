@@ -1,4 +1,4 @@
-# fixefid
+# Fixefid
 Fixefid is a Java library for working with flat fixed formatted text files. 
 It differs from other tools focusing on:
 <ul>
