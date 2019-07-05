@@ -10,6 +10,7 @@ It differs from other tools focusing on:
   <li>Fields normalization</li>
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
+  <li>Default fields values</li>
 </ul>
 
 
@@ -74,7 +75,6 @@ public enum PersonRecordField implements FieldProperty {
 		return null;
 	}
 }
-
 ```
 
 then create a new empty record, fill the fields and get the string representation:
@@ -85,7 +85,6 @@ record.setValue(PersonRecordField.firstName, "Paolo");
 record.setValue(PersonRecordField.lastName, "Rossi");
 record.setValue(PersonRecordField.age, 51);
 String recordAsString = record.toString();
-
 ```
 
 or if you have the record as string (read for example from a file), create a record with the string e read the fields:
@@ -105,7 +104,6 @@ You can create more complex records with formatters for decimal, date, boolean. 
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class, 100);
-
 ```
 in this case a default filler of 47 space will be added at the end of the record. If you set the value of a field with a len greater than the field len, an exception is thrown.
 
