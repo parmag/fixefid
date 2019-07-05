@@ -7,6 +7,7 @@ It differs from other tools focusing on:
   <li>Custom formatters</li>
   <li>In/Out fields mandatory awareness</li>
   <li>Fields normalization</li>
+  <li>LPad/RPad</li>
 </ul>
 
 
