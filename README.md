@@ -108,12 +108,63 @@ this is a very simple example for getting started.
 
 You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
 
-## Record Len
+## Record len
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class, 100);
 ```
 in this case a default filler of 47 space will be added at the end of the record. If you set the value of a field with a len greater than the field len, an exception is thrown.
+
+## Field mandatory
+The field mandatory can be set with the enum FieldMandatory. In the PersonRecordField example above, all the fields are FieldMandatory.INOUT. To set it field by field, change the enum constructor like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, FieldMandatory.IN),
+	lastName(25, FieldType.AN, FieldMandatory.OUT),
+	age(3, FieldType.N, FieldMandatory.NO);
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private FieldMandatory fieldMandatory;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, FieldMandatory fieldMandatory) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.fieldMandatory = fieldMandatory;
+	}
+	
+	...............................
+	
+	@Override
+	public FieldMandatory fieldMandatory() {
+		return fieldMandatory;
+	}
+	
+	.................
+```
+
+The field mandatory is related to the record way. By default the record way is set to RecordWay.IN. That's when the record is read from an input source. When the record is write to an output source, the record way should be set to RecordWay.OUT. The record way can be set by record constructor like this:
+
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, PersonRecordField.class);
+```
+ or by the setter method 
+ 
+ ```
+ record.setRecordWay(RecordWay.IN);
+ ```
+
+This is usefull when a field is optional when you read the record but mandatory when you write the record (that's an output field). In general:
+
+<ul>
+	<li>FieldMandatory.IN => the field is mandatory if the record way is RecordWay.IN</li>
+	<li>FieldMandatory.OUT => the field is mandatory if the record way is RecordWay.OUT</li>
+	<li>FieldMandatory.INOUT => the field is always mandatory</li>
+	<li>FieldMandatory.NO => the field is never mandatory</li>
+</ul>
+
+if the toString method is invoked but a field mandatory has no value, an exception is thrown.
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
