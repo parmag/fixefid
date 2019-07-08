@@ -15,7 +15,7 @@ It differs from other tools focusing on:
 
 
 ## Getting started
-To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
+The JDK compliance level is 1.6 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
 
 To include maven dependency of fixefid version 1.0.0 in your pom.xml, add this:
 
@@ -81,13 +81,21 @@ then create a new empty record, fill the fields and get the string representatio
 
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class);
-record.setValue(PersonRecordField.firstName, "Paolo");
-record.setValue(PersonRecordField.lastName, "Rossi");
+record.setValue(PersonRecordField.firstName, "Paul");
+record.setValue(PersonRecordField.lastName, "Robinson");
 record.setValue(PersonRecordField.age, 51);
 String recordAsString = record.toString();
 ```
 
-or if you have the record as string (read for example from a file), create a record with the string e read the fields:
+The system out of the recordAsString is as follow:
+
+```
+Paul                     Robinson                 051
+```
+
+by default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. This default behavior can be changed with the extended properties.
+
+If you have the record as string (read for example from a file), create a record with the string e read the fields:
 
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
