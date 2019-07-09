@@ -11,6 +11,7 @@ It differs from other tools focusing on:
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
   <li>Default fields values</li>
+  <li>Record status</li>
 </ul>
 
 
@@ -195,8 +196,8 @@ public enum PersonRecordField implements FieldProperty {
 	.................
 ```
 
-## Alphanumeric data type and Date and Boolean formatters
-The alphanumeric data type FieldType.AN can be manage like a Java Date or Boolean. For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
+## Alphanumeric data type with Date and Boolean formatters
+The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
 
 ```
 public enum PersonRecordField implements FieldProperty {
@@ -262,6 +263,48 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString,
 Date birthDate = record.getValueAsDate(PersonRecordField.birthDate);
 Boolean vip = record.getValueAsBoolean(PersonRecordField.vip);
 ```
+## Alphanumeric data type with Custom Formatter
+The alphanumeric data type FieldType.AN can be used with a custom formatter. For instance, to create a custom formatter for the last name field, change the PersonRecordField enum like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
+			@Override
+			public String format(String value) {	
+				// do something
+				return value;
+			}
+
+			@Override
+			public String parse(String value) {
+				// do something
+				return value;
+			}
+		}))),
+	age(3, FieldType.N, null);
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private List<FieldExtendedProperty> fieldExtendedProperties;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, List<FieldExtendedProperty> fieldExtendedProperties) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.fieldExtendedProperties = fieldExtendedProperties;
+	}
+	
+	...............................
+	
+	@Override
+	public List<FieldExtendedProperty> fieldExtendedProperties() {
+		return fieldExtendedProperties;
+	}
+	
+	.................
+```
+
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
