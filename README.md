@@ -307,7 +307,7 @@ public enum PersonRecordField implements FieldProperty {
 ```
 
 ## Numeric data type
-The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. For instance, to add the field amount to the PersonRecordField example above, change the eunm like this:
+The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. For instance, to add the field amount to the PersonRecordField example above, change the enum like this:
 
 ```
 public enum PersonRecordField implements FieldProperty {
@@ -337,7 +337,7 @@ public enum PersonRecordField implements FieldProperty {
 	
 	.................
 ```
-now amount can be managed like Double. To set the value: 
+now amount can be managed like Double. To set the values: 
 
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class);
