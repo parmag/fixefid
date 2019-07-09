@@ -101,7 +101,7 @@ If you have the record as string (read for example from a file), create a record
 Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
 String firstName = record.getValueAsString(PersonRecordField.firstName);
 String lastName = record.getValueAsString(PersonRecordField.lastName);
-Integer age = record.getValueAsInteger(PersonRecordField.age)
+Integer age = record.getValueAsInteger(PersonRecordField.age);
 ```
 
 this is a very simple example for getting started. 
@@ -116,7 +116,7 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordFie
 in this case a default filler of 47 space will be added at the end of the record. If you set the value of a field with a len greater than the field len, an exception is thrown.
 
 ## Field mandatory
-The field mandatory can be set with the enum FieldMandatory. In the PersonRecordField example above, all the fields are FieldMandatory.INOUT. To set it field by field, change the enum constructor like this:
+The field mandatory can be set with the enum FieldMandatory. In the PersonRecordField example above, all the fields are FieldMandatory.INOUT. To set it field by field, change the enum like this:
 
 ```
 public enum PersonRecordField implements FieldProperty {
@@ -167,7 +167,7 @@ This is usefull when a field is optional when you read the record but mandatory 
 if the toString method is invoked but a field mandatory has no value, an exception is thrown.
 
 ## Field default value
-Every field can have a default value. In the PersonRecordField example above, all the fields don't have the default value. To set it field by field, change the enum constructor like this:
+Every field can have a default value. In the PersonRecordField example above, all the fields don't have the default value. To set it field by field, change the enum like this:
 
 ```
 public enum PersonRecordField implements FieldProperty {
@@ -193,6 +193,74 @@ public enum PersonRecordField implements FieldProperty {
 	}
 	
 	.................
+```
+
+## Alphanumeric data type and Date and Boolean formatters
+The alphanumeric data type FieldType.AN can be manage like a Java Date or Boolean. For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, null),
+	age(3, FieldType.N, null),
+	birthDate(8, FieldType.AN,  Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)))),
+	vip(1, FieldType.AN, Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
+			@Override
+			public String format(Boolean value) {
+				return (value != null && value.booleanValue()) ? "Y" : "N";
+			}
+
+			@Override
+			public Boolean parse(String value) {
+				return "Y".equals(value) ? true : false;
+			}
+		})));
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private List<FieldExtendedProperty> fieldExtendedProperties;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, List<FieldExtendedProperty> fieldExtendedProperties) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.fieldExtendedProperties = fieldExtendedProperties;
+	}
+	
+	...............................
+	
+	@Override
+	public List<FieldExtendedProperty> fieldExtendedProperties() {
+		return fieldExtendedProperties;
+	}
+	
+	.................
+```
+
+now birth date and vip can be managed like Date and Boolean. To set the values: 
+
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class);
+record.setValue(PersonRecordField.firstName, "Paul");
+record.setValue(PersonRecordField.lastName, "Robinson");
+record.setValue(PersonRecordField.age, 51);
+record.setValue(PersonRecordField.birthDate, new Date());
+record.setValue(PersonRecordField.vip, true);
+String recordAsString = record.toString();
+```
+
+The system out of the recordAsString is as follow:
+
+```
+Paul                     Robinson                 05109072019Y
+```
+ and get the values:
+ 
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
+Date birthDate = record.getValueAsDate(PersonRecordField.birthDate);
+Boolean vip = record.getValueAsBoolean(PersonRecordField.vip);
 ```
 
 ## Javadoc
