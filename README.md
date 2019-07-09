@@ -263,6 +263,7 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString,
 Date birthDate = record.getValueAsDate(PersonRecordField.birthDate);
 Boolean vip = record.getValueAsBoolean(PersonRecordField.vip);
 ```
+
 ## Alphanumeric data type with Custom Formatter
 The alphanumeric data type FieldType.AN can be used with a custom formatter. For instance, to create a custom formatter for the last name field, change the PersonRecordField enum like this:
 
@@ -305,6 +306,58 @@ public enum PersonRecordField implements FieldProperty {
 	.................
 ```
 
+## Numeric data type
+The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. For instance, to add the field amount to the PersonRecordField example above, change the eunm like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, null),
+	age(3, FieldType.N, null),
+	amount(10, FieldType.N, Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
+			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private List<FieldExtendedProperty> fieldExtendedProperties;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, List<FieldExtendedProperty> fieldExtendedProperties) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.fieldExtendedProperties = fieldExtendedProperties;
+	}
+	
+	...............................
+	
+	@Override
+	public List<FieldExtendedProperty> fieldExtendedProperties() {
+		return fieldExtendedProperties;
+	}
+	
+	.................
+```
+now amount can be managed like Double. To set the value: 
+
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class);
+record.setValue(PersonRecordField.firstName, "Paul");
+record.setValue(PersonRecordField.lastName, "Robinson");
+record.setValue(PersonRecordField.age, 51);
+record.setValue(PersonRecordField.amount, 1500.99);
+```
+
+The system out of the recordAsString is as follow:
+
+```
+Paul                     Robinson                 0510001500.99
+```
+ and get the value:
+ 
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
+Double amount = record.getValueAsDouble(PersonRecordField.amount);
+```
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
