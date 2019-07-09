@@ -166,5 +166,34 @@ This is usefull when a field is optional when you read the record but mandatory 
 
 if the toString method is invoked but a field mandatory has no value, an exception is thrown.
 
+## Field default value
+Every field can have a default value. In the PersonRecordField example above, all the fields don't have the default value. To set it field by field, change the enum constructor like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, "Unknown"),
+	lastName(25, FieldType.AN, "Unknown"),
+	age(3, FieldType.N, "999");
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private String defaultValue;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, String defaultValue) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.defaultValue = defaultValue;
+	}
+	
+	...............................
+	
+	@Override
+	public String fieldDefaultValue() {
+		return defaultValue;
+	}
+	
+	.................
+```
+
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
