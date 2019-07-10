@@ -381,12 +381,31 @@ amount(10, FieldType.N, Arrays.asList(
 			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
 ...................
 ```
- the result is:
+the result is:
  ```
 Paul                     Robinson                 0510000150099
 ```
 
+## Field padding
+The field padding can be managed with the relative extended property. By default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. For instance to change the default padding behavior of the field lastName of the PersonRecordField example above, change the enum like this:
 
+```
+.................
+	lastName(25, FieldType.AN, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " "))),	
+.................
+```
+the result is:
+ ```
+Paul                                      Robinson0510000150099
+```
+
+moreover the padding behavior can be set at Record level like this:
+
+```
+Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")));
+```
+in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
