@@ -411,8 +411,8 @@ in this case all the fields of the record are left padded with spaces. Anyway, t
 There are three types of normalization to apply at field or record level:
 <ul>
 	<li>ascii encoding: no ascii char is replaced with a question mark. The method is record.toAscii</li>
-	<li>to upper case: lower case char is replaced with the relative upper case chark. The method is record.toUpperCase</li>
-	<li>accentes removing: a char with accent is replaced with the relative char without accentk. The method is record.toRemoveAccents</li>
+	<li>to upper case: lower case char is replaced with the relative upper case char. The method is record.toUpperCase</li>
+	<li>accentes removing: a char with accent is replaced with the relative char without accent. The method is record.toRemoveAccents</li>
 </ul>
 
 all those normalizations can be applyed with the method record.toNormalize. For instance, to apply normalization to the lastName field, this method can be used:
