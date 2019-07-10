@@ -407,5 +407,21 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, n
 ```
 in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
 
+## Field normalization
+There are three type of normalization to apply at field or record level:
+<ul>
+	<li>ascii encoding: no ascii char is replaced with a question mark. The method is record.toAscii</li>
+	<li>to upper case: lower case char is replaced with the relative upper case chark. The method is record.toUpperCase</li>
+	<li>accentes removing: a char with accent is replaced with the relative char without accentk. The method is record.toRemoveAccents</li>
+</ul>
+
+all those normalizations can be applyed with the method record.toNormalize. For instance, to apply normalization to the lastName field, this method can be used:
+
+```
+ record.toNormalize(PersonRecordField.lastName);
+ ```
+
+if the value was "àx@°§12", after normalization will be "AX@??12"
+
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
