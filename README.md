@@ -4,14 +4,13 @@ It differs from other tools focusing on:
 <ul>
   <li>Easy-to-use</li>
   <li>Numeric and Alphanumeric data types</li>
-  <li>Custom formatters</li>
-  <li>Custom validators</li>
+  <li>Custom formatters</li>  
   <li>In/Out fields mandatory awareness</li>
   <li>Fields normalization</li>
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
   <li>Default fields values</li>
-  <li>Record status</li>
+  <li>Record status and custom validators</li>
   <li>Record pretty print</li>
 </ul>
 
@@ -157,7 +156,7 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, P
  record.setRecordWay(RecordWay.IN);
  ```
 
-This is usefull when a field is optional when you read the record but mandatory when you write the record (that's an output field). In general:
+This is useful when a field is optional when you read the record but mandatory when you write the record (that's an output field). In general:
 
 <ul>
 	<li>FieldMandatory.IN => the field is mandatory if the record way is RecordWay.IN</li>
@@ -475,6 +474,17 @@ moreover the validation info can be retrieved like this:
 FieldValidationInfo validInfo = record.getRecordFieldValidationInfo(PersonRecordField.lastName);
  ```
 
+## Record pretty print
+When there are lot of fields, various record pretty prints can give informations of fields like index, offset, name and others. For instance the system out of this pretty print:
+
+```
+String prettyPrint = record.prettyPrint();
+ ```
+is formatted like this (for every field of the record):
+
+```
+name=[index][offset][len][value][validation status][validation msg (if present)]
+ ```
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
