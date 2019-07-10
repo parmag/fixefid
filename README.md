@@ -307,7 +307,20 @@ public enum PersonRecordField implements FieldProperty {
 ```
 
 ## Numeric data type
-The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. For instance, to add the field amount to the PersonRecordField example above, change the enum like this:
+The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. 
+
+The len of the field and the DecimalFormat determines the Java type:
+
+<ul>
+	<li>Len < 10 and no DecimalFormat: Integer</li>
+	<li>Len >= 10 and no DecimalFormat: Long</li>
+	<li>Len < 10 and DecimalFormat: Float</li>
+	<li>Len >= 10 and DecimalFormat: Double</li>	
+</ul>
+
+moreover if the DecimalFormat is present, the field can always be managed like a BigDecimal, no matter its len.
+
+For instance, to add the field amount to the PersonRecordField example above, change the enum like this:
 
 ```
 public enum PersonRecordField implements FieldProperty {
@@ -358,6 +371,22 @@ Paul                     Robinson                 0510001500.99
 Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
 Double amount = record.getValueAsDouble(PersonRecordField.amount);
 ```
+
+if the extended proporty REMOVE_DECIMAL_SEPARATOR is added to the field amount like this:
+```
+...................
+amount(10, FieldType.N, Arrays.asList(
+                new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
+		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
+			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
+...................
+```
+ the result is:
+ ```
+Paul                     Robinson                 0510000150099
+```
+
+
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
