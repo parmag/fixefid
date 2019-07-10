@@ -12,6 +12,7 @@ It differs from other tools focusing on:
   <li>Automatic record filler</li>
   <li>Default fields values</li>
   <li>Record status</li>
+  <li>Record pretty print</li>
 </ul>
 
 
@@ -408,7 +409,7 @@ Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, n
 in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
 
 ## Field normalization
-There are three type of normalization to apply at field or record level:
+There are three types of normalization to apply at field or record level:
 <ul>
 	<li>ascii encoding: no ascii char is replaced with a question mark. The method is record.toAscii</li>
 	<li>to upper case: lower case char is replaced with the relative upper case chark. The method is record.toUpperCase</li>
@@ -421,7 +422,59 @@ all those normalizations can be applyed with the method record.toNormalize. For 
  record.toNormalize(PersonRecordField.lastName);
  ```
 
-if the value was "àx@°§12", after normalization will be "AX@??12"
+if the value is "àx@°§12", after normalization is "AX@??12"
+
+## Record status and custom validator
+A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
+			@Override
+			public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
+					List<FieldExtendedProperty> fieldExtendedProperties) {
+				if (value.contains("-")) {
+					return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
+				} else {
+					return new FieldValidationInfo();
+				}
+			}
+		}))),
+	age(3, FieldType.N, null);
+	
+	private int fieldLen; 
+	private FieldType fieldType;
+	private List<FieldExtendedProperty> fieldExtendedProperties;
+	
+	private PersonRecordField(int fieldLen, FieldType fieldType, List<FieldExtendedProperty> fieldExtendedProperties) {
+		this.fieldLen = fieldLen;
+		this.fieldType = fieldType; 
+		this.fieldExtendedProperties = fieldExtendedProperties;
+	}
+	
+	...............................
+	
+	@Override
+	public List<FieldExtendedProperty> fieldExtendedProperties() {
+		return fieldExtendedProperties;
+	}
+	
+	.................
+```
+
+if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
+```
+boolean isError = record.isErrorStatus(PersonRecordField.lastName);
+ ```
+
+moreover the validation info can be retrieved like this:
+
+```
+FieldValidationInfo validInfo = record.getRecordFieldValidationInfo(PersonRecordField.lastName);
+ ```
+
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
