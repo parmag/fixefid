@@ -1,3 +1,7 @@
+### STS ###
+.settings
+
 /target/
 /fixefid_assembly.bat
 /fixefid_deploy.bat
+/fixefid_eclipse.bat
