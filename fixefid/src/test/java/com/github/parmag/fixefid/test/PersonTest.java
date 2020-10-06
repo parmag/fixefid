@@ -19,6 +19,7 @@ import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.format.CustomFormat;
 import com.github.parmag.fixefid.test.bean.FakePerson;
 import com.github.parmag.fixefid.test.bean.Person;
+import com.github.parmag.fixefid.test.bean.Person1000;
 
 public class PersonTest {
 	private static final Calendar CAL = Calendar.getInstance();
@@ -27,9 +28,12 @@ public class PersonTest {
 			new HashMap<String, List<FieldExtendedProperty>>();
 	
 	private static final Person PERSON_BEAN = new Person();
+	private static final Person1000 PERSON_1000_BEAN = new Person1000();
 	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BO";
 	private static final BeanRecord PERSON_BEAN_RECORD; 
+	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
+	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	
 	static {
 		CAL.set(Calendar.DAY_OF_MONTH, 7);
@@ -66,7 +70,16 @@ public class PersonTest {
 		PERSON_BEAN_RECORD.setValue("stature", 1.86f);
 		PERSON_BEAN_RECORD.setValue("birthDistrict", "bo");
 		
+		PERSON_1000_BEAN_RECORD = new BeanRecord(PERSON_1000_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		PERSON_1000_BEAN_RECORD.setValue("firstName", "Paolo");
+		PERSON_1000_BEAN_RECORD.setValue("lastName", "Rossi");
+		PERSON_1000_BEAN_RECORD.setValue("age", 51);
+		PERSON_1000_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		PERSON_1000_BEAN_RECORD.setValue("stature", 1.86f);
+		PERSON_1000_BEAN_RECORD.setValue("birthDistrict", "bo");
+		
 		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
+		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 	}
 	
 	@Test
@@ -104,5 +117,16 @@ public class PersonTest {
 		}
 		
 		Assert.assertNull(br); 
+	}
+	
+	@Test
+	public void testLenConstructor() {
+		Assert.assertTrue(1000 == PERSON_1000_BEAN_RECORD.toString().length());
+	}
+	
+	@Test
+	public void testInitRecordToString() {
+		PERSON_BEAN_RECORD_INIT_WITH_STRING.initRecord(PERSON_RECORD_AS_STRING);
+		Assert.assertTrue(PERSON_RECORD_AS_STRING.equals(PERSON_BEAN_RECORD_INIT_WITH_STRING.toString()));
 	}
 }
