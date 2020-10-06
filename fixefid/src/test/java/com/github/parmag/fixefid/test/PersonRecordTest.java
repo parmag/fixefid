@@ -28,7 +28,7 @@ public class PersonRecordTest {
 		PERSON_RECORD.setValue(PersonRecord.FIELDS.age, 51);
 		PERSON_RECORD.setValue(PersonRecord.FIELDS.birthDate, CAL.getTime()); 
 		PERSON_RECORD.setValue(PersonRecord.FIELDS.stature, 1.86f);
-		PERSON_RECORD.setValue(PersonRecord.FIELDS.birthDitrict, "bo");
+		PERSON_RECORD.setValue(PersonRecord.FIELDS.birthDistrict, "bo");
 	}
 	
 	@Test
@@ -48,11 +48,11 @@ public class PersonRecordTest {
 	
 	@Test
 	public void testGetBirthPlaceCustomFormatAsStringValue() {  
-		Assert.assertTrue("bo".equals(PERSON_RECORD.getValueAsString(PersonRecord.FIELDS.birthDitrict)));
+		Assert.assertTrue("bo".equals(PERSON_RECORD.getValueAsString(PersonRecord.FIELDS.birthDistrict)));
 	}
 	
 	@Test
 	public void testGetBirthPlaceCustomFormatAsString() {  
-		Assert.assertTrue("BO".equals(PERSON_RECORD.getValue(PersonRecord.FIELDS.birthDitrict)));
+		Assert.assertTrue("BO".equals(PERSON_RECORD.getValue(PersonRecord.FIELDS.birthDistrict)));
 	}
 }

@@ -11,7 +11,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	DecimalRecordFieldTest.class,
 	NumericRecordFieldTest.class,
 	AlphaNumericRecordFieldTest.class,
-	LPadPersonRecordFieldTest.class
+	LPadPersonRecordFieldTest.class,
+	
+	PersonTest.class 
 })
 public class AllTests {
 

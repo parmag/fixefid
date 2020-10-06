@@ -24,7 +24,7 @@ public class PersonRecord extends Record<PersonRecord.FIELDS> {
 		birthDate(8, FieldType.AN, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)))), 
 		stature(3, FieldType.N, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH))),
 					new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, Boolean.valueOf(true)))),
-		birthDitrict(2, FieldType.AN, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
+		birthDistrict(2, FieldType.AN, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
 			@Override
 			public String format(String value) {
 				return value.toUpperCase();
