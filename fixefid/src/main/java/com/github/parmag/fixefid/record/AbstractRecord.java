@@ -151,7 +151,6 @@ public abstract class AbstractRecord {
 		
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
-			rf.setIndex(index); 
 			rf.setValue(record.substring(index, index += rf.getLen()), false); 
 		}
 	}

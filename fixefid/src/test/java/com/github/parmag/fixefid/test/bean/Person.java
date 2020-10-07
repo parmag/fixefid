@@ -26,6 +26,9 @@ public class Person {
 	@FixefidField(fieldOrdinal = 6, fieldLen = 2, fieldType = FieldType.AN)
 	private String birthDistrict;
 	
+	@FixefidField(fieldOrdinal = 7, fieldLen = 1, fieldType = FieldType.AN)
+	private Boolean vip;
+	
 	private String notFixefidField;
 	
 	public String getFirstName() {
@@ -69,5 +72,11 @@ public class Person {
 	}
 	public void setNotFixefidField(String notFixefidField) {
 		this.notFixefidField = notFixefidField;
+	}
+	public Boolean getVip() {
+		return vip;
+	}
+	public void setVip(Boolean vip) {
+		this.vip = vip;
 	}
 }

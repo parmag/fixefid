@@ -106,10 +106,7 @@ public class BeanRecord extends AbstractRecord {
             field.setAccessible(true);
             if (field.isAnnotationPresent(FixefidField.class)) {
                 FixefidField fixefidField = field.getAnnotation(FixefidField.class);
-                String fieldName = fixefidField.fieldName();
-                if (fieldName.isEmpty()) {
-                	fieldName = field.getName();
-                }
+                String fieldName = field.getName();
                 
                 if (FINAL_FILLER_NAME.equals(fieldName)) {
     				throw new RecordException("The field name=[" + FINAL_FILLER_NAME + "] is reserved");
@@ -118,9 +115,11 @@ public class BeanRecord extends AbstractRecord {
                 List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
                 		mapFieldExtendedProperties != null ? mapFieldExtendedProperties.get(fieldName) : null);
                 
-                fieldsMap.put(fieldName, new com.github.parmag.fixefid.record.field.Field(
+				fieldsMap.put(fieldName, new com.github.parmag.fixefid.record.field.Field(
                 		fieldName, fixefidField.fieldOrdinal(), fixefidField.fieldType(), fixefidField.fieldLen(), 
                 		fixefidField.fieldMandatory(), recordWay, fixefidField.fieldDefaultValue(), eps));
+                
+                syncValueFromBeanFieldToRecordField(field);
             }
         }
 		
@@ -333,9 +332,17 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 */
-	public void setValue(String fieldName, String value) {
+	public void setValue(String fieldName, String value, boolean syncToBean) {
 		getRecordField(fieldName).setValue(value, true); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -345,10 +352,11 @@ public class BeanRecord extends AbstractRecord {
 	 * @param value the value to set
 	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
 	 * field, the specified value will be truncated at the len od the field. 
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
 	 * greater than the len of the field
 	 */
-	public void setValue(String fieldName, String value, boolean truncate) throws RecordException {
+	public void setValue(String fieldName, String value, boolean truncate, boolean syncToBean) throws RecordException {
 		int fieldLen = getFieldLen(fieldName);
 		if (value != null && value.length() > fieldLen) { 
 			if (truncate) {
@@ -358,7 +366,14 @@ public class BeanRecord extends AbstractRecord {
 			} 
 		}
 		
-		setValue(fieldName, value);
+		setValue(fieldName, value, syncToBean);
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -366,10 +381,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a Long
 	 */
-	public void setValue(String fieldName, Long value) throws FieldException {
+	public void setValue(String fieldName, Long value, boolean syncToBean) throws FieldException {
 		getRecordField(fieldName).setValue(value); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -377,10 +400,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not an Integer
 	 */
-	public void setValue(String fieldName, Integer value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+	public void setValue(String fieldName, Integer value, boolean syncToBean) throws FieldException {
+		getRecordField(fieldName).setValue(value);
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -388,10 +419,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a Double
 	 */
-	public void setValue(String fieldName, Double value) throws FieldException {
+	public void setValue(String fieldName, Double value, boolean syncToBean) throws FieldException {
 		getRecordField(fieldName).setValue(value); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -399,10 +438,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a Float
 	 */
-	public void setValue(String fieldName, Float value) throws FieldException {
+	public void setValue(String fieldName, Float value, boolean syncToBean) throws FieldException {
 		getRecordField(fieldName).setValue(value); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -410,10 +457,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public void setValue(String fieldName, BigDecimal value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+	public void setValue(String fieldName, BigDecimal value, boolean syncToBean) throws FieldException {
+		getRecordField(fieldName).setValue(value);
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -421,10 +476,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a Date
 	 */
-	public void setValue(String fieldName, Date value) throws FieldException {
+	public void setValue(String fieldName, Date value, boolean syncToBean) throws FieldException {
 		getRecordField(fieldName).setValue(value); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -432,10 +495,18 @@ public class BeanRecord extends AbstractRecord {
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
+	 * @param syncToBean if <code>true</code> set the value to bean field
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public void setValue(String fieldName, Boolean value) throws FieldException {
+	public void setValue(String fieldName, Boolean value, boolean syncToBean) throws FieldException {
 		getRecordField(fieldName).setValue(value); 
+		if (syncToBean) {
+			try {
+				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+			} catch (Exception e) {
+				throw new FieldException(e);
+			}
+		}
 	}
 	
 	/**
@@ -546,5 +617,168 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public boolean isInfoStatus(String fieldName) {
 		return !isErrorStatus(fieldName) && !isWarnStatus(fieldName);
+	}
+	
+	/**
+	 * Fill the value of every field of this record with the formatted value presented in the <code>record</code> param
+	 * 
+	 * @param record the record with the formatted value to fill
+	 */
+	protected void doFill(String record) {
+		super.doFill(record); 
+		
+		Class<?> clazz = bean.getClass();
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+		    syncValueFromRecordFieldToBeanField(field);
+		} 
+	}
+
+	private void syncValueFromRecordFieldToBeanField(Field field) {
+		field.setAccessible(true);
+		if (field.isAnnotationPresent(FixefidField.class)) {
+		    String fieldName = field.getName();
+		    boolean error = false;
+		    
+		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
+		    String typeName = field.getType().getName();
+		    Object value = null;
+		    
+		    if ("java.lang.String".equals(typeName)) {
+		    	if (rf.isString()) {
+		    		value = rf.getValueAsString();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.util.Date".equals(typeName)) {
+		    	if (rf.isDate()) {
+		    		value = rf.getValueAsDate();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Boolean".equals(typeName)) {
+		    	if (rf.isBoolean()) {
+		    		value = rf.getValueAsBoolean();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Float".equals(typeName)) {
+		    	if (rf.isFloat()) {
+		    		value = rf.getValueAsFloat();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Double".equals(typeName)) {
+		    	if (rf.isDouble()) {
+		    		value = rf.getValueAsDouble();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Integer".equals(typeName)) {
+		    	if (rf.isInteger()) {
+		    		value = rf.getValueAsInteger();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Long".equals(typeName)) {
+		    	if (rf.isLong()) {
+		    		value = rf.getValueAsLong();
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.math.BigDecimal".equals(typeName)) {
+		    	if (rf.isBigDecimal()) {
+		    		value = rf.getValueAsBigDecimal();
+		    	} else {
+		    		error = true;
+		    	}
+		    }
+		    
+		    if (error) {
+		    	throw new RecordException("Cannot set to field " + fieldName + " of type " + typeName + " the value from " + rf.toString());
+		    } else {
+		    	try {
+		    		field.set(bean, value);
+		    	} catch (Exception e) {
+					throw new RecordException(e);
+				} 
+		    }
+		}
+	}
+	
+	private void syncValueFromBeanFieldToRecordField(Field field) {
+		field.setAccessible(true);
+		Object value = null;
+	    try {
+		    value = field.get(bean);
+		} catch (Exception e) {
+			throw new RecordException(e);
+		}
+		if (field.isAnnotationPresent(FixefidField.class) && value != null) {
+		    String fieldName = field.getName();
+		    boolean error = false;
+		    
+		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
+		    String typeName = field.getType().getName();
+		    
+		    if ("java.lang.String".equals(typeName)) {
+		    	if (rf.isString()) {
+		    		String valueAsString = (String) value;
+		    		if (valueAsString.length() > rf.getLen()) { 
+		    			valueAsString = valueAsString.substring(0, rf.getLen());
+		    		}
+		    		
+		    		rf.setValue(valueAsString, true);
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.util.Date".equals(typeName)) {
+		    	if (rf.isDate()) {
+		    		rf.setValue((Date)value); 
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Boolean".equals(typeName)) {
+		    	if (rf.isBoolean()) {
+		    		rf.setValue((Boolean)value); 
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Float".equals(typeName)) {
+		    	if (rf.isFloat()) {
+		    		rf.setValue((Float)value);
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Double".equals(typeName)) {
+		    	if (rf.isDouble()) {
+		    		rf.setValue((Double)value);
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Integer".equals(typeName)) {
+		    	if (rf.isInteger()) {
+		    		rf.setValue((Integer)value);
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.lang.Long".equals(typeName)) {
+		    	if (rf.isLong()) {
+		    		rf.setValue((Long)value);
+		    	} else {
+		    		error = true;
+		    	}
+		    } else if ("java.math.BigDecimal".equals(typeName)) {
+		    	if (rf.isBigDecimal()) {
+		    		rf.setValue((BigDecimal)value);
+		    	} else {
+		    		error = true;
+		    	}
+		    }
+		    
+		    if (error) {
+		    	throw new RecordException("Cannot set to " + rf.toString() + " the value from field " + fieldName + " of type " + typeName);
+		    }
+		}
 	}
 }

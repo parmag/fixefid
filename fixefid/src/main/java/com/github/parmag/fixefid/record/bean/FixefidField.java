@@ -12,7 +12,6 @@ import com.github.parmag.fixefid.record.field.FieldType;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface FixefidField {
-	public String fieldName() default "";
 	public int fieldOrdinal();
 	public int fieldLen() default 10;
 	public FieldType fieldType() default FieldType.AN;
