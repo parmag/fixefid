@@ -1,5 +1,6 @@
 package com.github.parmag.fixefid.test;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ public class PersonTest {
 	private static final Person PERSON_BEAN_FOR_INIT_WITH_STRING = new Person();
 	private static final Person PERSON_BEAN_FOR_INIT_FIELD = new Person();
 	private static final Person1000 PERSON_1000_BEAN = new Person1000();
-	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON";
+	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
@@ -78,6 +79,10 @@ public class PersonTest {
 						return "Y".equals(value) ? true : false;
 					}
 		})));
+		MAP_FIELD_EXTENDED_PROPERTIES.put("tor", Arrays.asList(
+				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.ENGLISH)))));
+		MAP_FIELD_EXTENDED_PROPERTIES.put("turnover", Arrays.asList(
+				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
 		
 		PERSON_BEAN_RECORD = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		PERSON_BEAN_RECORD.setValue("firstName", "Paolo", true);
@@ -87,6 +92,9 @@ public class PersonTest {
 		PERSON_BEAN_RECORD.setValue("stature", 1.86f, true);
 		PERSON_BEAN_RECORD.setValue("birthDistrict", "bo", true);
 		PERSON_BEAN_RECORD.setValue("vip", "N", true);
+		PERSON_BEAN_RECORD.setValue("id", "0000000001", true);
+		PERSON_BEAN_RECORD.setValue("tor", "00001.0001", true);
+		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00", true);
 		
 		PERSON_1000_BEAN_RECORD = new BeanRecord(PERSON_1000_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		PERSON_1000_BEAN_RECORD.setValue("firstName", "Paolo", false);
@@ -96,6 +104,9 @@ public class PersonTest {
 		PERSON_1000_BEAN_RECORD.setValue("stature", 1.86f, false);
 		PERSON_1000_BEAN_RECORD.setValue("birthDistrict", "bo", false);
 		PERSON_1000_BEAN_RECORD.setValue("vip", "N", false);
+		PERSON_BEAN_RECORD.setValue("id", "0000000001", false);
+		PERSON_BEAN_RECORD.setValue("tor", "00001.0001", false);
+		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00", false);
 		
 		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
@@ -107,6 +118,9 @@ public class PersonTest {
 		PERSON_BEAN_FOR_INIT_FIELD.setStature(1.86f);
 		PERSON_BEAN_FOR_INIT_FIELD.setBirthDistrict("bo");
 		PERSON_BEAN_FOR_INIT_FIELD.setVip(false);
+		PERSON_BEAN_FOR_INIT_FIELD.setId(1L);
+		PERSON_BEAN_FOR_INIT_FIELD.setTor(1.0001);
+		PERSON_BEAN_FOR_INIT_FIELD.setTurnover(BigDecimal.valueOf(100000.00)); 
 		
 		PERSON_BEAN_RECORD_INIT_WITH_FIELD = new BeanRecord(PERSON_BEAN_FOR_INIT_FIELD, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		
@@ -133,7 +147,7 @@ public class PersonTest {
 	}
 	
 	@Test
-	public void testGetBirthPlaceCustomFormatAsStringValue() {  
+	public void testGetBirthDistrictCustomFormatAsStringValue() {  
 		Assert.assertTrue("bo".equals(PERSON_BEAN_RECORD.getValueAsString("birthDistrict")));
 	}
 	
@@ -148,8 +162,33 @@ public class PersonTest {
 	}
 	
 	@Test
-	public void testGetBirthPlaceCustomFormatAsString() {  
+	public void testGetBirthDistrictCustomFormatAsString() {  
 		Assert.assertTrue("BO".equals(PERSON_BEAN_RECORD.getValue("birthDistrict")));
+	}
+	
+	@Test
+	public void testGetTurnoverAsString() {  
+		Assert.assertTrue("0100000.00".equals(PERSON_BEAN_RECORD.getValue("turnover")));
+	}
+	
+	@Test
+	public void testSyncValuesFromBeanToRecord() {
+		PERSON_BEAN_FOR_INIT_FIELD.setAge(25);
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
+		
+		Assert.assertTrue(25 == PERSON_BEAN_RECORD_INIT_WITH_FIELD.getValueAsInteger("age")); 
+		
+		PERSON_BEAN_FOR_INIT_FIELD.setAge(51);
+	}
+	
+	@Test
+	public void testSyncValuesFromRecordToBean() {
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.setValue("age", 35, false); 
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
+		
+		Assert.assertTrue(35 == PERSON_BEAN_FOR_INIT_FIELD.getAge()); 
+		
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.setValue("age", 51, true); 
 	}
 	
 	@Test

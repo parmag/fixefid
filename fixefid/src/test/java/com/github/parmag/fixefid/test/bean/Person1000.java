@@ -1,5 +1,6 @@
 package com.github.parmag.fixefid.test.bean;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
@@ -28,6 +29,15 @@ public class Person1000 {
 	
 	@FixefidField(fieldOrdinal = 7, fieldLen = 1, fieldType = FieldType.AN)
 	private Boolean vip;
+	
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private Long id;
+	
+	@FixefidField(fieldOrdinal = 9, fieldLen = 10, fieldType = FieldType.N)
+	private Double tor;
+	
+	@FixefidField(fieldOrdinal = 10, fieldLen = 10, fieldType = FieldType.N)
+	private BigDecimal turnover;
 	
 	private String notFixefidField;
 	
@@ -78,5 +88,23 @@ public class Person1000 {
 	}
 	public void setVip(Boolean vip) {
 		this.vip = vip;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Double getTor() {
+		return tor;
+	}
+	public void setTor(Double tor) {
+		this.tor = tor;
+	}
+	public BigDecimal getTurnover() {
+		return turnover;
+	}
+	public void setTurnover(BigDecimal turnover) {
+		this.turnover = turnover;
 	}
 }

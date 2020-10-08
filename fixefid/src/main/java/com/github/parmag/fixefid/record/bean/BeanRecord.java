@@ -15,6 +15,15 @@ import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 
 public class BeanRecord extends AbstractRecord {
+	private static final String JAVA_MATH_BIG_DECIMAL = "java.math.BigDecimal";
+	private static final String JAVA_LANG_LONG = "java.lang.Long";
+	private static final String JAVA_LANG_INTEGER = "java.lang.Integer";
+	private static final String JAVA_LANG_DOUBLE = "java.lang.Double";
+	private static final String JAVA_LANG_FLOAT = "java.lang.Float";
+	private static final String JAVA_LANG_BOOLEAN = "java.lang.Boolean";
+	private static final String JAVA_UTIL_DATE = "java.util.Date"; 
+	private static final String JAVA_LANG_STRING = "java.lang.String";
+	
 	private Object bean;
 	private Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties;
 
@@ -627,10 +636,22 @@ public class BeanRecord extends AbstractRecord {
 	protected void doFill(String record) {
 		super.doFill(record); 
 		
+		syncValuesFromRecordToBean();
+	}
+	
+	public void syncValuesFromRecordToBean() {
 		Class<?> clazz = bean.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 		    syncValueFromRecordFieldToBeanField(field);
+		} 
+	}
+	
+	public void syncValuesFromBeanToRecord() {
+		Class<?> clazz = bean.getClass();
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+		    syncValueFromBeanFieldToRecordField(field);
 		} 
 	}
 
@@ -644,49 +665,49 @@ public class BeanRecord extends AbstractRecord {
 		    String typeName = field.getType().getName();
 		    Object value = null;
 		    
-		    if ("java.lang.String".equals(typeName)) {
+		    if (JAVA_LANG_STRING.equals(typeName)) {
 		    	if (rf.isString()) {
 		    		value = rf.getValueAsString();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.util.Date".equals(typeName)) {
+		    } else if (JAVA_UTIL_DATE.equals(typeName)) {
 		    	if (rf.isDate()) {
 		    		value = rf.getValueAsDate();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Boolean".equals(typeName)) {
+		    } else if (JAVA_LANG_BOOLEAN.equals(typeName)) {
 		    	if (rf.isBoolean()) {
 		    		value = rf.getValueAsBoolean();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Float".equals(typeName)) {
+		    } else if (JAVA_LANG_FLOAT.equals(typeName)) {
 		    	if (rf.isFloat()) {
 		    		value = rf.getValueAsFloat();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Double".equals(typeName)) {
+		    } else if (JAVA_LANG_DOUBLE.equals(typeName)) {
 		    	if (rf.isDouble()) {
 		    		value = rf.getValueAsDouble();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Integer".equals(typeName)) {
+		    } else if (JAVA_LANG_INTEGER.equals(typeName)) {
 		    	if (rf.isInteger()) {
 		    		value = rf.getValueAsInteger();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Long".equals(typeName)) {
+		    } else if (JAVA_LANG_LONG.equals(typeName)) {
 		    	if (rf.isLong()) {
 		    		value = rf.getValueAsLong();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.math.BigDecimal".equals(typeName)) {
+		    } else if (JAVA_MATH_BIG_DECIMAL.equals(typeName)) {
 		    	if (rf.isBigDecimal()) {
 		    		value = rf.getValueAsBigDecimal();
 		    	} else {
@@ -721,7 +742,7 @@ public class BeanRecord extends AbstractRecord {
 		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
 		    String typeName = field.getType().getName();
 		    
-		    if ("java.lang.String".equals(typeName)) {
+		    if (JAVA_LANG_STRING.equals(typeName)) {
 		    	if (rf.isString()) {
 		    		String valueAsString = (String) value;
 		    		if (valueAsString.length() > rf.getLen()) { 
@@ -732,43 +753,43 @@ public class BeanRecord extends AbstractRecord {
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.util.Date".equals(typeName)) {
+		    } else if (JAVA_UTIL_DATE.equals(typeName)) {
 		    	if (rf.isDate()) {
 		    		rf.setValue((Date)value); 
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Boolean".equals(typeName)) {
+		    } else if (JAVA_LANG_BOOLEAN.equals(typeName)) {
 		    	if (rf.isBoolean()) {
 		    		rf.setValue((Boolean)value); 
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Float".equals(typeName)) {
+		    } else if (JAVA_LANG_FLOAT.equals(typeName)) {
 		    	if (rf.isFloat()) {
 		    		rf.setValue((Float)value);
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Double".equals(typeName)) {
+		    } else if (JAVA_LANG_DOUBLE.equals(typeName)) {
 		    	if (rf.isDouble()) {
 		    		rf.setValue((Double)value);
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Integer".equals(typeName)) {
+		    } else if (JAVA_LANG_INTEGER.equals(typeName)) {
 		    	if (rf.isInteger()) {
 		    		rf.setValue((Integer)value);
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.lang.Long".equals(typeName)) {
+		    } else if (JAVA_LANG_LONG.equals(typeName)) {
 		    	if (rf.isLong()) {
 		    		rf.setValue((Long)value);
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if ("java.math.BigDecimal".equals(typeName)) {
+		    } else if (JAVA_MATH_BIG_DECIMAL.equals(typeName)) {
 		    	if (rf.isBigDecimal()) {
 		    		rf.setValue((BigDecimal)value);
 		    	} else {
