@@ -22,6 +22,7 @@ import com.github.parmag.fixefid.record.format.CustomFormat;
 import com.github.parmag.fixefid.test.bean.FakePerson;
 import com.github.parmag.fixefid.test.bean.Person;
 import com.github.parmag.fixefid.test.bean.Person1000;
+import com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal;
 
 public class PersonTest {
 	private static final Calendar CAL = Calendar.getInstance();
@@ -34,7 +35,9 @@ public class PersonTest {
 	private static final Person PERSON_BEAN_FOR_INIT_WITH_STRING = new Person();
 	private static final Person PERSON_BEAN_FOR_INIT_FIELD = new Person();
 	private static final Person1000 PERSON_1000_BEAN = new Person1000();
+	
 	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
+	
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
@@ -196,6 +199,18 @@ public class PersonTest {
 		BeanRecord br = null;
 		try {
 			br = new BeanRecord(new FakePerson());
+		} catch (Exception e) {
+			
+		}
+		
+		Assert.assertNull(br); 
+	}
+	
+	@Test
+	public void testPersonWithNotUniqueOrdinal() {
+		BeanRecord br = null;
+		try {
+			br = new BeanRecord(new PersonWithNotUniqueOrdinal());
 		} catch (Exception e) {
 			
 		}

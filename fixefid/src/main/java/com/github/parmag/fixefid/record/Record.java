@@ -156,7 +156,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is mandatory
 	 */
 	public boolean isMandatory(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isMandatory();
+		return isMandatory(fieldProperty.name());
 	}
 	
 	/**
@@ -167,7 +167,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is a <code>String</code>
 	 */
 	public boolean isString(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isString();
+		return isString(fieldProperty.name());
 	}
 	
 	/**
@@ -179,7 +179,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Long</code>
 	 */
 	public boolean isLong(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isLong();
+		return isLong(fieldProperty.name());
 	}
 	
 	/**
@@ -191,7 +191,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Integer</code>
 	 */
 	public boolean isInteger(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isInteger();
+		return isInteger(fieldProperty.name());
 	}
 	
 	/**
@@ -203,7 +203,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is a <code>Date</code>
 	 */
 	public boolean isDate(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isDate();
+		return isDate(fieldProperty.name());
 	}
 	
 	/**
@@ -215,7 +215,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is a <code>Boolean</code>
 	 */
 	public boolean isBoolean(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isBoolean();
+		return isBoolean(fieldProperty.name());
 	}
 	
 	/**
@@ -227,7 +227,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>
 	 */
 	public boolean isDouble(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isDouble();
+		return isDouble(fieldProperty.name());
 	}
 	
 	/**
@@ -239,7 +239,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>
 	 */
 	public boolean isFloat(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isFloat();
+		return isFloat(fieldProperty.name());
 	}
 	
 	/**
@@ -250,7 +250,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>BigDecimal</code>
 	 */
 	public boolean isBigDecimal(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).isBigDecimal();
+		return isBigDecimal(fieldProperty.name());
 	}
 	
 	/**
@@ -260,7 +260,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return the formatted value of the field represented by the <code>fieldProperty</code> param
 	 */
 	public String getValue(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).getValue();
+		return getValue(fieldProperty.name());
 	}
 	
 	/**
@@ -271,7 +271,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a String
 	 */
 	public String getValueAsString(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsString();
+		return getValueAsString(fieldProperty.name());
 	}
 	
 	/**
@@ -282,7 +282,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public Long getValueAsLong(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsLong();
+		return getValueAsLong(fieldProperty.name());
 	}
 	
 	/**
@@ -293,7 +293,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Integer
 	 */
 	public Integer getValueAsInteger(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsInteger();
+		return getValueAsInteger(fieldProperty.name());
 	}
 	
 	/**
@@ -304,7 +304,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public Double getValueAsDouble(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsDouble();
+		return getValueAsDouble(fieldProperty.name());
 	}
 	
 	/**
@@ -315,7 +315,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public Float getValueAsFloat(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsFloat();
+		return getValueAsFloat(fieldProperty.name());
 	}
 	
 	/**
@@ -326,7 +326,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public BigDecimal getValueAsBigDecimal(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsBigDecimal();
+		return getValueAsBigDecimal(fieldProperty.name());
 	}
 	
 	/**
@@ -337,7 +337,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public Date getValueAsDate(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsDate();
+		return getValueAsDate(fieldProperty.name());
 	}
 	
 	/**
@@ -348,7 +348,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public Boolean getValueAsBoolean(FieldProperty fieldProperty) throws FieldException {
-		return getRecordField(fieldProperty).getValueAsBoolean();
+		return getValueAsBoolean(fieldProperty.name());
 	}
 	
 	/**
@@ -358,7 +358,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @param value the value to set
 	 */
 	public void setValue(FieldProperty fieldProperty, String value) {
-		getRecordField(fieldProperty).setValue(value, true); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -372,16 +372,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * greater than the len of the field
 	 */
 	public void setValue(FieldProperty fieldProperty, String value, boolean truncate) throws RecordException {
-		int fieldLen = getFieldLen(fieldProperty);
-		if (value != null && value.length() > fieldLen) { 
-			if (truncate) {
-				value = value.substring(0, fieldLen);
-			} else {
-				throw new RecordException("Cannot set value=[" + value + "] for field=[" + fieldProperty.name() + "]: not valid len (expected" + fieldLen + ")");
-			} 
-		}
-		
-		setValue(fieldProperty, value);
+		setValue(fieldProperty.name(), value, truncate);
 	}
 	
 	/**
@@ -392,7 +383,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public void setValue(FieldProperty fieldProperty, Long value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -403,7 +394,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not an Integer
 	 */
 	public void setValue(FieldProperty fieldProperty, Integer value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -414,7 +405,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public void setValue(FieldProperty fieldProperty, Double value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -425,7 +416,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public void setValue(FieldProperty fieldProperty, Float value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -436,7 +427,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public void setValue(FieldProperty fieldProperty, BigDecimal value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -447,7 +438,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public void setValue(FieldProperty fieldProperty, Date value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -458,7 +449,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public void setValue(FieldProperty fieldProperty, Boolean value) throws FieldException {
-		getRecordField(fieldProperty).setValue(value); 
+		setValue(fieldProperty.name(), value); 
 	}
 	
 	/**
@@ -489,7 +480,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @param fieldProperty the field property of the field to apply the upper case
 	 */
 	public void toUpperCase(FieldProperty fieldProperty) {
-		getRecordField(fieldProperty).toUpperCase();
+		toUpperCase(fieldProperty.name());
 	}
 	
 	/**
@@ -502,7 +493,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @param fieldProperty the field property of the field to removing accents
 	 */
 	public void toRemoveAccents(FieldProperty fieldProperty) {
-		getRecordField(fieldProperty).toRemoveAccents();
+		toRemoveAccents(fieldProperty.name());
 	}
 	
 	/**
@@ -515,7 +506,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @param fieldProperty the field property of the field to apply the encoding
 	 */
 	public void toAscii(FieldProperty fieldProperty) {
-		getRecordField(fieldProperty).toAscii();
+		toAscii(fieldProperty.name());
 	}
 	
 	/**
@@ -525,7 +516,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @param fieldProperty the field property of the field to apply the normalize
 	 */
 	public void toNormalize(FieldProperty fieldProperty) {
-		getRecordField(fieldProperty).toNormalize();
+		toNormalize(fieldProperty.name());
 	}
 	
 	/**
@@ -535,7 +526,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return the validation info of the field represented by the <code>fieldProperty</code> param
 	 */
 	public FieldValidationInfo getRecordFieldValidationInfo(FieldProperty fieldProperty) {
-		return getRecordField(fieldProperty).getValidationInfo();
+		return getRecordFieldValidationInfo(fieldProperty.name());
 	}
 	
 	/**
@@ -547,15 +538,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isErrorStatus(FieldProperty fieldProperty) {
-		boolean result = false;
-		
-		Field rf = getRecordField(fieldProperty);
-		FieldValidationInfo vi = rf.getValidationInfo();
-		if (vi != null && FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(vi.getValidationStatus())) {
-			result = true;
-		}
-		
-		return result;
+		return isErrorStatus(fieldProperty.name());
 	}
 	
 	/**
@@ -567,15 +550,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 */
 	public boolean isWarnStatus(FieldProperty fieldProperty) {
-		boolean result = false;
-		
-		Field rf = getRecordField(fieldProperty);
-		FieldValidationInfo vi = rf.getValidationInfo();
-		if (vi != null && FieldValidationInfo.RecordFieldValidationStatus.WARN.equals(vi.getValidationStatus())) {
-			result = true;
-		}
-		
-		return result;
+		return isWarnStatus(fieldProperty.name());
 	}
 	
 	/**
