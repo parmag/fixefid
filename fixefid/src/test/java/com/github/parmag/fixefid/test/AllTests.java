@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	AlphaNumericRecordFieldTest.class,
 	LPadPersonRecordFieldTest.class,
 	
-	PersonTest.class 
+	PersonTest.class,
+	StudentTest.class 
 })
 public class AllTests {
 

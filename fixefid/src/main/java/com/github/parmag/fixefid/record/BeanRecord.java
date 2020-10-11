@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -73,7 +74,7 @@ public class BeanRecord extends AbstractRecord {
 		FixefidRecord fixefidRecord = clazz.getAnnotation(FixefidRecord.class);
 		int recordLen = fixefidRecord.recordLen();
     	if (recordLen == 0) {
-    		for (Field field : clazz.getDeclaredFields()) {
+    		for (Field field : retrieveAllFields(new ArrayList<Field>(), clazz)) {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(FixefidField.class)) {
                     FixefidField fixefidField = field.getAnnotation(FixefidField.class);
@@ -92,8 +93,10 @@ public class BeanRecord extends AbstractRecord {
 	
 	protected void initFieldsMap() throws RecordException, FieldException {
 		Class<?> clazz = bean.getClass();
-		Field[] fields = clazz.getDeclaredFields();
-		Arrays.sort(fields, new Comparator<Field>() {
+		
+		List<Integer> ordinals = new ArrayList<Integer>();
+		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), clazz);
+		Collections.sort(fields, new Comparator<Field>() {
 			@Override
 			public int compare(Field f1, Field f2) {
 				int fieldOrdinal1 = 0;
@@ -111,8 +114,6 @@ public class BeanRecord extends AbstractRecord {
 			}
 		});
 		
-		List<Integer> ordinals = new ArrayList<Integer>();
-		
 		for (Field field : fields) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(FixefidField.class)) {
@@ -122,7 +123,7 @@ public class BeanRecord extends AbstractRecord {
                 
                 // check ordinals => must be unique
                 if (ordinals.contains(fieldOrdinal)) {
-                	throw new RecordException("The ordinal " + fieldOrdinal + " must be unique for the type " + clazz.getName());
+                	throw new RecordException("The ordinal " + fieldOrdinal + " must be unique for the type (and super type) " + clazz.getName());
                 } else {
                 	ordinals.add(fieldOrdinal);
                 }
@@ -155,7 +156,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -177,7 +178,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value, truncate);
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -196,7 +197,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -215,7 +216,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value);
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -234,7 +235,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -253,7 +254,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -272,7 +273,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value);
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -291,7 +292,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -310,7 +311,7 @@ public class BeanRecord extends AbstractRecord {
 		super.setValue(fieldName, value); 
 		if (syncToBean) {
 			try {
-				syncValueFromRecordFieldToBeanField(bean.getClass().getDeclaredField(fieldName));
+				syncValueFromRecordFieldToBeanField(fielForName(fieldName, (bean.getClass())));
 			} catch (Exception e) {
 				throw new FieldException(e);
 			}
@@ -329,16 +330,14 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	public void syncValuesFromRecordToBean() {
-		Class<?> clazz = bean.getClass();
-		Field[] fields = clazz.getDeclaredFields();
+		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
 		    syncValueFromRecordFieldToBeanField(field);
 		} 
 	}
 	
 	public void syncValuesFromBeanToRecord() {
-		Class<?> clazz = bean.getClass();
-		Field[] fields = clazz.getDeclaredFields();
+		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
 		    syncValueFromBeanFieldToRecordField(field);
 		} 
@@ -490,5 +489,35 @@ public class BeanRecord extends AbstractRecord {
 		    	throw new RecordException("Cannot set to " + rf.toString() + " the value from field " + fieldName + " of type " + typeName);
 		    }
 		}
+	}
+	
+	private static List<Field> retrieveAllFields(List<Field> fields, Class<?> type) {
+	    fields.addAll(Arrays.asList(type.getDeclaredFields()));
+
+	    if (type.getSuperclass() != null) {
+	        retrieveAllFields(fields, type.getSuperclass());
+	    }
+
+	    return fields;
+	}
+	
+	private static Field fielForName(String fieldName, Class<?> type) {
+		Field result = null;
+		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), type);
+		for (Field field : fields) {
+			field.setAccessible(true);
+            if (field.isAnnotationPresent(FixefidField.class)) {
+				if (fieldName.equals(field.getName())) {
+					result = field;
+					break;
+				}
+            }
+		}
+		
+		if (result == null) {
+			throw new RecordException("Not found field with name " + fieldName);
+		}
+		
+		return result;
 	}
 }

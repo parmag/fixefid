@@ -36,7 +36,7 @@ public class PersonTest {
 	private static final Person PERSON_BEAN_FOR_INIT_FIELD = new Person();
 	private static final Person1000 PERSON_1000_BEAN = new Person1000();
 	
-	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
+	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
 	
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
@@ -100,16 +100,6 @@ public class PersonTest {
 		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00", true);
 		
 		PERSON_1000_BEAN_RECORD = new BeanRecord(PERSON_1000_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
-		PERSON_1000_BEAN_RECORD.setValue("firstName", "Paolo", false);
-		PERSON_1000_BEAN_RECORD.setValue("lastName", "Rossi", false);
-		PERSON_1000_BEAN_RECORD.setValue("age", 51, false);
-		PERSON_1000_BEAN_RECORD.setValue("birthDate", CAL.getTime(), false); 
-		PERSON_1000_BEAN_RECORD.setValue("stature", 1.86f, false);
-		PERSON_1000_BEAN_RECORD.setValue("birthDistrict", "bo", false);
-		PERSON_1000_BEAN_RECORD.setValue("vip", "N", false);
-		PERSON_BEAN_RECORD.setValue("id", "0000000001", false);
-		PERSON_BEAN_RECORD.setValue("tor", "00001.0001", false);
-		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00", false);
 		
 		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
