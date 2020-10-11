@@ -14,7 +14,7 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.parmag.fixefid.record.bean.BeanRecord;
+import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.format.BooleanFormat;

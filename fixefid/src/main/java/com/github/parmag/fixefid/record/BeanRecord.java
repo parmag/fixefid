@@ -1,4 +1,4 @@
-package com.github.parmag.fixefid.record.bean;
+package com.github.parmag.fixefid.record;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -8,8 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.github.parmag.fixefid.record.AbstractRecord;
-import com.github.parmag.fixefid.record.RecordException;
+import com.github.parmag.fixefid.record.bean.FixefidField;
+import com.github.parmag.fixefid.record.bean.FixefidRecord;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
