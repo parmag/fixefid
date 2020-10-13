@@ -22,6 +22,7 @@ import com.github.parmag.fixefid.record.format.CustomFormat;
 import com.github.parmag.fixefid.test.bean.FakePerson;
 import com.github.parmag.fixefid.test.bean.Person;
 import com.github.parmag.fixefid.test.bean.Person1000;
+import com.github.parmag.fixefid.test.bean.PersonWithFakeAddress;
 import com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal;
 
 public class PersonTest {
@@ -186,26 +187,38 @@ public class PersonTest {
 	
 	@Test
 	public void testFakePerson() {
-		BeanRecord br = null;
+		String errorMsg = null;
 		try {
-			br = new BeanRecord(new FakePerson());
+			new BeanRecord(new FakePerson());
 		} catch (Exception e) {
-			
+			errorMsg = e.getLocalizedMessage();
 		}
 		
-		Assert.assertNull(br); 
+		Assert.assertTrue("The class FakePerson is not annotated with FixefidRecord".equals(errorMsg));
+	}
+	
+	@Test
+	public void testPersonWithFakeAddress() {
+		String errorMsg = null;
+		try {
+			new BeanRecord(new PersonWithFakeAddress());
+		} catch (Exception e) {
+			errorMsg = e.getLocalizedMessage();
+		}
+		
+		Assert.assertTrue("Cannot set to RecordField [value=          , defaultValue=, name=fakeAddress, type=AN, index=11, len=10, mandatory=NO, recordWay=IN, validationInfo=INFO 0 , removeDecimalSeparator=false] the value from field fakeAddress of type com.github.parmag.fixefid.test.bean.FakeAddress".equals(errorMsg));
 	}
 	
 	@Test
 	public void testPersonWithNotUniqueOrdinal() {
-		BeanRecord br = null;
+		String errorMsg = null;
 		try {
-			br = new BeanRecord(new PersonWithNotUniqueOrdinal());
+			new BeanRecord(new PersonWithNotUniqueOrdinal());
 		} catch (Exception e) {
-			
+			errorMsg = e.getLocalizedMessage();
 		}
 		
-		Assert.assertNull(br); 
+		Assert.assertTrue("The ordinal 1 must be unique for the type (and super type) com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal".equals(errorMsg));
 	}
 	
 	@Test

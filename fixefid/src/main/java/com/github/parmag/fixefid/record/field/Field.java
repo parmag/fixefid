@@ -920,7 +920,7 @@ public class Field {
      */
 	@Override
 	public String toString() {
-		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ",name=" + name + ", type="
+		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", name=" + name + ", type="
 				+ type + ", index=" + index + ", len=" + len + ", mandatory=" + mandatory + ", recordWay=" 
 				+ recordWay + ", validationInfo=" + validationInfo + ", removeDecimalSeparator=" 
 				+ removeDecimalSeparator + "]";

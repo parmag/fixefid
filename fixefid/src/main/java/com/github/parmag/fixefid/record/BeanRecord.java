@@ -401,6 +401,8 @@ public class BeanRecord extends AbstractRecord {
 		    	} else {
 		    		error = true;
 		    	}
+		    } else {
+		    	error = true;
 		    }
 		    
 		    if (error) {
@@ -483,6 +485,8 @@ public class BeanRecord extends AbstractRecord {
 		    	} else {
 		    		error = true;
 		    	}
+		    } else {
+		    	error = true;
 		    }
 		    
 		    if (error) {
