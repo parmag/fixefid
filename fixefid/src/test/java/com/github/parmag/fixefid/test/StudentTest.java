@@ -74,17 +74,17 @@ public class StudentTest {
 				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
 		
 		STUDENT_BEAN_RECORD = new BeanRecord(STUDENT_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
-		STUDENT_BEAN_RECORD.setValue("firstName", "Paolo", true);
-		STUDENT_BEAN_RECORD.setValue("lastName", "Rossi", true);
-		STUDENT_BEAN_RECORD.setValue("age", 51, true);
-		STUDENT_BEAN_RECORD.setValue("birthDate", CAL.getTime(), true); 
-		STUDENT_BEAN_RECORD.setValue("stature", 1.86f, true);
-		STUDENT_BEAN_RECORD.setValue("birthDistrict", "bo", true);
-		STUDENT_BEAN_RECORD.setValue("vip", "N", true);
-		STUDENT_BEAN_RECORD.setValue("id", "0000000001", true);
-		STUDENT_BEAN_RECORD.setValue("tor", "00001.0001", true);
-		STUDENT_BEAN_RECORD.setValue("turnover", "0100000.00", true);
-		STUDENT_BEAN_RECORD.setValue("studentId", "0000000001", true);
+		STUDENT_BEAN_RECORD.setValue("firstName", "Paolo");
+		STUDENT_BEAN_RECORD.setValue("lastName", "Rossi");
+		STUDENT_BEAN_RECORD.setValue("age", 51);
+		STUDENT_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		STUDENT_BEAN_RECORD.setValue("stature", 1.86f);
+		STUDENT_BEAN_RECORD.setValue("birthDistrict", "bo");
+		STUDENT_BEAN_RECORD.setValue("vip", "N");
+		STUDENT_BEAN_RECORD.setValue("id", "0000000001");
+		STUDENT_BEAN_RECORD.setValue("tor", "00001.0001");
+		STUDENT_BEAN_RECORD.setValue("turnover", "0100000.00");
+		STUDENT_BEAN_RECORD.setValue("studentId", "0000000001");
 	}
 	
 	@Test

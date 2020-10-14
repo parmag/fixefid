@@ -1,11 +1,22 @@
 package com.github.parmag.fixefid.test.bean;
 
-public class FakeAddress {
+import com.github.parmag.fixefid.record.bean.FixefidField;
+import com.github.parmag.fixefid.record.bean.FixefidRecord;
+import com.github.parmag.fixefid.record.field.FieldType;
+
+@FixefidRecord
+public class Address {
+	@FixefidField(fieldOrdinal = 11, fieldLen = 25, fieldType = FieldType.AN)
 	private String location;
+	@FixefidField(fieldOrdinal = 12, fieldLen = 5, fieldType = FieldType.AN)
 	private String postalCode;
+	@FixefidField(fieldOrdinal = 13, fieldLen = 2, fieldType = FieldType.AN)
 	private String district;
+	@FixefidField(fieldOrdinal = 14, fieldLen = 3, fieldType = FieldType.AN)
 	private String nationIso3;
+	@FixefidField(fieldOrdinal = 15, fieldLen = 30, fieldType = FieldType.AN)
 	private String address;
+	@FixefidField(fieldOrdinal = 16, fieldLen = 10, fieldType = FieldType.AN)
 	private String num;
 	
 	public String getLocation() {

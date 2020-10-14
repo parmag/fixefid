@@ -15,5 +15,9 @@ public enum FieldType {
 	/**
 	 * the numeric type
 	 */
-	N 	
+	N,
+	/**
+	 * the composite type
+	 */
+	CMP 
 }

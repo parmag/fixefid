@@ -2,17 +2,20 @@ package com.github.parmag.fixefid.test.bean;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
+import com.github.parmag.fixefid.record.field.FieldType;
 
 @FixefidRecord
-public class PersonWithFakeAddress extends Person {
-	@FixefidField(fieldOrdinal = 11)
-	private FakeAddress fakeAddress = new FakeAddress();
+public class PersonWithAddress extends Person {
+	@FixefidField(fieldOrdinal = 11, fieldType = FieldType.CMP, fieldLen = 75)
+	private Address address = new Address();
 
-	public FakeAddress getFakeAddress() {
-		return fakeAddress;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setFakeAddress(FakeAddress fakeAddress) {
-		this.fakeAddress = fakeAddress;
-	}
+	public void setAddress(Address address) {
+		this.address = address;
+	} 
+
+	
 }
