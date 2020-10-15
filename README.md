@@ -14,6 +14,16 @@ It differs from other tools focusing on:
   <li>Record pretty print</li>
 </ul>
 
+## What's new
+
+The version 1.1.0 has been released. Includes:
+
+<ul>
+	<li>Record defined by java bean</li>
+	<li>Error codes</li>
+	<li>JUnit version 4.13.1</li>
+	<li>Minor bug fixes</li>
+</ul>
 
 ## Getting started
 The JDK compliance level is 1.6 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
