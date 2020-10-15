@@ -14,6 +14,16 @@ It differs from other tools focusing on:
   <li>Record pretty print</li>
 </ul>
 
+## What's new
+
+The version 1.1.0 has been released. Includes:
+
+<ul>
+	<li>Record defined by java bean</li>
+	<li>Error codes</li>
+	<li>JUnit version 4.13.1</li>
+	<li>Minor bug fixes</li>
+</ul>
 
 ## Getting started
 The JDK compliance level is 1.6 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
@@ -27,6 +37,8 @@ To include maven dependency of fixefid version 1.0.0 in your pom.xml, add this:
     <version>1.0.0</version>
 </dependency>
 ```
+
+## Getting started with Enum
 
 To define a simple person record with three fixed fields, first name, last name and age, create an enum like this:
 
@@ -108,6 +120,103 @@ Integer age = record.getValueAsInteger(PersonRecordField.age);
 this is a very simple example for getting started. 
 
 You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
+
+## Getting started with Java Bean
+
+To define a simple person record with three fixed fields, first name, last name and age, create a java bean like this:
+
+```
+import java.math.BigDecimal;
+import java.util.Date;
+
+import com.github.parmag.fixefid.record.bean.FixefidField;
+import com.github.parmag.fixefid.record.bean.FixefidRecord;
+import com.github.parmag.fixefid.record.field.FieldType;
+
+@FixefidRecord
+public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN)
+	private String firstName;
+	
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastName;
+	
+	@FixefidField(fieldOrdinal = 3, fieldLen = 3, fieldType = FieldType.N)
+	private Integer age;
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+```
+
+then create a new empty record, fill the fields and get the string representation:
+
+```
+BeanRecord record = new BeanRecord(new Person());
+record.setValue("firstName", "Paul");
+record.setValue("lastName", "Robinson");
+record.setValue("age", 51);
+String recordAsString = record.toString();
+```
+
+or you can fill the fields directly to java bean:
+
+```
+Person person = new Person();
+person.setFirstName("Paul");
+person.setLastName("Robinson");
+person.setAge(51);
+BeanRecord record = new BeanRecord(person);
+String recordAsString = record.toString();
+```
+
+The system out of the recordAsString is as follow:
+
+```
+Paul                     Robinson                 051
+```
+
+by default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. This default behavior can be changed with the extended properties.
+
+If you have the record as string (read for example from a file), create a record with the string e read the fields:
+
+```
+BeanRecord record = new BeanRecord(new Person(), recordAsString);
+String firstName = record.getValueAsString("firstName");
+String lastName = record.getValueAsString("lastName");
+Integer age = record.getValueAsInteger("age");
+```
+
+or you can get data directly from java bean:
+
+```
+Person person = new Person();
+BeanRecord record = new BeanRecord(person, recordAsString);
+String firstName = person.getFirstName();
+String lastName = person.getLastName();
+Integer age = person.getAge();
+```
+
+this is a very simple example for getting started. 
+
+You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
+
+The advantage respect enum style is the java inheritance, composition, etc etc... that you can use with java bean, that's mean a more compact record representation. But bear in mind that every fixed field record can be represented by enum or java bean.
 
 ## Record len
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
