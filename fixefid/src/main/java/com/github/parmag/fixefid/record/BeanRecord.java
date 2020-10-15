@@ -17,6 +17,14 @@ import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldType;
 
+/**
+ * The <code>BeanRecord</code> represents a fixed fields formatted text backed by a java bean.
+ * 
+ * @author Giancarlo Parma
+ * 
+ * @since 1.1.0
+ *
+ */
 public class BeanRecord extends AbstractRecord {
 	private static final String CMP_FIELD_NAME_SEP = ".";
 	private static final String JAVA_MATH_BIG_DECIMAL = "java.math.BigDecimal";

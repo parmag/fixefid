@@ -15,6 +15,14 @@ import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 
+/**
+ * Abstract implementation of a fixed fields formatted text
+ * 
+ * @author Giancarlo Parma
+ * 
+ * @since 1.1.0
+ *
+ */
 public abstract class AbstractRecord {
 	protected static final String FINAL_FILLER_NAME = "finalFiller";
 	protected static final String NO_VALIDATION_INFO = "NO VALIDATION INFO";
@@ -26,6 +34,11 @@ public abstract class AbstractRecord {
 	
 	abstract protected void initFieldsMap() throws RecordException, FieldException;
 	
+	/**
+	 * check field extended properties at record level and set the list 
+	 * 
+	 * @param fieldExtendedProperties field extended properties at record level
+	 */
 	protected void initFieldExtendedProperties(List<FieldExtendedProperty> fieldExtendedProperties) {
 		if (fieldExtendedProperties != null) {
 			for (FieldExtendedProperty fep : fieldExtendedProperties) {
@@ -41,6 +54,13 @@ public abstract class AbstractRecord {
 		} 
 	}
 	
+	/**
+	 * mix the list <code>eps</code> of field extended properties with the relative list at record level.
+	 * If the same property is present at record and field level, the second one win
+	 * 
+	 * @param eps field extended properties at field level
+	 * @return a list of field extended properties
+	 */
 	protected List<FieldExtendedProperty> normalizeFieldExtendedProperties(List<FieldExtendedProperty> eps) {
 		if (eps == null) {
 			eps = fieldExtendedProperties;

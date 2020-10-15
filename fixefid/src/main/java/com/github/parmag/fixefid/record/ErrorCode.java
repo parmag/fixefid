@@ -1,5 +1,13 @@
 package com.github.parmag.fixefid.record;
 
+/**
+ * The enum that represent the error codes
+ * 
+ * @author Giancarlo Parma
+ * 
+ * @since 1.1.0
+ *
+ */
 public enum ErrorCode {
 	RE1,
 	RE2,

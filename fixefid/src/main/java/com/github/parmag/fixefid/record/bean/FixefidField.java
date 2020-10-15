@@ -9,12 +9,35 @@ import java.lang.annotation.Target;
 import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
 
+/**
+ * Configures a java bean property for use with as a fixed field in a record
+ * 
+ * @author Giancarlo Parma
+ * 
+ * @since 1.1.0
+ *
+ */
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface FixefidField {
+	/**
+	 * @return the ordinal of the java bean property
+	 */
 	public int fieldOrdinal();
+	/**
+	 * @return the len of the java bean property
+	 */
 	public int fieldLen();
+	/**
+	 * @return the type of the java bean property
+	 */
 	public FieldType fieldType();
+	/**
+	 * @return the mandatory of the java bean property
+	 */
 	public FieldMandatory fieldMandatory() default FieldMandatory.NO;
+	/**
+	 * @return the default value of the java bean property
+	 */
 	public String fieldDefaultValue() default "";
 }
