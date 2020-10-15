@@ -54,9 +54,10 @@ public class NumericRecordFieldTest {
 	
 	@Test
 	public void testIntNumericMandatory() {
+		Record<NumericRecordField> R = new Record<NumericRecordField>(NumericRecordField.class);
 		boolean error = false;
 		try {
-			NUMERIC_RECORD.getValueAsInteger(NumericRecordField.intNumeric); 
+			R.getValueAsInteger(NumericRecordField.intNumeric); 
 		} catch (Exception e) {
 			error = true;
 		}

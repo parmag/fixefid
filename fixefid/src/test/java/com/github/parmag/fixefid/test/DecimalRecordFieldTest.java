@@ -451,6 +451,7 @@ public class DecimalRecordFieldTest {
 	
 	@Test
 	public void testDecimalsWithNoNegativeValidatorRecordStatusInfo() {
+		DECIMAL_RECORD.resetStatus();
 		DECIMAL_RECORD.setValue(DecimalRecordField.decimalsWithNoNegativeValidator, 123.45);
 		Assert.assertTrue(DECIMAL_RECORD.isInfoStatus());
 	}

@@ -220,6 +220,7 @@ public class PersonTest {
 		Assert.assertTrue(25 == PERSON_BEAN_RECORD_INIT_WITH_FIELD.getValueAsInteger("age")); 
 		
 		PERSON_BEAN_FOR_INIT_FIELD.setAge(51);
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
 	}
 	
 	@Test
@@ -230,6 +231,7 @@ public class PersonTest {
 		Assert.assertTrue(35 == PERSON_BEAN_FOR_INIT_FIELD.getAge()); 
 		
 		PERSON_BEAN_RECORD_INIT_WITH_FIELD.setValue("age", 51); 
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 	}
 	
 	@Test
@@ -296,6 +298,7 @@ public class PersonTest {
 	
 	@Test
 	public void testPersonFieldInitRecordToString() {
+		PERSON_BEAN_RECORD_INIT_WITH_STRING.initRecord(PERSON_RECORD_AS_STRING);
 		Assert.assertTrue("Paolo".equals(PERSON_BEAN_FOR_INIT_WITH_STRING.getFirstName()));
 		Assert.assertTrue("Rossi".equals(PERSON_BEAN_FOR_INIT_WITH_STRING.getLastName()));
 		Assert.assertTrue(51 == PERSON_BEAN_FOR_INIT_WITH_STRING.getAge());

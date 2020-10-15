@@ -140,7 +140,8 @@ public class AlphaNumericRecordFieldTest {
 	
 	@Test
 	public void testStringMandatoryOutRecordInAsStringValue() {
-		Assert.assertTrue("".equals(ALPHA_NUMERIC_RECORD.getValueAsString(AlphaNumericRecordField.strMandatoryOut)));
+		Record<AlphaNumericRecordField> R = new Record<AlphaNumericRecordField>(AlphaNumericRecordField.class);
+		Assert.assertTrue("".equals(R.getValueAsString(AlphaNumericRecordField.strMandatoryOut)));
 	}
 	
 	@Test
