@@ -15,7 +15,6 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
  * 
  * @author Giancarlo Parma
  *
- * @param <T>
  * 
  * @since 1.0
  */
@@ -173,7 +172,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Long</code>.
 	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len >= 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>
 	 * 
 	 * @param fieldProperty the field property to know if the relative field is a <code>Long</code>
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Long</code>
@@ -185,7 +184,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Integer</code>.
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len < 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
 	 * 
 	 * @param fieldProperty the field property to know if the relative field is a <code>Integer</code>
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Integer</code>
@@ -221,7 +220,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len >= 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>
 	 * 
 	 * @param fieldProperty the field property to know if the relative field is a <code>Double</code>
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>
@@ -233,7 +232,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len < 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
 	 * 
 	 * @param fieldProperty the field property to know if the relative field is a <code>Double</code>
 	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>

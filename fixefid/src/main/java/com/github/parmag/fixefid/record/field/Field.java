@@ -646,7 +646,7 @@ public class Field {
 	/**
 	 * Returns true if this field is a Long. This field is a Long if
 	 * <p>
-	 * FieldType.N and decimal format is not present and <code>len >= 10</code>
+	 * FieldType.N and decimal format is not present and <code>len &ge; 10</code>
 	 * 
 	 * @return true if this field is a Long. 
 	 */
@@ -657,7 +657,7 @@ public class Field {
 	/**
 	 * Returns true if this field is a Integer. This field is a Integer if
 	 * <p>
-	 * FieldType.N and decimal format is not present and <code>len < 10</code>
+	 * FieldType.N and decimal format is not present and <code>len &lt; 10</code>
 	 * 
 	 * @return true if this field is a Integer. 
 	 */
@@ -690,7 +690,7 @@ public class Field {
 	/**
 	 * Returns true if this field is a Double. This field is a Double if
 	 * <p>
-	 * FieldType.N and decimal format is present and <code>len >= 10</code>
+	 * FieldType.N and decimal format is present and <code>len &ge; 10</code>
 	 * 
 	 * @return true if this field is a Double. 
 	 */
@@ -701,7 +701,7 @@ public class Field {
 	/**
 	 * Returns true if this field is a Float. This field is a Float if
 	 * <p>
-	 * FieldType.N and decimal format is not present and <code>len < 10</code>
+	 * FieldType.N and decimal format is not present and <code>len &lt; 10</code>
 	 * 
 	 * @return true if this field is a Float. 
 	 */
