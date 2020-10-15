@@ -1,5 +1,7 @@
 package com.github.parmag.fixefid.record.field;
 
+import com.github.parmag.fixefid.record.ErrorCode;
+
 /**
  * Thrown to indicate that a <code>Field</code> has no valid status
  * 
@@ -11,15 +13,16 @@ package com.github.parmag.fixefid.record.field;
 public class FieldException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
-	private int code;
+	private ErrorCode errorCode;
 	
 	/**
      * Constructs an <code>FieldException</code> with the 
      * specified message. 
      *
+     * @param   errorCode   the error code.
      * @param   message  the  message.
      */
-	public FieldException(String message) {
+	public FieldException(ErrorCode errorCode, String message) {
 		super(message);
 	}
 
@@ -27,9 +30,10 @@ public class FieldException extends RuntimeException {
      * Constructs an <code>FieldException</code> with the 
      * specified cause. 
      *
+     * @param   errorCode   the error code.
      * @param   cause   the specified cause.
      */
-	public FieldException(Throwable cause) {
+	public FieldException(ErrorCode errorCode, Throwable cause) {
 		super(cause);
 	}
 
@@ -37,54 +41,35 @@ public class FieldException extends RuntimeException {
      * Constructs an <code>FieldException</code> with the 
      * specified message and cause
      *
+     * @param   errorCode   the error code.
      * @param   message   the message.
      * @param   cause   the specified cause.
      */
-	public FieldException(String message, Throwable cause) {
+	public FieldException(ErrorCode errorCode, String message, Throwable cause) {
 		super(message, cause);
 	}
 	
-	/**
-     * Constructs an <code>FieldException</code> with the 
-     * specified code and message
-     *
-     * @param   code   the specified code.
-     * @param   message   the detail message.
-     */
-	public FieldException(int code, String message) {
-		super(message);
-		this.code = code;
-	}
-
-	/**
-     * Constructs an <code>FieldException</code> with the 
-     * specified code and cause
-     *
-     * @param   code   the detail code.
-     * @param   cause   the specified cause.
-     */
-	public FieldException(int code, Throwable cause) {
-		super(cause);
-		this.code = code;
-	}
-
-	/**
-     * Constructs an <code>FieldException</code> with the 
-     * specified code, message and cause
-     *
-     * @param   code   the detail code.
-     * @param   message   the detail message.
-     * @param   cause   the specified cause.
-     */
-	public FieldException(int code, String message, Throwable cause) {
-		super(message, cause);
-		this.code = code;
+	@Override
+	public String getLocalizedMessage() {
+		return getErrorCode() + " - " + super.getLocalizedMessage();
 	}
 	
+	@Override
+	public String getMessage() {
+		return getErrorCode() + " - " + super.getMessage();
+	}
+
 	/**
-	 * @return the code of this <code>FieldException</code>
+	 * @return the error code
 	 */
-	public int getCode() {
-		return code;
+	public ErrorCode getErrorCode() {
+		return errorCode;
+	}
+
+	/**
+	 * @param errorCode the error code
+	 */
+	public void setErrorCode(ErrorCode errorCode) {
+		this.errorCode = errorCode;
 	}
 }

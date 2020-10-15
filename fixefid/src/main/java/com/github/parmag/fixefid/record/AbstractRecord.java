@@ -33,7 +33,7 @@ public abstract class AbstractRecord {
 				if (!(FieldExtendedPropertyType.LPAD.equals(repType) ||
 						FieldExtendedPropertyType.RPAD.equals(repType) ||
 						FieldExtendedPropertyType.VALIDATOR.equals(repType))) {
-					throw new RecordException("Field Extended Property=[" + repType.name() + " not valid at record level.");
+					throw new RecordException(ErrorCode.RE6, "Field Extended Property=[" + repType.name() + " not valid at record level.");
 				}
 			}
 			
@@ -123,7 +123,7 @@ public abstract class AbstractRecord {
 		
 		String toStringRecord = toString();
 		if (!toStringRecord.equals(record)) {
-			throw new RecordException("Input record=[" + record + "] diff from toString record=[" + toStringRecord + "]");
+			throw new RecordException(ErrorCode.RE7, "Input record=[" + record + "] diff from toString record=[" + toStringRecord + "]");
 		}
 	}
 	
@@ -138,7 +138,7 @@ public abstract class AbstractRecord {
 	protected void doValidRecordLen(String record, String info) throws RecordException {
 		int len = record != null ? record.length() : 0; 
 		if (len != getRecordLen()) {
-			throw new RecordException("Not valid len=[" + len + "] for " + info + " record=[" + record + 
+			throw new RecordException(ErrorCode.RE8, "Not valid len=[" + len + "] for " + info + " record=[" + record + 
 				"]. Expected len=[" + getRecordLen() + "]");
 		}
 	}
@@ -166,7 +166,7 @@ public abstract class AbstractRecord {
 	 */
 	public Field getRecordField(String fieldName) throws RecordException {
 		if (!fieldsMap.containsKey(fieldName)) {
-			throw new RecordException("Unknown fieldName=[" + fieldName + "]");
+			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "]");
 		}
 		
 		return fieldsMap.get(fieldName);
@@ -224,7 +224,7 @@ public abstract class AbstractRecord {
 	@Override
 	public String toString() throws RecordException {
 		if (isErrorStatus()) {
-			throw new RecordException("Record has Error status. Cause: " + prettyPrintErrorValidationInfo());
+			throw new RecordException(ErrorCode.RE10, "Record has Error status. Cause: " + prettyPrintErrorValidationInfo());
 		}
 		
 		StringBuilder sb = new StringBuilder();
@@ -756,7 +756,7 @@ public abstract class AbstractRecord {
 			if (truncate) {
 				value = value.substring(0, fieldLen);
 			} else {
-				throw new RecordException("Cannot set value=[" + value + "] for field=[" + fieldName + "]: not valid len (expected" + fieldLen + ")");
+				throw new RecordException(ErrorCode.RE11, "Cannot set value=[" + value + "] for field=[" + fieldName + "]: not valid len (expected" + fieldLen + ")");
 			} 
 		}
 		

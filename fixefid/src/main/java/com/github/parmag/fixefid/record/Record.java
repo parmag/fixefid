@@ -576,7 +576,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	protected void initFieldsMap() throws RecordException, FieldException {
 		for(FieldProperty p : fields.getEnumConstants()) {
 			if (FINAL_FILLER_NAME.equals(p.name())) {
-				throw new RecordException("The field name=[" + FINAL_FILLER_NAME + "] is reserved");
+				throw new RecordException(ErrorCode.RE18, "The field name=[" + FINAL_FILLER_NAME + "] is reserved");
 			}
 			
 			List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(p.fieldExtendedProperties());

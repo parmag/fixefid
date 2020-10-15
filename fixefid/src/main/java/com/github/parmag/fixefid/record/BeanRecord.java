@@ -53,14 +53,14 @@ public class BeanRecord extends AbstractRecord {
 	
 	private void initBean(Object bean, String record) {
 		if (bean == null) {
-            throw new RecordException("Can't create record with a null bean");
+            throw new RecordException(ErrorCode.RE12, "Can't create record with a null bean");
         }
 		
 		this.bean = bean;
 
         Class<?> clazz = bean.getClass();
         if (!clazz.isAnnotationPresent(FixefidRecord.class)) {
-            throw new RecordException("The class " + clazz.getSimpleName() + " is not annotated with FixefidRecord");
+            throw new RecordException(ErrorCode.RE13, "The class " + clazz.getSimpleName() + " is not annotated with FixefidRecord");
         } else {
         	initRecordLen(clazz);
         	initRecordWay(clazz);
@@ -126,13 +126,13 @@ public class BeanRecord extends AbstractRecord {
                 
                 // check ordinals => must be unique
                 if (ordinals.contains(fieldOrdinal)) {
-                	throw new RecordException("The ordinal " + fieldOrdinal + " must be unique for the type (and super type) " + clazz.getName());
+                	throw new RecordException(ErrorCode.RE14, "The ordinal " + fieldOrdinal + " must be unique for the type (and super type) " + clazz.getName());
                 } else {
                 	ordinals.add(fieldOrdinal);
                 }
                 
                 if (FINAL_FILLER_NAME.equals(fieldName)) {
-    				throw new RecordException("The field name=[" + FINAL_FILLER_NAME + "] is reserved");
+    				throw new RecordException(ErrorCode.RE15, "The field name=[" + FINAL_FILLER_NAME + "] is reserved");
     			}
                 
 				FieldType fieldType = fixefidField.fieldType();
@@ -154,7 +154,7 @@ public class BeanRecord extends AbstractRecord {
 							fieldsMap.put(fieldName + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
 						}
 					} catch (Exception e) {
-						throw new RecordException(e);
+						throw new RecordException(ErrorCode.RE1, e);
 					}
 				} else {
 					List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
@@ -182,7 +182,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE1, e);
 		}
 	}
 	
@@ -201,7 +201,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE2, e);
 		}
 	}
 	
@@ -217,7 +217,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE3, e);
 		}
 	}
 	
@@ -233,7 +233,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE4, e);
 		}
 	}
 	
@@ -249,7 +249,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE5, e);
 		}
 	}
 	
@@ -265,7 +265,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE6, e);
 		}
 	}
 	
@@ -281,7 +281,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE7, e);
 		}
 	}
 	
@@ -297,7 +297,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE8, e);
 		}
 	}
 	
@@ -313,7 +313,7 @@ public class BeanRecord extends AbstractRecord {
 		try {
 			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} catch (Exception e) {
-			throw new FieldException(e);
+			throw new FieldException(ErrorCode.FE9, e);
 		}
 	}
 	
@@ -407,12 +407,12 @@ public class BeanRecord extends AbstractRecord {
 		    }
 		    
 		    if (error) {
-		    	throw new RecordException("Cannot set to field " + fieldName + " of type " + typeName + " the value from " + rf.toString());
+		    	throw new RecordException(ErrorCode.RE2, "Cannot set to field " + fieldName + " of type " + typeName + " the value from " + rf.toString());
 		    } else {
 		    	try {
 		    		field.set(bean, value);
 		    	} catch (Exception e) {
-					throw new RecordException(e);
+					throw new RecordException(ErrorCode.RE3, e);
 				} 
 		    }
 		}
@@ -436,7 +436,7 @@ public class BeanRecord extends AbstractRecord {
 				}
 			}
 	    } catch (Exception e) {
-	    	throw new RecordException(e);
+	    	throw new RecordException(ErrorCode.RE4, e);
 	    }
 	}
 	
@@ -504,7 +504,7 @@ public class BeanRecord extends AbstractRecord {
 	    }
 	    
 	    if (error) {
-	    	throw new RecordException("Cannot set to " + rf.toString() + " the value from field " + fieldName + " of type " + typeName);
+	    	throw new RecordException(ErrorCode.RE16, "Cannot set to " + rf.toString() + " the value from field " + fieldName + " of type " + typeName);
 	    }
 	}
 	
@@ -536,11 +536,11 @@ public class BeanRecord extends AbstractRecord {
 	            }
 			}
 		} catch (Exception e) {
-	    	throw new RecordException(e);
+	    	throw new RecordException(ErrorCode.RE5, e);
 	    }
 		
 		if (result == null) {
-			throw new RecordException("Not found field with name " + fieldName);
+			throw new RecordException(ErrorCode.RE17, "Not found field with name " + fieldName);
 		}
 		
 		return result;

@@ -15,6 +15,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.parmag.fixefid.record.BeanRecord;
+import com.github.parmag.fixefid.record.ErrorCode;
+import com.github.parmag.fixefid.record.RecordException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.format.BooleanFormat;
@@ -232,26 +234,26 @@ public class PersonTest {
 	
 	@Test
 	public void testFakePerson() {
-		String errorMsg = null;
+		ErrorCode errorCode = null;
 		try {
 			new BeanRecord(new FakePerson());
-		} catch (Exception e) {
-			errorMsg = e.getLocalizedMessage();
+		} catch (RecordException e) {
+			errorCode = e.getErrorCode();
 		}
 		
-		Assert.assertTrue("The class FakePerson is not annotated with FixefidRecord".equals(errorMsg));
+		Assert.assertTrue(ErrorCode.RE13.equals(errorCode));
 	}
 	
 	@Test
 	public void testPersonWithNotUniqueOrdinal() {
-		String errorMsg = null;
+		ErrorCode errorCode = null;
 		try {
 			new BeanRecord(new PersonWithNotUniqueOrdinal());
-		} catch (Exception e) {
-			errorMsg = e.getLocalizedMessage();
+		} catch (RecordException e) {
+			errorCode = e.getErrorCode();
 		}
 		
-		Assert.assertTrue("The ordinal 1 must be unique for the type (and super type) com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal".equals(errorMsg));
+		Assert.assertTrue(ErrorCode.RE14.equals(errorCode));
 	}
 	
 	@Test
