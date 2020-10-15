@@ -44,18 +44,66 @@ public class BeanRecord extends AbstractRecord {
 	private Object bean;
 	private Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties;
 
+	/**
+	 * Constructs a new <code>BeanRecord</code> that represents the fixed fields indicated by the <code>bean</code> parameter.
+	 * The lenght of this record is calculated with the sum of the lenght of every
+	 * field. The value of every field is initialized with a default value (if present)
+	 * 
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
+	 */
 	public BeanRecord(Object bean) {
 		this(bean, null, null, null);
 	}
 	
+	/**
+	 * Constructs a new <code>BeanRecord</code> that represents the fixed fields indicated by the <code>bean</code> parameter.
+	 * The lenght of this record is calculated with the sum of the lenght of every
+	 * field. The value of every field is initialized with the formatted value present in the relative position of the <code>record</code> 
+	 * parameter
+	 * 
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param record the formatted string of this <code>BeanRecord</code>
+	 */
 	public BeanRecord(Object bean, String record) {
 		this(bean, record, null, null);
 	}
 	
+	/**
+	 * Constructs a new <code>BeanRecord</code> that represents the fixed fields indicated by the <code>bean</code> parameter.
+	 * The value of every field is initialized with the formatted value present in the
+	 * relative position of the <code>record</code> parameter. To every field of the record are applied the extended properties
+	 * present in the <code>fieldExtendedProperties</code> parameter. Only the following properties are permitted at record level:
+	 * <ul>
+	 * <li><code>FieldExtendedPropertyType.LPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.RPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
+	 * </ul>
+	 * 
+	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param record the formatted string of this <code>BeanRecord</code>
+	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
+	 */
 	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties) {
 		this(bean, record, fieldExtendedProperties, null);
 	}
 	
+	/**
+	 * Constructs a new <code>BeanRecord</code> that represents the fixed fields indicated by the <code>bean</code> parameter.
+	 * The value of every field is initialized with the formatted value present in the
+	 * relative position of the <code>record</code> parameter. To every field of the record are applied the extended properties
+	 * present in the <code>fieldExtendedProperties</code> parameter. Only the following properties are permitted at record level:
+	 * <ul>
+	 * <li><code>FieldExtendedPropertyType.LPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.RPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
+	 * </ul>
+	 * The extended property of every field can be overrided with the extended property present in the <code>mapFieldExtendedProperties</code>
+	 * 
+	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param record the formatted string of this <code>BeanRecord</code>
+	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
+	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
+	 */
 	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
 			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties) {
 		this.mapFieldExtendedProperties = mapFieldExtendedProperties;
@@ -107,6 +155,12 @@ public class BeanRecord extends AbstractRecord {
 		this.recordWay = fixefidRecord.recordWay();
 	}
 	
+	/**
+	 * Init the fields map
+	 * 
+	 * @throws RecordException if a field has the name equals to "finalFiller" or some reflection field access problem
+	 * @throws FieldException if the properties of the fields are in some non valid status
+	 */
 	protected void initFieldsMap() throws RecordException, FieldException {
 		Class<?> clazz = bean.getClass();
 		
