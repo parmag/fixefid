@@ -29,10 +29,15 @@ public class BeanRecord extends AbstractRecord {
 	private static final String CMP_FIELD_NAME_SEP = ".";
 	private static final String JAVA_MATH_BIG_DECIMAL = "java.math.BigDecimal";
 	private static final String JAVA_LANG_LONG = "java.lang.Long";
+	private static final String JAVA_LANG_LONG_PR = "long";
 	private static final String JAVA_LANG_INTEGER = "java.lang.Integer";
+	private static final String JAVA_LANG_INTEGER_PR = "int";
 	private static final String JAVA_LANG_DOUBLE = "java.lang.Double";
+	private static final String JAVA_LANG_DOUBLE_PR = "double";
 	private static final String JAVA_LANG_FLOAT = "java.lang.Float";
+	private static final String JAVA_LANG_FLOAT_PR = "float";
 	private static final String JAVA_LANG_BOOLEAN = "java.lang.Boolean";
+	private static final String JAVA_LANG_BOOLEAN_PR = "boolean";
 	private static final String JAVA_UTIL_DATE = "java.util.Date"; 
 	private static final String JAVA_LANG_STRING = "java.lang.String";
 	
@@ -374,31 +379,31 @@ public class BeanRecord extends AbstractRecord {
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if (JAVA_LANG_BOOLEAN.equals(typeName)) {
+		    } else if (JAVA_LANG_BOOLEAN.equals(typeName) || JAVA_LANG_BOOLEAN_PR.equals(typeName)) {
 		    	if (rf.isBoolean()) {
 		    		value = rf.getValueAsBoolean();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if (JAVA_LANG_FLOAT.equals(typeName)) {
+		    } else if (JAVA_LANG_FLOAT.equals(typeName) || JAVA_LANG_FLOAT_PR.equals(typeName)) {
 		    	if (rf.isFloat()) {
 		    		value = rf.getValueAsFloat();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if (JAVA_LANG_DOUBLE.equals(typeName)) {
+		    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
 		    	if (rf.isDouble()) {
 		    		value = rf.getValueAsDouble();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if (JAVA_LANG_INTEGER.equals(typeName)) {
+		    } else if (JAVA_LANG_INTEGER.equals(typeName) || JAVA_LANG_INTEGER_PR.equals(typeName)) {
 		    	if (rf.isInteger()) {
 		    		value = rf.getValueAsInteger();
 		    	} else {
 		    		error = true;
 		    	}
-		    } else if (JAVA_LANG_LONG.equals(typeName)) {
+		    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
 		    	if (rf.isLong()) {
 		    		value = rf.getValueAsLong();
 		    	} else {
@@ -471,31 +476,31 @@ public class BeanRecord extends AbstractRecord {
 	    	} else {
 	    		error = true;
 	    	}
-	    } else if (JAVA_LANG_BOOLEAN.equals(typeName)) {
+	    } else if (JAVA_LANG_BOOLEAN.equals(typeName) || JAVA_LANG_BOOLEAN_PR.equals(typeName)) {
 	    	if (rf.isBoolean()) {
 	    		rf.setValue((Boolean)value); 
 	    	} else {
 	    		error = true;
 	    	}
-	    } else if (JAVA_LANG_FLOAT.equals(typeName)) {
+	    } else if (JAVA_LANG_FLOAT.equals(typeName) || JAVA_LANG_FLOAT_PR.equals(typeName)) {
 	    	if (rf.isFloat()) {
 	    		rf.setValue((Float)value);
 	    	} else {
 	    		error = true;
 	    	}
-	    } else if (JAVA_LANG_DOUBLE.equals(typeName)) {
+	    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
 	    	if (rf.isDouble()) {
 	    		rf.setValue((Double)value);
 	    	} else {
 	    		error = true;
 	    	}
-	    } else if (JAVA_LANG_INTEGER.equals(typeName)) {
+	    } else if (JAVA_LANG_INTEGER.equals(typeName) || JAVA_LANG_INTEGER_PR.equals(typeName)) {
 	    	if (rf.isInteger()) {
 	    		rf.setValue((Integer)value);
 	    	} else {
 	    		error = true;
 	    	}
-	    } else if (JAVA_LANG_LONG.equals(typeName)) {
+	    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
 	    	if (rf.isLong()) {
 	    		rf.setValue((Long)value);
 	    	} else {

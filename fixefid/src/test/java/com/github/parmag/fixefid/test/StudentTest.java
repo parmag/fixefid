@@ -23,11 +23,24 @@ import com.github.parmag.fixefid.test.bean.Student;
 public class StudentTest {
 	private static final Calendar CAL = Calendar.getInstance();
 	
+	private static final List<FieldExtendedProperty> BOOLEAN_FORMAT_LIST = Arrays.asList(
+			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
+				@Override
+				public String format(Boolean value) {
+					return value ? "Y" : "N";
+				}
+
+				@Override
+				public Boolean parse(String value) {
+					return "Y".equals(value) ? true : false;
+				}
+	}));
+	
 	private static final Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
 			new HashMap<String, List<FieldExtendedProperty>>();
 	
 	private static final Student STUDENT_BEAN = new Student();
-	public static final String STUDENT_RECORD_AS_STRING = PersonTest.PERSON_RECORD_AS_STRING + "0000000001";
+	public static final String STUDENT_RECORD_AS_STRING = PersonTest.PERSON_RECORD_AS_STRING + "000000000102Y";
 	private static final BeanRecord STUDENT_BEAN_RECORD; 
 	
 	static {
@@ -56,22 +69,13 @@ public class StudentTest {
 				return value.toLowerCase();
 			}
 		})));
-		MAP_FIELD_EXTENDED_PROPERTIES.put("vip", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-					@Override
-					public String format(Boolean value) {
-						return value ? "Y" : "N";
-					}
-
-					@Override
-					public Boolean parse(String value) {
-						return "Y".equals(value) ? true : false;
-					}
-		})));
+		
+		MAP_FIELD_EXTENDED_PROPERTIES.put("vip", BOOLEAN_FORMAT_LIST);
 		MAP_FIELD_EXTENDED_PROPERTIES.put("tor", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.ENGLISH)))));
 		MAP_FIELD_EXTENDED_PROPERTIES.put("turnover", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
+		MAP_FIELD_EXTENDED_PROPERTIES.put("active", BOOLEAN_FORMAT_LIST);
 		
 		STUDENT_BEAN_RECORD = new BeanRecord(STUDENT_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		STUDENT_BEAN_RECORD.setValue("firstName", "Paolo");
@@ -85,6 +89,8 @@ public class StudentTest {
 		STUDENT_BEAN_RECORD.setValue("tor", "00001.0001");
 		STUDENT_BEAN_RECORD.setValue("turnover", "0100000.00");
 		STUDENT_BEAN_RECORD.setValue("studentId", "0000000001");
+		STUDENT_BEAN_RECORD.setValue("level", "02");
+		STUDENT_BEAN_RECORD.setValue("active", "Y");
 	}
 	
 	@Test
