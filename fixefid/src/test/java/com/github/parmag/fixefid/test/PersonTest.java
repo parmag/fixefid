@@ -171,6 +171,11 @@ public class PersonTest {
 	}
 	
 	@Test
+	public void testPersonWithAddressLen() {
+		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.length() == PERSON_WITH_ADDRESS_BEAN_RECORD.getRecordLen());
+	}
+	
+	@Test
 	public void testPersonGetBirthDistrictCustomFormatAsStringValue() {  
 		Assert.assertTrue("bo".equals(PERSON_BEAN_RECORD.getValueAsString("birthDistrict")));
 	}
@@ -193,6 +198,16 @@ public class PersonTest {
 	@Test
 	public void testPersonGetTurnoverAsString() {  
 		Assert.assertTrue("0100000.00".equals(PERSON_BEAN_RECORD.getValue("turnover")));
+	}
+	
+	@Test
+	public void testPersonWithAddressGetLocationAsString() {  
+		Assert.assertTrue("Bologna                  ".equals(PERSON_WITH_ADDRESS_BEAN_RECORD.getValue("address.location")));
+	}
+	
+	@Test
+	public void testPersonWithAddressGetLocationAsStringValue() {  
+		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_BEAN_RECORD.getValueAsString("address.location")));
 	}
 	
 	@Test

@@ -13,8 +13,8 @@ import com.github.parmag.fixefid.record.field.FieldType;
 @Target(FIELD)
 public @interface FixefidField {
 	public int fieldOrdinal();
-	public int fieldLen() default 10;
-	public FieldType fieldType() default FieldType.AN;
+	public int fieldLen();
+	public FieldType fieldType();
 	public FieldMandatory fieldMandatory() default FieldMandatory.NO;
 	public String fieldDefaultValue() default "";
 }
