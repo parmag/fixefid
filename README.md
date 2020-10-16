@@ -331,6 +331,14 @@ The default record len is the sum of every field len. For example for the person
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(PersonRecordField.class, 100);
 ```
+or for java bean
+
+```
+@FixefidRecord(recordLen = 100)
+public class Person {
+
+```
+
 in this case a default filler of 47 space will be added at the end of the record. If you set the value of a field with a len greater than the field len, an exception is thrown.
 
 ## Field mandatory
@@ -362,12 +370,28 @@ public enum PersonRecordField implements FieldProperty {
 	.................
 ```
 
+or the java bean like this:
+
+```
+@FixefidRecord
+public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN, fieldMandatory = FieldMandatory.IN)
+	private String firstName;
+
+```
+
 The field mandatory is related to the record way. By default the record way is set to RecordWay.IN. That's when the record is read from an input source. When the record is write to an output source, the record way should be set to RecordWay.OUT. The record way can be set by record constructor like this:
 
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, PersonRecordField.class);
 ```
- or by the setter method 
+or for java bean
+```
+@FixefidRecord(recordWay = RecordWay.IN)
+public class Person {
+
+```
+or by the setter method 
  
  ```
  record.setRecordWay(RecordWay.IN);
@@ -412,6 +436,14 @@ public enum PersonRecordField implements FieldProperty {
 	
 	.................
 ```
+
+or for java bean
+
+```
+ public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN, fieldDefaultValue = "Unknown")
+	private String firstName;
+ ```
 
 ## Alphanumeric data type with Date and Boolean formatters
 The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
