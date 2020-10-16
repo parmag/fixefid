@@ -14,9 +14,9 @@ It differs from other tools focusing on:
   <li>Record pretty print</li>
 </ul>
 
-## What's new
+## What's new 1.1.0
 
-The version 1.1.0 has been released. Includes:
+The version 1.1.0 includes:
 
 <ul>
 	<li>Record defined by java bean</li>
@@ -217,6 +217,114 @@ this is a very simple example for getting started.
 You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
 
 The advantage respect enum style is the java inheritance, composition, etc etc... that you can use with java bean, that's mean a more compact record representation. But bear in mind that every fixed field record can be represented by enum or java bean.
+
+For example you can add the Address bean
+
+```
+@FixefidRecord
+public class Address {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN)
+	private String location;
+	@FixefidField(fieldOrdinal = 2, fieldLen = 5, fieldType = FieldType.AN)
+	private String postalCode;
+	@FixefidField(fieldOrdinal = 3, fieldLen = 2, fieldType = FieldType.AN)
+	private String district;
+	@FixefidField(fieldOrdinal = 4, fieldLen = 3, fieldType = FieldType.AN)
+	private String nationIso3;
+	@FixefidField(fieldOrdinal = 5, fieldLen = 30, fieldType = FieldType.AN)
+	private String address;
+	@FixefidField(fieldOrdinal = 6, fieldLen = 10, fieldType = FieldType.AN)
+	private String num;
+	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public String getPostalCode() {
+		return postalCode;
+	}
+	public void setPostalCode(String postalCode) {
+		this.postalCode = postalCode;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getNationIso3() {
+		return nationIso3;
+	}
+	public void setNationIso3(String nationIso3) {
+		this.nationIso3 = nationIso3;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getNum() {
+		return num;
+	}
+	public void setNum(String num) {
+		this.num = num;
+	}
+```
+
+to the Person bean above, 
+
+```
+
+@FixefidRecord
+public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN)
+	private String firstName;
+	
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastName;
+	
+	@FixefidField(fieldOrdinal = 3, fieldLen = 3, fieldType = FieldType.N)
+	private Integer age;
+	
+	@FixefidField(fieldOrdinal = 4, fieldType = FieldType.CMP, fieldLen = 75)
+	private Address address = new Address();
+
+```
+
+and crete a Student bean wich extends the Person bean
+
+```
+@FixefidRecord
+public class Student extends Person {
+	@FixefidField(fieldOrdinal = 5, fieldLen = 10, fieldType = FieldType.N)
+	private long studentId;
+	
+	@FixefidField(fieldOrdinal = 6, fieldLen = 2, fieldType = FieldType.N)
+	private int level;
+	
+	@FixefidField(fieldOrdinal = 7, fieldLen = 1, fieldType = FieldType.AN)
+	private boolean active;
+```
+
+and create a Student record
+
+```
+BeanRecord record = new BeanRecord(new Student());
+record.setValue("firstName", "Peter");
+record.setValue("lastName", "Rossi");
+record.setValue("age", 20);
+record.setValue("address.location", "jacksonville");
+record.setValue("address.postalCode", "40128");
+record.setValue("studentId", 123456789);
+record.setValue("level", 1);
+record.setValue("active", true);
+String recordAsString = record.toString();
+```
+
+the fieldOrdinal must be unique for inheritance. For composition is not mandatory.
 
 ## Record len
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
