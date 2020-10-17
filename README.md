@@ -34,7 +34,7 @@ To include maven dependency of fixefid version 1.0.0 in your pom.xml, add this:
 <dependency>
     <groupId>com.github.parmag</groupId>
     <artifactId>fixefid</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
