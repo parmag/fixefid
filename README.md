@@ -19,7 +19,7 @@ It differs from other tools focusing on:
 The version 1.1.0 includes:
 
 <ul>
-	<li>Record defined by java bean</li>
+	<li>Record defined by Java Bean</li>
 	<li>Error codes</li>
 	<li>JUnit version 4.13.1</li>
 	<li>Minor bug fixes</li>
@@ -28,7 +28,7 @@ The version 1.1.0 includes:
 ## Getting started
 The JDK compliance level is 1.6 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
 
-To include maven dependency of fixefid version 1.0.0 in your pom.xml, add this:
+To include maven dependency of fixefid version 1.1.0 in your pom.xml, add this:
 
 ```
 <dependency>
