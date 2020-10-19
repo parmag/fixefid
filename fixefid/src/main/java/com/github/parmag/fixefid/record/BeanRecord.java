@@ -395,12 +395,18 @@ public class BeanRecord extends AbstractRecord {
 		syncValuesFromRecordToBean();
 	}
 	
+	/**
+	 * update the value of every fields from record to the backed bean
+	 */
 	public void syncValuesFromRecordToBean() {
 		for (String fieldName : fieldsMap.keySet()) {
 		    syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 		} 
 	}
 	
+	/**
+	 * update the value of every fields from the backed bean the the record
+	 */
 	public void syncValuesFromBeanToRecord() {
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
