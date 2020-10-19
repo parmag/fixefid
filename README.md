@@ -242,36 +242,7 @@ public class Address {
 	public void setLocation(String location) {
 		this.location = location;
 	}
-	public String getPostalCode() {
-		return postalCode;
-	}
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
-	public String getDistrict() {
-		return district;
-	}
-	public void setDistrict(String district) {
-		this.district = district;
-	}
-	public String getNationIso3() {
-		return nationIso3;
-	}
-	public void setNationIso3(String nationIso3) {
-		this.nationIso3 = nationIso3;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getNum() {
-		return num;
-	}
-	public void setNum(String num) {
-		this.num = num;
-	}
+	....
 ```
 
 to the Person bean above, 
@@ -446,16 +417,12 @@ or for java bean
  ```
 
 ## Alphanumeric data type with Date and Boolean formatters
-The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
+The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. To do that you need a date and a boolean formatter like these:
 
 ```
-public enum PersonRecordField implements FieldProperty {
-	firstName(25, FieldType.AN, null),
-	lastName(25, FieldType.AN, null),
-	age(3, FieldType.N, null),
-	birthDate(8, FieldType.AN,  Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)))),
-	vip(1, FieldType.AN, Arrays.asList(
+List<FieldExtendedProperty> birthDateFieldExtendedProperties = Arrays.asList(
+		new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)));
+List<FieldExtendedProperty> vipFieldExtendedProperties = Arrays.asList(
 		new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
 			@Override
 			public String format(Boolean value) {
@@ -466,7 +433,19 @@ public enum PersonRecordField implements FieldProperty {
 			public Boolean parse(String value) {
 				return "Y".equals(value) ? true : false;
 			}
-		})));
+		}));
+
+```
+
+For instance, to add two fields to the PersonRecordField example above, birth date and vip, change the enum like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, null),
+	age(3, FieldType.N, null),
+	birthDate(8, FieldType.AN,  birthDateFieldExtendedProperties),
+	vip(1, FieldType.AN, vipFieldExtendedProperties);
 	
 	private int fieldLen; 
 	private FieldType fieldType;
@@ -511,6 +490,36 @@ Paul                     Robinson                 05109072019Y
 Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
 Date birthDate = record.getValueAsDate(PersonRecordField.birthDate);
 Boolean vip = record.getValueAsBoolean(PersonRecordField.vip);
+```
+
+for the java bean:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	
+	@FixefidField(fieldOrdinal = 4, fieldLen = 8, fieldType = FieldType.AN)
+	private Date birthDate;
+	
+	@FixefidField(fieldOrdinal = 5, fieldLen = 1, fieldType = FieldType.AN)
+	private Boolean vip;
+```
+
+and create the record
+
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
+			new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("birthDate", birthDateFieldExtendedProperties);
+MAP_FIELD_EXTENDED_PROPERTIES.put("vip", vipFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+record.setValue("firstName", "Peter");
+record.setValue("lastName", "Rossi");
+...
+record.setValue("birthDate", new Date());
+record.setValue("vip", true);
 ```
 
 ## Alphanumeric data type with Custom Formatter
