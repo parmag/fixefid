@@ -581,13 +581,12 @@ for the java bean:
 public class Person {
 	.....
 	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
-	private String lastname;
+	private String lastName;
 	....
 ```
 ans create the record:
 ```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
-			new HashMap<String, List<FieldExtendedProperty>>();
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
 MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
@@ -607,6 +606,14 @@ The len of the field and the DecimalFormat determines the Java type:
 
 moreover if the DecimalFormat is present, the field can always be managed like a BigDecimal, no matter its len.
 
+To define an extended property for a Decimal Format, you can do like this:
+
+```
+List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH))));
+
+```
+
 For instance, to add the field amount to the PersonRecordField example above, change the enum like this:
 
 ```
@@ -614,9 +621,7 @@ public enum PersonRecordField implements FieldProperty {
 	firstName(25, FieldType.AN, null),
 	lastName(25, FieldType.AN, null),
 	age(3, FieldType.N, null),
-	amount(10, FieldType.N, Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
-			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
+	amount(10, FieldType.N, amountFieldExtendedProperties);
 	
 	private int fieldLen; 
 	private FieldType fieldType;
@@ -661,16 +666,34 @@ Double amount = record.getValueAsDouble(PersonRecordField.amount);
 
 if the extended proporty REMOVE_DECIMAL_SEPARATOR is added to the field amount like this:
 ```
-...................
-amount(10, FieldType.N, Arrays.asList(
-                new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
-		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
-			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
-...................
+List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
+	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))
+);
 ```
 the result is:
  ```
 Paul                     Robinson                 0510000150099
+```
+
+for the java bean:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private String amount;
+```
+ans create the record:
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("amount", amountFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
 ## Field padding
