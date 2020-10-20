@@ -712,10 +712,15 @@ Paul                                      Robinson0510000150099
 moreover the padding behavior can be set at Record level like this:
 
 ```
-Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")));
+Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, );
 ```
 in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
+
+The same for java bean, the padding behavior can be set at Record level like this:
+```
+BeanRecord record = new BeanRecord(person, null, Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")), MAP_FIELD_EXTENDED_PROPERTIES);
+```
 
 ## Field normalization
 There are three types of normalization to apply at field or record level:
@@ -737,20 +742,25 @@ if the value is "àx@°§12", after normalization is "AX@??12"
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
 
 ```
+List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
+		@Override
+		public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
+				List<FieldExtendedProperty> fieldExtendedProperties) {
+			if (value.contains("-")) {
+				return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
+			} else {
+				return new FieldValidationInfo();
+			}
+		}
+	}));
+
+```
+
+```
 public enum PersonRecordField implements FieldProperty {
 	firstName(25, FieldType.AN, null),
-	lastName(25, FieldType.AN, Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
-			@Override
-			public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
-					List<FieldExtendedProperty> fieldExtendedProperties) {
-				if (value.contains("-")) {
-					return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
-				} else {
-					return new FieldValidationInfo();
-				}
-			}
-		}))),
+	lastName(25, FieldType.AN, lastNameFieldExtendedProperties),
 	age(3, FieldType.N, null);
 	
 	private int fieldLen; 
@@ -771,6 +781,13 @@ public enum PersonRecordField implements FieldProperty {
 	}
 	
 	.................
+```
+the same for java bean
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
 if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
