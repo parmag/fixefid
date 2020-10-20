@@ -37,6 +37,7 @@ To include maven dependency of fixefid version 1.1.0 in your pom.xml, add this:
     <version>1.1.0</version>
 </dependency>
 ```
+Every record can be defined by Enum or Java Bean. Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library. 
 
 ## Getting started with Enum
 
@@ -296,6 +297,8 @@ String recordAsString = record.toString();
 ```
 
 the fieldOrdinal must be unique for inheritance. For composition is not mandatory.
+
+Here a complete <a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Example</a> about how getting started with records defined by Java Bean. 
 
 ## Record len
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
