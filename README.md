@@ -523,15 +523,13 @@ record.setValue("vip", true);
 ```
 
 ## Alphanumeric data type with Custom Formatter
-The alphanumeric data type FieldType.AN can be used with a custom formatter. For instance, to create a custom formatter for the last name field, change the PersonRecordField enum like this:
+The alphanumeric data type FieldType.AN can be used with a custom formatter:
 
 ```
-public enum PersonRecordField implements FieldProperty {
-	firstName(25, FieldType.AN, null),
-	lastName(25, FieldType.AN, Arrays.asList(
+List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
 		new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
 			@Override
-			public String format(String value) {	
+			public String format(String value) {
 				// do something
 				return value;
 			}
@@ -541,7 +539,16 @@ public enum PersonRecordField implements FieldProperty {
 				// do something
 				return value;
 			}
-		}))),
+		}));
+
+```
+
+For instance, to create a custom formatter for the last name field, change the PersonRecordField enum like this:
+
+```
+public enum PersonRecordField implements FieldProperty {
+	firstName(25, FieldType.AN, null),
+	lastName(25, FieldType.AN, lastNameFieldExtendedProperties),
 	age(3, FieldType.N, null);
 	
 	private int fieldLen; 
@@ -562,6 +569,25 @@ public enum PersonRecordField implements FieldProperty {
 	}
 	
 	.................
+```
+
+for the java bean:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+```
+ans create the record:
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
+			new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
 ## Numeric data type
