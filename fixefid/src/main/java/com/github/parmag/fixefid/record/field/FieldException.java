@@ -24,6 +24,7 @@ public class FieldException extends RuntimeException {
      */
 	public FieldException(ErrorCode errorCode, String message) {
 		super(message);
+		this.errorCode = errorCode;
 	}
 
 	/**
@@ -35,6 +36,7 @@ public class FieldException extends RuntimeException {
      */
 	public FieldException(ErrorCode errorCode, Throwable cause) {
 		super(cause);
+		this.errorCode = errorCode;
 	}
 
 	/**
@@ -47,6 +49,7 @@ public class FieldException extends RuntimeException {
      */
 	public FieldException(ErrorCode errorCode, String message, Throwable cause) {
 		super(message, cause);
+		this.errorCode = errorCode;
 	}
 	
 	@Override
