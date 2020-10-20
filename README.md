@@ -37,6 +37,7 @@ To include maven dependency of fixefid version 1.1.0 in your pom.xml, add this:
     <version>1.1.0</version>
 </dependency>
 ```
+Every record can be defined by Enum or Java Bean. Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library. 
 
 ## Getting started with Enum
 
@@ -296,6 +297,8 @@ String recordAsString = record.toString();
 ```
 
 the fieldOrdinal must be unique for inheritance. For composition is not mandatory.
+
+Here a complete <a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Example</a> about how getting started with records defined by Java Bean. 
 
 ## Record len
 The default record len is the sum of every field len. For example for the person record above, the len is 25 + 25 + 3 = 53. If the record len must be greater than the default fields len sum, you can set it using the constructor like this:
@@ -578,13 +581,12 @@ for the java bean:
 public class Person {
 	.....
 	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
-	private String lastname;
+	private String lastName;
 	....
 ```
 ans create the record:
 ```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
-			new HashMap<String, List<FieldExtendedProperty>>();
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
 MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
@@ -604,6 +606,14 @@ The len of the field and the DecimalFormat determines the Java type:
 
 moreover if the DecimalFormat is present, the field can always be managed like a BigDecimal, no matter its len.
 
+To define an extended property for a Decimal Format, you can do like this:
+
+```
+List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH))));
+
+```
+
 For instance, to add the field amount to the PersonRecordField example above, change the enum like this:
 
 ```
@@ -611,9 +621,7 @@ public enum PersonRecordField implements FieldProperty {
 	firstName(25, FieldType.AN, null),
 	lastName(25, FieldType.AN, null),
 	age(3, FieldType.N, null),
-	amount(10, FieldType.N, Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
-			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
+	amount(10, FieldType.N, amountFieldExtendedProperties);
 	
 	private int fieldLen; 
 	private FieldType fieldType;
@@ -658,16 +666,34 @@ Double amount = record.getValueAsDouble(PersonRecordField.amount);
 
 if the extended proporty REMOVE_DECIMAL_SEPARATOR is added to the field amount like this:
 ```
-...................
-amount(10, FieldType.N, Arrays.asList(
-                new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
-		new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, 
-			new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
-...................
+List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
+	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))
+);
 ```
 the result is:
  ```
 Paul                     Robinson                 0510000150099
+```
+
+for the java bean:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private String amount;
+```
+ans create the record:
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("amount", amountFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
 ## Field padding
@@ -686,10 +712,15 @@ Paul                                      Robinson0510000150099
 moreover the padding behavior can be set at Record level like this:
 
 ```
-Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")));
+Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, );
 ```
 in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
+
+The same for java bean, the padding behavior can be set at Record level like this:
+```
+BeanRecord record = new BeanRecord(person, null, Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")), MAP_FIELD_EXTENDED_PROPERTIES);
+```
 
 ## Field normalization
 There are three types of normalization to apply at field or record level:
@@ -711,20 +742,25 @@ if the value is "àx@°§12", after normalization is "AX@??12"
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
 
 ```
+List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
+		@Override
+		public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
+				List<FieldExtendedProperty> fieldExtendedProperties) {
+			if (value.contains("-")) {
+				return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
+			} else {
+				return new FieldValidationInfo();
+			}
+		}
+	}));
+
+```
+
+```
 public enum PersonRecordField implements FieldProperty {
 	firstName(25, FieldType.AN, null),
-	lastName(25, FieldType.AN, Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
-			@Override
-			public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
-					List<FieldExtendedProperty> fieldExtendedProperties) {
-				if (value.contains("-")) {
-					return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
-				} else {
-					return new FieldValidationInfo();
-				}
-			}
-		}))),
+	lastName(25, FieldType.AN, lastNameFieldExtendedProperties),
 	age(3, FieldType.N, null);
 	
 	private int fieldLen; 
@@ -745,6 +781,13 @@ public enum PersonRecordField implements FieldProperty {
 	}
 	
 	.................
+```
+the same for java bean
+```
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
+
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
 if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
