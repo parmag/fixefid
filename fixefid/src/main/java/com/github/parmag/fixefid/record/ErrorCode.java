@@ -9,23 +9,77 @@ package com.github.parmag.fixefid.record;
  *
  */
 public enum ErrorCode {
+	/**
+	 * Error to access internal java bean field by reflection
+	 */
 	RE1,
+	/**
+	 * Sync field value from record to bean error
+	 */
 	RE2,
+	/**
+	 * Error to access internal java bean field by reflection
+	 */
 	RE3,
+	/**
+	 * Error to access internal java bean field by reflection
+	 */
 	RE4,
+	/**
+	 * Error to access internal java bean field by reflection
+	 */
 	RE5,
+	/**
+	 * Record field extended property error
+	 */
 	RE6,
+	/**
+	 * Init record error cause input string diff vs record to string
+	 */
 	RE7,
+	/**
+	 * Not valid record len
+	 */
 	RE8,
+	/**
+	 * Unknown field name
+	 */
 	RE9,
+	/**
+	 * To string error cause record error status
+	 */
 	RE10,
+	/**
+	 * Error to set field value cause not valid value len
+	 */
 	RE11,
+	/**
+	 * Error to create record bean cause null bean
+	 */
 	RE12,
+	/**
+	 * Missing Java Bean FixefidRecord annnotation
+	 */
 	RE13,
+	/**
+	 * Field ordinal must be unique (for type and super type)
+	 */
 	RE14,
+	/**
+	 * Java Bean field name reserved
+	 */
 	RE15,
+	/**
+	 * Sync field value from bean to record error
+	 */
 	RE16,
+	/**
+	 * Not found field by name
+	 */
 	RE17,
+	/**
+	 * Enum field name reserved
+	 */
 	RE18,
 	
 	FE1,
