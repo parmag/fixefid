@@ -37,7 +37,11 @@ To include maven dependency of fixefid version 1.1.0 in your pom.xml, add this:
     <version>1.1.0</version>
 </dependency>
 ```
-Every record can be defined by Enum or Java Bean. Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library. 
+Every record can be defined by Enum or Java Bean. 
+
+## Getting started by examples
+
+Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library. 
 
 ## Getting started with Enum
 
