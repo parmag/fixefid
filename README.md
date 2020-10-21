@@ -1,5 +1,5 @@
 # Fixefid
-Fixefid is a Java library for working with flat fixed formatted text files. 
+Fixefid is a Java library for working with fixed fields formatted text files. 
 It differs from other tools focusing on:
 <ul>
   <li>Easy-to-use</li>
