@@ -43,8 +43,14 @@ Every record can be defined by Enum or Java Bean.
 
 Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library:
 <ul>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Fixefidbean</a>: An example about how using fixefid to define a record with a Java Bean</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Fixefidbean</a>: A java project about how using fixefid to define a record with Java Bean</li>
 </ul>
+
+Here some video tutorial:
+<ul>
+	<li><a href="https://www.youtube.com/watch?v=5fBsCyPSFOk&t" target="_blank">Fixefidbean</a>: A video tutorial about how using fixefid to define a record with Java Bean</li>
+</ul>
+
 
 ## Getting started with Enum
 
