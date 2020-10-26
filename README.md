@@ -12,6 +12,7 @@ It differs from other tools focusing on:
   <li>Default fields values</li>
   <li>Record status and custom validators</li>
   <li>Record pretty print</li>
+  <li>Record definition with Java Bean or Java Enum</li>	
 </ul>
 
 ## What's new 1.1.0
