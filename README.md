@@ -137,6 +137,8 @@ this is a very simple example for getting started.
 
 You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the pad fields, create custom validators and many others features.
 
+Here a complete <a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidenum" target="_blank">Example</a> about how getting started with records defined by Java Enum. 
+
 ## Getting started with Java Bean
 
 To define a simple person record with three fixed fields, first name, last name and age, create a java bean like this:
