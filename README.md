@@ -52,6 +52,7 @@ Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">E
 Here some video tutorial:
 <ul>
 	<li><a href="https://www.youtube.com/watch?v=5fBsCyPSFOk&t" target="_blank">Fixefidbean</a>: A video tutorial about how using fixefid to define a record with Java Bean</li>
+	<li><a href="https://www.youtube.com/watch?v=7yoBbqGE9gU" target="_blank">Fixefidjpa</a>: A video tutorial about how using fixefid to define a record with JPA Entity</li>
 </ul>
 
 
