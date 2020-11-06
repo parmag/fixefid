@@ -55,6 +55,12 @@ Here some video tutorial:
 	<li><a href="https://www.youtube.com/watch?v=7yoBbqGE9gU" target="_blank">Fixefidjpa</a>: A video tutorial about how using fixefid to define a record with JPA Entity</li>
 </ul>
 
+Here some articles:
+<ul>
+	<li><a href="https://giancarloparma.com/2020/10/26/howto-deal-with-fixed-fields-text-record-without-substring/" target="_blank">Howto deal with fixed fields text record without substring</a></li>
+	<li><a href="https://giancarloparma.com/2020/11/06/howto-deal-with-fixed-fields-text-record-and-jpa-entity/" target="_blank">Howto deal with fixed fields text record and JPA Entity</a></li>
+</ul>
+
 
 ## Getting started with Enum
 
