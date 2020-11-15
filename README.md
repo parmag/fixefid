@@ -47,7 +47,7 @@ Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">E
 	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Fixefidbean</a>: A java project about how using fixefid to define a record with Java Bean</li>
 	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidenum" target="_blank">Fixefidenum</a>: A java project about how using fixefid to define a record with Java Enum</li>
 	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidjpa" target="_blank">Fixefidjpa</a>: A java project about how using fixefid to define a record with JPA Entity</li>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidrest" target="_blank">Fixefidrest</a>: A java project about how using fixefid to define a record with REST Service</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidrest" target="_blank">Fixefidrest</a>: A java project about how using fixefid to convert a record to json with a REST Service</li>
 </ul>
 
 Here some video tutorial:
