@@ -60,6 +60,7 @@ Here some articles:
 <ul>
 	<li><a href="https://giancarloparma.com/2020/10/26/howto-deal-with-fixed-fields-text-record-without-substring/" target="_blank">Howto deal with fixed fields text record without substring</a></li>
 	<li><a href="https://giancarloparma.com/2020/11/06/howto-deal-with-fixed-fields-text-record-and-jpa-entity/" target="_blank">Howto deal with fixed fields text record and JPA Entity</a></li>
+	<li><a href="https://giancarloparma.com/2020/11/15/converting-fixed-fields-text-record-to-json/" target="_blank">Conveting fixed fields text record to json</a></li>
 </ul>
 
 
