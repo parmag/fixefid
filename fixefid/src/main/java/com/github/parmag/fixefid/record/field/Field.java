@@ -924,7 +924,8 @@ public class Field {
 		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", name=" + name + ", type="
 				+ type + ", index=" + index + ", len=" + len + ", mandatory=" + mandatory + ", recordWay=" 
 				+ recordWay + ", validationInfo=" + validationInfo + ", removeDecimalSeparator=" 
-				+ removeDecimalSeparator + "]";
+				+ removeDecimalSeparator + ", decimalFormat=" + decimalFormat + ", booleanFormat=" + booleanFormat + ", dateFormat=" 
+				+ dateFormat + ", customFormat=" + customFormat + ", pad=" + pad + ", padStr=" + padStr + ", padStrNum=" + padStrNum + "]";
 	}
 	
 	/**
