@@ -52,6 +52,7 @@ public class PersonTest {
 	private static final Person PERSON_BEAN_FOR_INIT_WITH_STRING = new Person();
 	private static final Person PERSON_BEAN_FOR_INIT_FIELD = new Person();
 	private static final Person1000 PERSON_1000_BEAN = new Person1000();
+	private static final Person1000 PERSON_1000_BEAN_FOR_STRING = new Person1000();
 	private static final PersonWithAddress PERSON_WITH_ADDRESS_BEAN = new PersonWithAddress();
 	
 	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
@@ -59,6 +60,7 @@ public class PersonTest {
 			
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
+	private static final BeanRecord PERSON_1000_BEAN_RECORD_STRING; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_FIELD;
@@ -111,6 +113,7 @@ public class PersonTest {
 		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00");
 		
 		PERSON_1000_BEAN_RECORD = new BeanRecord(PERSON_1000_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		PERSON_1000_BEAN_RECORD_STRING = new BeanRecord(PERSON_1000_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		
 		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
@@ -288,6 +291,11 @@ public class PersonTest {
 	@Test
 	public void testPerson1000LenConstructor() {
 		Assert.assertTrue(1000 == PERSON_1000_BEAN_RECORD.toString().length());
+	}
+	
+	@Test
+	public void testPerson1000ToStringConstructor() {
+		Assert.assertTrue((PERSON_RECORD_AS_STRING + String.format("%-903s", "")).contentEquals(PERSON_1000_BEAN_RECORD_STRING.toString()));
 	}
 	
 	@Test

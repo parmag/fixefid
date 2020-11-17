@@ -380,6 +380,10 @@ public class BeanRecord extends AbstractRecord {
 
 	private static void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+		if (FINAL_FILLER_NAME.equals(fieldName)) {
+			return;
+		}
+		
 		Object[] fieldAndBean = fieldAndBeanForName(fieldName, bean); 
 		Field field = (Field) fieldAndBean[0];
 		bean = fieldAndBean[1];
