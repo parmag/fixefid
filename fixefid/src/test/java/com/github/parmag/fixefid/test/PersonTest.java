@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
 import com.github.parmag.fixefid.record.RecordException;
+import com.github.parmag.fixefid.record.RecordWay;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
@@ -59,6 +60,7 @@ public class PersonTest {
 	public static final String PERSON_WITH_ADDRESS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
 			
 	private static final BeanRecord PERSON_BEAN_RECORD; 
+	private static final BeanRecord PERSON_BEAN_RECORD_WAY_OUT; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD_STRING; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
@@ -111,6 +113,18 @@ public class PersonTest {
 		PERSON_BEAN_RECORD.setValue("id", "0000000001");
 		PERSON_BEAN_RECORD.setValue("tor", "00001.0001");
 		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00");
+		
+		PERSON_BEAN_RECORD_WAY_OUT = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES, RecordWay.OUT); 
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("firstName", "Paolo");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("lastName", "Rossi");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("age", 51);
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("birthDate", CAL.getTime()); 
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("stature", 1.86f);
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("birthDistrict", "bo");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("vip", "N");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("id", "0000000001");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("tor", "00001.0001");
+		PERSON_BEAN_RECORD_WAY_OUT.setValue("turnover", "0100000.00");
 		
 		PERSON_1000_BEAN_RECORD = new BeanRecord(PERSON_1000_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		PERSON_1000_BEAN_RECORD_STRING = new BeanRecord(PERSON_1000_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES); 
@@ -341,5 +355,22 @@ public class PersonTest {
 		Assert.assertTrue(1.86f == PERSON_BEAN_FOR_INIT_WITH_STRING.getStature());
 		Assert.assertTrue("bo".equals(PERSON_BEAN_FOR_INIT_WITH_STRING.getBirthDistrict()));
 		Assert.assertFalse(PERSON_BEAN_FOR_STRING.getVip());
+	}
+	
+	@Test
+	public void testPersonDefaultRecordWay() { 
+		Assert.assertTrue(RecordWay.IN.equals(PERSON_BEAN_RECORD.getRecordWay()));
+	}
+	
+	@Test
+	public void testPersonSetRecordWay() {
+		PERSON_BEAN_RECORD.setRecordWay(RecordWay.OUT); 
+		Assert.assertTrue(RecordWay.OUT.equals(PERSON_BEAN_RECORD.getRecordWay()));
+		PERSON_BEAN_RECORD.setRecordWay(RecordWay.IN); 
+	}
+	
+	@Test
+	public void testPersonCreateRecordWay() { 
+		Assert.assertTrue(RecordWay.OUT.equals(PERSON_BEAN_RECORD_WAY_OUT.getRecordWay()));
 	}
 }

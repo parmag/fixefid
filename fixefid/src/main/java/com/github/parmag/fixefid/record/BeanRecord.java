@@ -106,13 +106,36 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
 			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties) {
+		this(bean, record, fieldExtendedProperties, mapFieldExtendedProperties, null);
+	}
+	
+	/**
+	 * Constructs a new <code>BeanRecord</code> that represents the fixed fields indicated by the <code>bean</code> parameter.
+	 * The value of every field is initialized with the formatted value present in the
+	 * relative position of the <code>record</code> parameter. To every field of the record are applied the extended properties
+	 * present in the <code>fieldExtendedProperties</code> parameter. Only the following properties are permitted at record level:
+	 * <ul>
+	 * <li><code>FieldExtendedPropertyType.LPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.RPAD</code></li>
+	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
+	 * </ul>
+	 * The extended property of every field can be overrided with the extended property present in the <code>mapFieldExtendedProperties</code>
+	 * 
+	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param record the formatted string of this <code>BeanRecord</code>
+	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
+	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
+	 * @param recordWay the record way
+	 */
+	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
+			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties, RecordWay recordWay) {
 		this.mapFieldExtendedProperties = mapFieldExtendedProperties;
 		
 		initFieldExtendedProperties(fieldExtendedProperties); 
-		initBean(bean, record);
+		initBean(bean, record, recordWay);
 	}
 	
-	private void initBean(Object bean, String record) {
+	private void initBean(Object bean, String record, RecordWay recordWay) {
 		if (bean == null) {
             throw new RecordException(ErrorCode.RE12, "Can't create record with a null bean");
         }
@@ -124,7 +147,7 @@ public class BeanRecord extends AbstractRecord {
             throw new RecordException(ErrorCode.RE13, "The class " + clazz.getSimpleName() + " is not annotated with FixefidRecord");
         } else {
         	initRecordLen(clazz);
-        	initRecordWay(clazz);
+        	initRecordWay(clazz, recordWay);
         	initFieldsMap();
         	addFiller();
         	if (record != null) {
@@ -150,9 +173,9 @@ public class BeanRecord extends AbstractRecord {
     	this.recordLen = recordLen;
 	}
 	
-	private void initRecordWay(Class<?> clazz) {
+	private void initRecordWay(Class<?> clazz, RecordWay recordWay) {
 		FixefidRecord fixefidRecord = clazz.getAnnotation(FixefidRecord.class);
-		this.recordWay = fixefidRecord.recordWay();
+		this.recordWay = recordWay != null ? recordWay : fixefidRecord.recordWay();
 	}
 	
 	/**
