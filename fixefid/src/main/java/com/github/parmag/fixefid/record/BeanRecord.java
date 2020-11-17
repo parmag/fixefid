@@ -246,11 +246,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, String value) {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE1, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -265,11 +261,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, String value, boolean truncate) throws RecordException {
 		super.setValue(fieldName, value, truncate);
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE2, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -281,11 +273,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Long value) throws FieldException {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE3, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -297,11 +285,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Integer value) throws FieldException {
 		super.setValue(fieldName, value);
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE4, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -313,11 +297,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Double value) throws FieldException {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE5, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -329,11 +309,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Float value) throws FieldException {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE6, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -345,11 +321,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, BigDecimal value) throws FieldException {
 		super.setValue(fieldName, value);
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE7, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -361,11 +333,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Date value) throws FieldException {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE8, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**
@@ -377,11 +345,7 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void setValue(String fieldName, Boolean value) throws FieldException {
 		super.setValue(fieldName, value); 
-		try {
-			syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
-		} catch (Exception e) {
-			throw new FieldException(ErrorCode.FE9, e);
-		}
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
 	}
 	
 	/**

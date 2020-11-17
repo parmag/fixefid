@@ -983,7 +983,7 @@ public class Field {
 		validLenAnMandatory();
 		
 		if (FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(validationInfo.getValidationStatus())) {
-			throw new FieldException(ErrorCode.FE10, "Validatin Code " + validationInfo.getValidationCode() +
+			throw new FieldException(ErrorCode.FE10, "Validation Code " + validationInfo.getValidationCode() +
 					" - Field " + name + " has status " + validationInfo.getValidationStatus().name() + 
 					". Cause: " + validationInfo.getValidationMessage());
 		}

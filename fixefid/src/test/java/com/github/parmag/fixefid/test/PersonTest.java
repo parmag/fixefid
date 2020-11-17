@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
 import com.github.parmag.fixefid.record.RecordException;
+import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.format.BooleanFormat;
@@ -256,6 +257,32 @@ public class PersonTest {
 		}
 		
 		Assert.assertTrue(ErrorCode.RE14.equals(errorCode));
+	}
+	
+	@Test
+	public void testPersonWithWrongAgeLen() {
+		ErrorCode errorCode = null;
+		try {
+			PERSON_BEAN_RECORD.setValue("age", 5100);
+		} catch (FieldException e) {
+			errorCode = e.getErrorCode();
+			PERSON_BEAN_RECORD.setValue("age", 51);
+		}
+		
+		Assert.assertTrue(ErrorCode.FE10.equals(errorCode));
+	}
+	
+	@Test
+	public void testPersonWithWrongAgeNumeric() {
+		ErrorCode errorCode = null;
+		try {
+			PERSON_BEAN_RECORD.setValue("age", "abc");
+		} catch (FieldException e) {
+			errorCode = e.getErrorCode();
+			PERSON_BEAN_RECORD.setValue("age", 51);
+		}
+		
+		Assert.assertTrue(ErrorCode.FE10.equals(errorCode));
 	}
 	
 	@Test
