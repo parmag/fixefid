@@ -97,7 +97,7 @@ public class BeanRecord extends AbstractRecord {
 	 * <li><code>FieldExtendedPropertyType.RPAD</code></li>
 	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
 	 * </ul>
-	 * The extended property of every field can be overrided with the extended property present in the <code>mapFieldExtendedProperties</code>
+	 * The extended property of every field can be overridden with the extended property present in the <code>mapFieldExtendedProperties</code>
 	 * 
 	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
 	 * @param record the formatted string of this <code>BeanRecord</code>
@@ -119,13 +119,13 @@ public class BeanRecord extends AbstractRecord {
 	 * <li><code>FieldExtendedPropertyType.RPAD</code></li>
 	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
 	 * </ul>
-	 * The extended property of every field can be overrided with the extended property present in the <code>mapFieldExtendedProperties</code>
+	 * The extended property of every field can be overridden with the extended property present in the <code>mapFieldExtendedProperties</code>
 	 * 
 	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
 	 * @param record the formatted string of this <code>BeanRecord</code>
 	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
 	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
-	 * @param recordWay the record way
+	 * @param recordWay the record way. This overrides what's defined at annotation level (see FixefidRecord annotation)
 	 */
 	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
 			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties, RecordWay recordWay) {
