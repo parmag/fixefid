@@ -9,6 +9,9 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.parmag.fixefid.record.ErrorCode;
 import com.github.parmag.fixefid.record.RecordWay;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo.RecordFieldValidationStatus;
@@ -23,6 +26,8 @@ import com.github.parmag.fixefid.record.format.CustomFormat;
  * @since 1.0
  */
 public class Field {
+	private static final Logger LOG = LoggerFactory.getLogger(Field.class);
+	
 	private static final String DEFAULT_AN_VALUE = "";
 	private static final String DEFAULT_N_VALUE = "0";
 	private static final String DEFAULT_AN_PAD_VALUE = " ";
@@ -150,6 +155,8 @@ public class Field {
 				FieldExtendedPropertyType.RPAD + " or " + FieldExtendedPropertyType.LPAD + "] with wrong pad string=[" + 
 					padStr + "] . Pad String Len=[1} is expected.");
 		}
+		
+		LOG.debug("Created field {}", toString());
 	}
 
 	/**
@@ -923,7 +930,7 @@ public class Field {
 	public String toString() {
 		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", name=" + name + ", type="
 				+ type + ", index=" + index + ", len=" + len + ", mandatory=" + mandatory + ", recordWay=" 
-				+ recordWay + ", validationInfo=" + validationInfo + ", removeDecimalSeparator=" 
+				+ recordWay + ", validationInfo=" + validationInfo + ", validator=" + validator + ", removeDecimalSeparator=" 
 				+ removeDecimalSeparator + ", decimalFormat=" + decimalFormat + ", booleanFormat=" + booleanFormat + ", dateFormat=" 
 				+ dateFormat + ", customFormat=" + customFormat + ", pad=" + pad + ", padStr=" + padStr + ", padStrNum=" + padStrNum + "]";
 	}
