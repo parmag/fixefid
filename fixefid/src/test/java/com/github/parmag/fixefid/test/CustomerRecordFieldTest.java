@@ -19,4 +19,10 @@ public class CustomerRecordFieldTest {
 	public void testToString() {
 		Assert.assertTrue(CUSTOMER_RECORD_AS_STRING.equals(CUSTOMER_RECORD.toString()));
 	}
+	
+	@Test
+	public void testFieldPrettyPrint() {
+		Assert.assertTrue("email=[2][20][50][paul.robinson@serverxyz.com                       ][INFO][]".equals(
+				CUSTOMER_RECORD.prettyPrint(CustomerRecordField.email.name()))); 
+	}
 }

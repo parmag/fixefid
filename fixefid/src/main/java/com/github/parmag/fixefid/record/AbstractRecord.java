@@ -285,6 +285,40 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
+	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code> param.
+	 * The pretty print is composed as following:
+	 * <p>
+	 * name=[index][offset][len][value][validation status][validation msg (if present)]
+	 * 
+	 * @return the pretty print of the field represented by the <code>fieldName</code> param.
+	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
+	 */
+	public String prettyPrint(String fieldName) {
+		if (!fieldsMap.containsKey(fieldName)) {
+			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "]");
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		int offset = 1;
+		for (String key : fieldsMap.keySet()) {
+			Field rf = fieldsMap.get(key);
+			int len = rf.getLen(); 
+			if (key.equals(fieldName)) {
+				sb.append(key + "=[" + rf.getIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
+				FieldValidationInfo vi = rf.getValidationInfo();
+				if (vi != null) {
+					sb.append("[" + vi.getValidationStatus().name() + "][" + vi.getValidationMessage() + "]");
+				} else {
+					sb.append("[" + NO_VALIDATION_INFO + "]");
+				}
+			}
+			offset += len;
+		}
+		
+		return sb.toString();
+	}
+	
+	/**
 	 * Returns a <code>String</code> object representing the pretty print offset of this record.
 	 * The pretty print offset is composed as following:
 	 * <p>
