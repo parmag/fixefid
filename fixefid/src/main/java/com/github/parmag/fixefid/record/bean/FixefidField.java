@@ -40,4 +40,8 @@ public @interface FixefidField {
 	 * @return the default value of the java bean property
 	 */
 	public String fieldDefaultValue() default "";
+	/**
+	 * @return the sub ordinal of the java bean property
+	 */
+	public int fieldSubOrdinal() default 0;
 }

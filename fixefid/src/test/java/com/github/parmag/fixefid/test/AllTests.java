@@ -14,7 +14,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	LPadPersonRecordFieldTest.class,
 	
 	PersonTest.class,
-	StudentTest.class 
+	StudentTest.class,
+	CustomerTest.class 
 })
 public class AllTests {
 

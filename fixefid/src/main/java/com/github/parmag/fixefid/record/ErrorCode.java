@@ -62,7 +62,7 @@ public enum ErrorCode {
 	 */
 	RE13,
 	/**
-	 * Field ordinal must be unique (for type and super type)
+	 * Field ordinal + subordinal must be unique (for type and super type)
 	 */
 	RE14,
 	/**
@@ -81,6 +81,10 @@ public enum ErrorCode {
 	 * Enum field name reserved
 	 */
 	RE18,
+	/**
+	 * Field name must be unique (for type and super type)
+	 */
+	RE19,
 	
 	/**
 	 * NOT USED

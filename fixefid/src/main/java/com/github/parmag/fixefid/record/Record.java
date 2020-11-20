@@ -580,7 +580,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 			
 			List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(p.fieldExtendedProperties());
 			
-			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, p.fieldType(), p.fieldLen(), 
+			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 0, p.fieldType(), p.fieldLen(), 
 				p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
         }
 	}

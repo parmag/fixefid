@@ -14,8 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.parmag.fixefid.record.BeanRecord;
-import com.github.parmag.fixefid.record.ErrorCode;
-import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.field.FieldMandatory;
@@ -24,9 +22,9 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 import com.github.parmag.fixefid.record.field.FieldValidator;
 import com.github.parmag.fixefid.record.format.BooleanFormat;
 import com.github.parmag.fixefid.record.format.CustomFormat;
-import com.github.parmag.fixefid.test.bean.Student;
+import com.github.parmag.fixefid.test.bean.Customer;
 
-public class StudentTest {
+public class CustomerTest {
 	private static final Calendar CAL = Calendar.getInstance();
 	
 	private static final List<FieldExtendedProperty> BOOLEAN_FORMAT_LIST = Arrays.asList(
@@ -45,10 +43,9 @@ public class StudentTest {
 	private static final Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
 			new HashMap<String, List<FieldExtendedProperty>>();
 	
-	private static final Student STUDENT_BEAN = new Student();
-	public static final String STUDENT_RECORD_AS_STRING = PersonTest.PERSON_RECORD_AS_STRING + "000000000102Y";
-	private static final BeanRecord STUDENT_BEAN_RECORD; 
-	private static final BeanRecord STUDENT_CHILD_BEAN_RECORD; 
+	private static final Customer CUSTOMER_BEAN = new Customer();
+	public static final String CUSTOMER_RECORD_AS_STRING = PersonTest.PERSON_RECORD_AS_STRING + "0000000001paolo.rossi@serverxyz.com                         677 6575744              ";
+	private static final BeanRecord CUSTOMER_BEAN_RECORD; 
 	
 	static {
 		CAL.set(Calendar.DAY_OF_MONTH, 7);
@@ -94,56 +91,25 @@ public class StudentTest {
 			}
 		})));
 		
-		STUDENT_BEAN_RECORD = new BeanRecord(STUDENT_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
-		STUDENT_BEAN_RECORD.setValue("firstName", "Paolo");
-		STUDENT_BEAN_RECORD.setValue("lastName", "Rossi");
-		STUDENT_BEAN_RECORD.setValue("age", 51);
-		STUDENT_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
-		STUDENT_BEAN_RECORD.setValue("stature", 1.86f);
-		STUDENT_BEAN_RECORD.setValue("birthDistrict", "bo");
-		STUDENT_BEAN_RECORD.setValue("vip", "N");
-		STUDENT_BEAN_RECORD.setValue("id", "0000000001");
-		STUDENT_BEAN_RECORD.setValue("tor", "00001.0001");
-		STUDENT_BEAN_RECORD.setValue("turnover", "0100000.00");
-		STUDENT_BEAN_RECORD.setValue("studentId", "0000000001");
-		STUDENT_BEAN_RECORD.setValue("level", "02");
-		STUDENT_BEAN_RECORD.setValue("active", "Y");
-		
-		STUDENT_CHILD_BEAN_RECORD = new BeanRecord(STUDENT_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
-		STUDENT_CHILD_BEAN_RECORD.setValue("firstName", "Paolo");
-		STUDENT_CHILD_BEAN_RECORD.setValue("lastName", "Rossi");
-		STUDENT_CHILD_BEAN_RECORD.setValue("age", 51);
-		STUDENT_CHILD_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
-		STUDENT_CHILD_BEAN_RECORD.setValue("stature", 1.86f);
-		STUDENT_CHILD_BEAN_RECORD.setValue("birthDistrict", "bo");
-		STUDENT_CHILD_BEAN_RECORD.setValue("vip", "N");
-		STUDENT_CHILD_BEAN_RECORD.setValue("id", "0000000001");
-		STUDENT_CHILD_BEAN_RECORD.setValue("tor", "00001.0001");
-		STUDENT_CHILD_BEAN_RECORD.setValue("turnover", "0100000.00");
-		STUDENT_CHILD_BEAN_RECORD.setValue("studentId", "0000000001");
-		STUDENT_CHILD_BEAN_RECORD.setValue("level", "02");
-		STUDENT_CHILD_BEAN_RECORD.setValue("active", "Y");
+		CUSTOMER_BEAN_RECORD = new BeanRecord(CUSTOMER_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		CUSTOMER_BEAN_RECORD.setValue("firstName", "Paolo");
+		CUSTOMER_BEAN_RECORD.setValue("lastName", "Rossi");
+		CUSTOMER_BEAN_RECORD.setValue("age", 51);
+		CUSTOMER_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		CUSTOMER_BEAN_RECORD.setValue("stature", 1.86f);
+		CUSTOMER_BEAN_RECORD.setValue("birthDistrict", "bo");
+		CUSTOMER_BEAN_RECORD.setValue("vip", "N");
+		CUSTOMER_BEAN_RECORD.setValue("id", "0000000001");
+		CUSTOMER_BEAN_RECORD.setValue("tor", "00001.0001");
+		CUSTOMER_BEAN_RECORD.setValue("turnover", "0100000.00");
+		CUSTOMER_BEAN_RECORD.setValue("customerId", "0000000001");
+		CUSTOMER_BEAN_RECORD.setValue("email", "paolo.rossi@serverxyz.com");
+		CUSTOMER_BEAN_RECORD.setValue("phone", "677 6575744");
 	}
 	
 	@Test
 	public void testToString() { 
-		Assert.assertTrue(STUDENT_RECORD_AS_STRING.contentEquals(STUDENT_BEAN_RECORD.toString()));
+		Assert.assertTrue(CUSTOMER_RECORD_AS_STRING.contentEquals(CUSTOMER_BEAN_RECORD.toString()));
 	}
 	
-	@Test
-	public void testChildValidator() {
-		ErrorCode errorCode = null;
-		int validationCode = 0;
-		try {
-			STUDENT_CHILD_BEAN_RECORD.setValue("age", 15);
-		} catch (FieldException e) {
-			errorCode = e.getErrorCode();
-			validationCode = STUDENT_CHILD_BEAN_RECORD.getRecordFieldValidationInfo("age").getValidationCode();
-			STUDENT_CHILD_BEAN_RECORD.setValue("age", 51);
-		}
-		
-		Assert.assertTrue(ErrorCode.FE10.equals(errorCode));
-		Assert.assertTrue(validationCode == 100);
-	}
-
 }

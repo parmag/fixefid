@@ -98,7 +98,7 @@ public abstract class AbstractRecord {
 		int fillerLen = getRecordLen() - fillerIndex;
 		
 		if (fillerLen > 0) {
-			fieldsMap.put(FINAL_FILLER_NAME, new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1,
+			fieldsMap.put(FINAL_FILLER_NAME, new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1, 0,
 				FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null));
 		}
 	}

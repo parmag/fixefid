@@ -45,6 +45,7 @@ public class Field {
 	private BooleanFormat booleanFormat; 
 	private CustomFormat customFormat; 
 	private int index;
+	private int subIndex;
 	private String defaultValue;
 	private FieldValidator validator;
 	private FieldValidationInfo validationInfo;
@@ -58,6 +59,7 @@ public class Field {
 	 * 
 	 * @param name the name of this <code>Field</code>
 	 * @param index the index of this <code>Field</code>
+	 * @param subIndex the sub-index of this <code>Field</code>
 	 * @param type the type of this <code>Field</code>
 	 * @param len the len of this <code>Field</code>
 	 * @param mandatory the mandatory type of this <code>Field</code>
@@ -65,10 +67,11 @@ public class Field {
 	 * @param defaultValue the default value of this <code>Field</code>
 	 * @param fieldExtendedProperties the field extended properties of this <code>Field</code>
 	 */
-	public Field(String name, int index, FieldType type, int len, FieldMandatory mandatory, RecordWay recordWay, 
+	public Field(String name, int index, int subIndex, FieldType type, int len, FieldMandatory mandatory, RecordWay recordWay, 
 			String defaultValue, List<FieldExtendedProperty> fieldExtendedProperties) {
 		this.name = name;
 		this.index = index; 
+		this.subIndex = subIndex;
 		this.type = type;
 		this.len = len;
 		this.mandatory = mandatory;
@@ -744,6 +747,22 @@ public class Field {
 	}
 	
 	/**
+	 * @return the sub-idenx of this field
+	 */
+	public int getSubIndex() {
+		return subIndex;
+	}
+
+	/**
+	 * Set the sub-index of this field
+	 * 
+	 * @param subIndex the sub-index to set of this field
+	 */
+	public void setSubIndex(int subIndex) {
+		this.subIndex = subIndex;
+	}
+	
+	/**
 	 * @return the default value of this field
 	 */
 	public String getDefaultValue() {
@@ -840,7 +859,7 @@ public class Field {
 		String notValidMsg = "";
 		if (FieldType.N.equals(type)) {
 			if (validator != null) {
-				validationInfo = validator.valid(name, index, type, mandatory, value, fieldExtendedProperties);
+				validationInfo = validator.valid(name, index, subIndex, type, mandatory, value, fieldExtendedProperties);
 			} else {
 				if (isDouble()) {
 					try {
@@ -870,7 +889,7 @@ public class Field {
 			}
 		} else if (FieldType.AN.equals(type)) {
 			if (validator != null) {
-				validationInfo = validator.valid(name, index, type, mandatory, value, fieldExtendedProperties);
+				validationInfo = validator.valid(name, index, subIndex, type, mandatory, value, fieldExtendedProperties);
 			} else {
 				if (isDate()) {
 					try {
@@ -929,7 +948,7 @@ public class Field {
 	@Override
 	public String toString() {
 		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", name=" + name + ", type="
-				+ type + ", index=" + index + ", len=" + len + ", mandatory=" + mandatory + ", recordWay=" 
+				+ type + ", index=" + index + " subIndex=" + subIndex + ", len=" + len + ", mandatory=" + mandatory + ", recordWay=" 
 				+ recordWay + ", validationInfo=" + validationInfo + ", validator=" + validator + ", removeDecimalSeparator=" 
 				+ removeDecimalSeparator + ", decimalFormat=" + decimalFormat + ", booleanFormat=" + booleanFormat + ", dateFormat=" 
 				+ dateFormat + ", customFormat=" + customFormat + ", pad=" + pad + ", padStr=" + padStr + ", padStrNum=" + padStrNum + "]";

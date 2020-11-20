@@ -188,6 +188,9 @@ public class BeanRecord extends AbstractRecord {
 		Class<?> clazz = bean.getClass();
 		
 		List<Integer> ordinals = new ArrayList<Integer>();
+		List<String> names = new ArrayList<String>();
+		Map<Integer, List<Integer>> subOrdinalsMap = new HashMap<Integer, List<Integer>>();
+		
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), clazz);
 		Collections.sort(fields, new Comparator<Field>() {
 			@Override
@@ -195,12 +198,20 @@ public class BeanRecord extends AbstractRecord {
 				int fieldOrdinal1 = 0;
 				int fieldOrdinal2 = 0;
 				
+				FixefidField a1 = f1.getAnnotation(FixefidField.class);
+				FixefidField a2 = f2.getAnnotation(FixefidField.class);
+				
 				if (f1.isAnnotationPresent(FixefidField.class)) {
-					fieldOrdinal1 = f1.getAnnotation(FixefidField.class).fieldOrdinal();
+					fieldOrdinal1 = a1.fieldOrdinal();
 				}
 				
 				if (f2.isAnnotationPresent(FixefidField.class)) {
-					fieldOrdinal2 = f2.getAnnotation(FixefidField.class).fieldOrdinal();
+					fieldOrdinal2 = a2.fieldOrdinal();
+				}
+				
+				if (fieldOrdinal1 == fieldOrdinal2) {
+					fieldOrdinal1 = a1.fieldSubOrdinal();
+					fieldOrdinal2 = a2.fieldSubOrdinal();
 				}
 				
 				return fieldOrdinal1 - fieldOrdinal2;
@@ -213,17 +224,34 @@ public class BeanRecord extends AbstractRecord {
                 FixefidField fixefidField = field.getAnnotation(FixefidField.class);
                 String fieldName = field.getName();
                 int fieldOrdinal = fixefidField.fieldOrdinal();
+                int fieldSubOrdinal = fixefidField.fieldSubOrdinal();
                 
                 // check ordinals => must be unique
                 if (ordinals.contains(fieldOrdinal)) {
-                	throw new RecordException(ErrorCode.RE14, "The ordinal " + fieldOrdinal + " must be unique for the type (and super type) " + clazz.getName());
+                	List<Integer> subOrdinals = subOrdinalsMap.get(fieldOrdinal);
+                	if (subOrdinals.contains(fieldSubOrdinal)) {
+                		throw new RecordException(ErrorCode.RE14, "The ordinal " + fieldOrdinal + " + subOrdinal " + fieldSubOrdinal + " must be unique for the type (and super type) " + clazz.getName());
+                	} else {
+                		subOrdinals.add(fieldSubOrdinal);
+                	}
                 } else {
                 	ordinals.add(fieldOrdinal);
+                	
+                	List<Integer> subOrdinals = new ArrayList<Integer>();
+                	subOrdinals.add(fieldSubOrdinal);
+                	subOrdinalsMap.put(fieldOrdinal, subOrdinals); 
                 }
                 
+                // check names => must be unique and diff respect FINAL_FILLER_NAME
                 if (FINAL_FILLER_NAME.equals(fieldName)) {
     				throw new RecordException(ErrorCode.RE15, "The field name=[" + FINAL_FILLER_NAME + "] is reserved");
-    			}
+    			} else  {
+    				if (names.contains(fieldName)) {
+    					throw new RecordException(ErrorCode.RE19, "The field name=[" + fieldName + "] must be unique for the type (and super type) " + clazz.getName());
+    				} else {
+    					names.add(fieldName);
+    				}
+    			} 
                 
 				FieldType fieldType = fixefidField.fieldType();
 				if (FieldType.CMP.equals(fieldType)) {
@@ -250,7 +278,7 @@ public class BeanRecord extends AbstractRecord {
 					List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
 	                		mapFieldExtendedProperties != null ? mapFieldExtendedProperties.get(fieldName) : null);
 					fieldsMap.put(fieldName, new com.github.parmag.fixefid.record.field.Field(
-                		fieldName, fieldOrdinal, fieldType, fixefidField.fieldLen(), 
+                		fieldName, fieldOrdinal, fieldSubOrdinal, fieldType, fixefidField.fieldLen(), 
                 		fixefidField.fieldMandatory(), recordWay, fixefidField.fieldDefaultValue(), eps));
 					
 					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap);

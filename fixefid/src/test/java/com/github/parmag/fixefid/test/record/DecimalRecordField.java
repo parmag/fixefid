@@ -40,7 +40,7 @@ public enum DecimalRecordField implements FieldProperty {
 	decimalsWithNoNegativeValidator (10, null, FieldMandatory.NO, 
 		Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
 				@Override
-				public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
+				public FieldValidationInfo valid(String name, int index, int subIndex, FieldType type, FieldMandatory mandatory, String value,
 						List<FieldExtendedProperty> fieldExtendedProperties) {
 					
 					if (value.contains("-")) {
