@@ -3,7 +3,7 @@ package com.github.parmag.fixefid.record.field;
 import java.util.List;
 
 /**
- * The field property. A field has a name, a type, a mandatory type, a default value and some extended properties
+ * The field property. A field has a name, a type, a len, a mandatory type, a default value and some extended properties
  * 
  * @author Giancarlo Parma
  * 
@@ -26,17 +26,23 @@ public interface FieldProperty {
 	int fieldLen();
 	
 	/**
-	 * @return the mandatory type of the field
+	 * @return the mandatory type of the field. The default implementation returns <code>FieldMandatory.NO</code>
 	 */
-	FieldMandatory fieldMandatory();
+	default FieldMandatory fieldMandatory() {
+		return FieldMandatory.NO;
+	}
 	
 	/**
-	 * @return the default value of the field
+	 * @return the default value of the field. The default implementation returns <code>null</code>
 	 */
-	String fieldDefaultValue();
+	default String fieldDefaultValue() {
+		return null;
+	}
 	
 	/**
-	 * @return the extended properties of the field
+	 * @return the extended properties of the field. The default implementation returns <code>null</code>
 	 */
-	List<FieldExtendedProperty> fieldExtendedProperties();
+	default List<FieldExtendedProperty> fieldExtendedProperties() {
+		return null;
+	}
 }

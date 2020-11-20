@@ -12,6 +12,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	NumericRecordFieldTest.class,
 	AlphaNumericRecordFieldTest.class,
 	LPadPersonRecordFieldTest.class,
+	CustomerRecordFieldTest.class,
 	
 	PersonTest.class,
 	StudentTest.class,
