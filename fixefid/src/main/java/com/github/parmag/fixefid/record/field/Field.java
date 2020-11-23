@@ -174,6 +174,17 @@ public class Field {
 	}
 	
 	/**
+	 * Returns the formatted value of this <code>Field</code> with no PAD and trimmed
+	 * 
+	 * @return the formatted value of this <code>Field</code> with no PAD and trimmed
+	 */
+	public String getValueWithNoPADAndTrimmed() {
+		checkValidationInfo();
+		
+		return undoPad(value).trim();
+	}
+	
+	/**
 	 * Returns the parsed value as <code>String</code> of this <code>Field</code>
 	 * 
 	 * @return the parsed value as <code>String</code> of this <code>Field</code>

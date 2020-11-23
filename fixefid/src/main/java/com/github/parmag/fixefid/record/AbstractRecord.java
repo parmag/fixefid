@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
+import com.github.parmag.fixefid.record.csv.CSVEnc;
+import com.github.parmag.fixefid.record.csv.CSVSep;
 import com.github.parmag.fixefid.record.field.Field;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
@@ -236,7 +239,7 @@ public abstract class AbstractRecord {
 	
 	 /**
      * Returns a <code>String</code> object representing this record. The returned string is composed with the formatted
-     * value of evry field of this record
+     * value of every field of this record
      *
      * @return  a string representation of this record
      * @throws RecordException it the status of this record is ERROR
@@ -255,6 +258,54 @@ public abstract class AbstractRecord {
 		doValidRecordLen(record, "toString");
 		
 		return record;
+	}
+	
+	/**
+     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
+     * value of every field of this record, unpadded and trimmed. Every value is separated with the <code>sep</code> param.
+     * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. If <code>encloseAllFields</code> is true,
+     * every field of the record is enclosed with the <code>enclosing</code> param. If the <code>enclosing</code> param is null,
+     * the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. If the <code>encloseAllFields</code> param is false the fields aren't enclosing, 
+     * eccept they contain the char sep or the char enclosing. Each of the embedded enclosing characters is represented by a pair of 
+     * double-enclosing characters.
+     *
+     * @param sep the field separator. If null the sep is <code>CSVSep.COMMA</code>
+     * @param otherSep the field separator if <code>sep</code> param is <code>CSVSep.OTHER</code>. If null the sep is <code>CSVSep.COMMA</code>
+     * @param enclosing the enclosing char. If null the enclosing char is <code>CSVEnc.DOUBLE_QUOTE</code>
+     * @param encloseAllFields if true every field of the record is enclosed with the enclosing char, otherwise only field which contains sep or enclosing chars
+     * 
+     * @return  a CSV string representation of this record
+     * @throws RecordException it the status of this record is ERROR
+     */
+	public String toStringCSV(CSVSep sep, String otherSep, CSVEnc enclosing, boolean encloseAllFields) throws RecordException {
+		if (isErrorStatus()) {
+			throw new RecordException(ErrorCode.RE10, "Record has Error status. Cause: " + prettyPrintErrorValidationInfo());
+		}
+		
+		sep = sep == null ? CSVSep.COMMA : sep;
+		if (CSVSep.OTHER.equals(sep) && otherSep == null) {
+			otherSep = CSVSep.COMMA.getSep();
+		}
+		String delimiter = CSVSep.OTHER.equals(sep) ? otherSep : sep.getSep();
+		
+		enclosing = enclosing == null ? CSVEnc.DOUBLE_QUOTE : enclosing;
+		String encString = enclosing.getEnc();
+		
+		StringJoiner sj = new StringJoiner(delimiter);
+		fieldsMap.forEach((fieldName, field) -> {
+			String value = field.getValueWithNoPADAndTrimmed();
+			if (encloseAllFields || value.contains(delimiter) || value.contains(encString)) {
+				if (value.contains(encString)) {
+					value = value.replace(encString, encString + encString);
+				}
+				
+				value = encString + value + encString;
+			}
+			
+			sj.add(value);
+		});
+		
+		return sj.toString();
 	}
 	
 	/**
@@ -787,7 +838,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 */
 	public void setValue(String fieldName, String value) {
@@ -797,7 +848,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param. 
 	 * 
-	 * @param fieldName the field proerty of the field to set the specified value
+	 * @param fieldName the field property of the field to set the specified value
 	 * @param value the value to set
 	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
 	 * field, the specified value will be truncated at the len od the field. 
@@ -820,7 +871,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not a Long
 	 */
@@ -831,7 +882,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not an Integer
 	 */
@@ -842,7 +893,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not a Double
 	 */
@@ -853,7 +904,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not a Float
 	 */
@@ -875,7 +926,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not a Date
 	 */
@@ -886,7 +937,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
-	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
 	 * @throws FieldException if the field is not a Boolean
 	 */

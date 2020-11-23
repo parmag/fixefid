@@ -6,12 +6,21 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.parmag.fixefid.record.Record;
+import com.github.parmag.fixefid.record.csv.CSVEnc;
+import com.github.parmag.fixefid.record.csv.CSVSep;
 import com.github.parmag.fixefid.test.record.PersonRecordField;
 
 public class PersonRecordFieldTest {
 	private static final Calendar CAL = Calendar.getInstance();
 	
 	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186";
+	private static final String PERSON_RECORD_AS_CSV_STRING = "Paolo,Rossi,51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_1 = "\"Paolo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
+	private static final String PERSON_RECORD_AS_CSV_STRING_2 = "\"Pao\"\"lo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3 = "\"Pao\"\"lo\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_4 = "Paolo;Rossi;51;07102002;186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_5 = "Paolo+Rossi+51+07102002+186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_6 = "'Paolo','Rossi','51','07102002','186'";
 	private static final Record<PersonRecordField> PERSON_RECORD = new Record<PersonRecordField>(PersonRecordField.class);
 	private static final Record<PersonRecordField> PERSON_RECORD_1000 = new Record<PersonRecordField>(PersonRecordField.class, 1000);
 	private static final Record<PersonRecordField> PERSON_RECORD_STRING = new Record<PersonRecordField>(PERSON_RECORD_AS_STRING, PersonRecordField.class);
@@ -83,6 +92,47 @@ public class PersonRecordFieldTest {
 	public void testInitRecordToString() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecord(PERSON_RECORD_AS_STRING);
 		Assert.assertTrue(PERSON_RECORD_AS_STRING.equals(PERSON_RECORD_INIT_WITH_STRING.toString()));
+	}
+	
+	@Test
+	public void testToStringCSV() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING.equals(PERSON_RECORD.toStringCSV(null, null, null, false)));
+	}
+	
+	@Test
+	public void testToStringCSV1() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_1.equals(PERSON_RECORD.toStringCSV(null, null, null, true)));
+	}
+	
+	@Test
+	public void testToStringCSV2() {
+		PERSON_RECORD.setValue(PersonRecordField.firstName, "Pao\"lo");
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_2.equals(PERSON_RECORD.toStringCSV(null, null, null, true)));
+		PERSON_RECORD.setValue(PersonRecordField.firstName, "Paolo");
+	}
+	
+	@Test
+	public void testToStringCSV3() {
+		PERSON_RECORD.setValue(PersonRecordField.firstName, "Pao\"lo");
+		PERSON_RECORD.setValue(PersonRecordField.lastName, "Ros,si");
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3.equals(PERSON_RECORD.toStringCSV(null, null, null, false)));
+		PERSON_RECORD.setValue(PersonRecordField.firstName, "Paolo");
+		PERSON_RECORD.setValue(PersonRecordField.lastName, "Rossi");
+	}
+	
+	@Test
+	public void testToStringCSV4() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_4.equals(PERSON_RECORD.toStringCSV(CSVSep.SEMICOLON, null, null, false)));
+	}
+	
+	@Test
+	public void testToStringCSV5() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_5.equals(PERSON_RECORD.toStringCSV(CSVSep.OTHER, "+", null, false)));
+	}
+	
+	@Test
+	public void testToStringCSV6() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_6.equals(PERSON_RECORD.toStringCSV(CSVSep.COMMA, null, CSVEnc.SINGLE_QUOTE, true)));
 	}
 
 }
