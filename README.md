@@ -42,18 +42,18 @@ Every record can be defined by Enum or Java Bean.
 
 ## Getting started by examples
 
-Here some <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library:
+Here some java projects <a href="https://github.com/parmag/fixefid-examples" target="_blank">Examples</a> about how using the library:
 <ul>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Fixefidbean</a>: A java project about how using fixefid to define a record with Java Bean</li>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidenum" target="_blank">Fixefidenum</a>: A java project about how using fixefid to define a record with Java Enum</li>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidjpa" target="_blank">Fixefidjpa</a>: A java project about how using fixefid to define a record with JPA Entity</li>
-	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidrest" target="_blank">Fixefidrest</a>: A java project about how using fixefid to convert a record to json with a REST Service</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidbean" target="_blank">Fixefidbean</a>: using fixefid to define a record with Java Bean</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidenum" target="_blank">Fixefidenum</a>: using fixefid to define a record with Java Enum</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidjpa" target="_blank">Fixefidjpa</a>: using fixefid to define a record with JPA Entity</li>
+	<li><a href="https://github.com/parmag/fixefid-examples/tree/main/fixefidrest" target="_blank">Fixefidrest</a>: using fixefid to convert a record to JSON with a REST Service</li>
 </ul>
 
 Here some video tutorial:
 <ul>
-	<li><a href="https://www.youtube.com/watch?v=5fBsCyPSFOk&t" target="_blank">Fixefidbean</a>: A video tutorial about how using fixefid to define a record with Java Bean</li>
-	<li><a href="https://www.youtube.com/watch?v=7yoBbqGE9gU" target="_blank">Fixefidjpa</a>: A video tutorial about how using fixefid to define a record with JPA Entity</li>
+	<li><a href="https://www.youtube.com/watch?v=5fBsCyPSFOk&t" target="_blank">Fixefidbean</a>: using fixefid to define a record with Java Bean</li>
+	<li><a href="https://www.youtube.com/watch?v=7yoBbqGE9gU" target="_blank">Fixefidjpa</a>: using fixefid to define a record with JPA Entity</li>
 </ul>
 
 Here some articles:
