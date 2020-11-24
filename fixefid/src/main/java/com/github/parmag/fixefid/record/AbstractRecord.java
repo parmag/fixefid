@@ -210,17 +210,17 @@ public abstract class AbstractRecord {
 					if (encString.equals(s)) {
 						enclosingBuilder.append(s);
 						flags[1] = false; // next not first
-						flags[2] = true; // next opened with enclosing
+						flags[2] = true; // opened with enclosing
 					} else  {
 						if (delimiter.equals(s)) {
 							// empty field
 							values.add("");
 							flags[1] = true; // next first
-							flags[2] = false; // next not opened with enclosing
+							flags[2] = false; // not opened with enclosing
 						} else {
 							flags[0] = false; // not all fields enclosed
 							flags[1] = false; // next not first
-							flags[2] = false; // next not opened with enclosing
+							flags[2] = false; // not opened with enclosing
 							valueBuilder.append(s);
 						}
 					}
@@ -234,7 +234,7 @@ public abstract class AbstractRecord {
 								values.add(encString);
 								enclosingBuilder.delete(0, enclosingBuilder.length());
 								flags[1] = true; // next first
-								flags[2] = false; // next not opened with enclosing
+								flags[2] = false; // not opened with enclosing
 							} else if (valueBuilder.length() == 0 && (encString + encString + encString).equals(enclosingBuilder.toString())) {
 								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found " + encString + encString + encString + " at index " + charIndex[0]);
 							} else if (valueBuilder.length() == 0 && (encString + encString).equals(enclosingBuilder.toString())) {
@@ -242,7 +242,7 @@ public abstract class AbstractRecord {
 								values.add("");
 								enclosingBuilder.delete(0, enclosingBuilder.length());
 								flags[1] = true; // next first
-								flags[2] = false; // next not opened with enclosing
+								flags[2] = false; // not opened with enclosing
 							} else if (valueBuilder.length() == 0 && encString.equals(enclosingBuilder.toString())) {
 								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found empty enclosing field not closed at index " + charIndex[0]);
 							} else {
@@ -254,16 +254,22 @@ public abstract class AbstractRecord {
 									valueBuilder.delete(0, valueBuilder.length());
 									enclosingBuilder.delete(0, enclosingBuilder.length());
 									flags[1] = true; // next first
-									flags[2] = false; // next not opened with enclosing
+									flags[2] = false; // not opened with enclosing
 								}
 							}
 						} else {
 							if (enclosingBuilder.length() > 1) {
+								if (valueBuilder.length() == 0) {
+									enclosingBuilder.deleteCharAt(0);
+								}
+								
 								if (enclosingBuilder.length() % 2 == 0) {
 									valueBuilder.append(enclosingBuilder.substring(0, enclosingBuilder.length() / 2)); 
 								} else {
 									throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found not valid odds double-enclosing field at index " + charIndex[0]);
 								}
+							} else if ((!flags[2] || valueBuilder.length() > 0) && enclosingBuilder.length() == 1) {
+								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found not valid double-enclosing field at index " + charIndex[0]);
 							}
 							
 							valueBuilder.append(s);
@@ -461,7 +467,7 @@ public abstract class AbstractRecord {
 		StringJoiner sj = new StringJoiner(delimiter);
 		fieldsMap.forEach((fieldName, field) -> {
 			if (!FINAL_FILLER_NAME.equals(fieldName)) {
-				String value = field.getValueWithNoPADAndTrimmed();
+				String value = field.getValueWithNoPAD();
 				if (encloseAllFields || value.contains(delimiter) || value.contains(encString)) {
 					if (value.contains(encString)) {
 						value = value.replace(encString, encString + encString);

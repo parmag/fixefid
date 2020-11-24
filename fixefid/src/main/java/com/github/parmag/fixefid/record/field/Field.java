@@ -174,14 +174,14 @@ public class Field {
 	}
 	
 	/**
-	 * Returns the formatted value of this <code>Field</code> with no PAD and trimmed
+	 * Returns the formatted value of this <code>Field</code> with no PAD
 	 * 
-	 * @return the formatted value of this <code>Field</code> with no PAD and trimmed
+	 * @return the formatted value of this <code>Field</code> with no PAD
 	 */
-	public String getValueWithNoPADAndTrimmed() {
+	public String getValueWithNoPAD() {
 		checkValidationInfo();
 		
-		return undoPad(value).trim();
+		return undoPad(value);
 	}
 	
 	/**
