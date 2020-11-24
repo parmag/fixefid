@@ -151,6 +151,156 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
+	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter.
+	 * Every value must be separated with the <code>CSVSep.COMMA</code>.
+     * A value must be enclosed with <code>CSVEnc.DOUBLE_QUOTE</code> if contains <code>CSVSep.COMMA</code> or <code>CSVEnc.DOUBLE_QUOTE</code>. 
+     * Each of the embedded enclosing characters must be represented by a pair of double-enclosing characters.
+	 * 
+	 * @param csvRecord the formatted csv string
+	 * @throws RecordException if the the <code>csvRecord</code> is malformed or the formatted csv string obtained from <code>toStringCSV</code> method diff from the <code>csvRecord</code> parameter
+	 */
+	public void initRecordCSV(String csvRecord) throws RecordException {
+		initRecordCSV(csvRecord, CSVSep.COMMA, null, CSVEnc.DOUBLE_QUOTE);
+	}
+	
+	/**
+	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter.
+	 * Every value must be separated with the <code>sep</code> param.
+     * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. Every value can be (or not) enclosed with 
+     * the <code>enclosing</code> param. If the <code>enclosing</code> param is null, the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. 
+     * A value must be enclosed if contains the char sep or the char enclosing. Each of the embedded enclosing characters must be represented by a pair of 
+     * double-enclosing characters.
+	 * 
+	 * @param csvRecord the formatted csv string
+	 * @param sep the field separator. If null the sep is <code>CSVSep.COMMA</code>
+     * @param otherSep the field separator if <code>sep</code> param is <code>CSVSep.OTHER</code>. Size must be eq 1. If null the sep is <code>CSVSep.COMMA</code>
+     * @param enclosing the enclosing char. If null the enclosing char is <code>CSVEnc.DOUBLE_QUOTE</code>
+	 * @throws RecordException if the the <code>csvRecord</code> is malformed or the separator size not eq 1 or the formatted csv string obtained from <code>toStringCSV</code> method diff from the <code>csvRecord</code> parameter
+	 */
+	public void initRecordCSV(String csvRecord, CSVSep sep, String otherSep, CSVEnc enclosing) throws RecordException {
+		sep = sep == null ? CSVSep.COMMA : sep;
+		if (CSVSep.OTHER.equals(sep) && otherSep == null) {
+			otherSep = CSVSep.COMMA.getSep();
+		}
+		String delimiter = CSVSep.OTHER.equals(sep) ? otherSep : sep.getSep();
+		if (delimiter.length() != 1) {
+			throw new RecordException(ErrorCode.RE21, "sep not valid: " + delimiter + ". Must be size eq 1");
+		}
+		
+		enclosing = enclosing == null ? CSVEnc.DOUBLE_QUOTE : enclosing;
+		String encString = enclosing.getEnc();
+		
+		// [0] => all fields enclosed
+		// [1] => first field char
+		// [2] => field opened with enclosing
+		boolean[] flags = {true, true, false};
+		
+		int[] charIndex = {0};
+		
+		List<String> values = new ArrayList<String>(); 
+		StringBuilder valueBuilder = new StringBuilder();
+		StringBuilder enclosingBuilder = new StringBuilder();
+		csvRecord.codePoints()
+			.mapToObj(c -> String.valueOf((char) c))
+			.forEachOrdered(s -> {
+				charIndex[0] = charIndex[0] + 1;
+				
+				if (flags[1]) {
+					// first field char
+					if (encString.equals(s)) {
+						enclosingBuilder.append(s);
+						flags[1] = false; // next not first
+						flags[2] = true; // next opened with enclosing
+					} else  {
+						if (delimiter.equals(s)) {
+							// empty field
+							values.add("");
+							flags[1] = true; // next first
+							flags[2] = false; // next not opened with enclosing
+						} else {
+							flags[0] = false; // not all fields enclosed
+							flags[1] = false; // next not first
+							flags[2] = false; // next not opened with enclosing
+							valueBuilder.append(s);
+						}
+					}
+				} else  {
+					if (encString.equals(s)) {
+						enclosingBuilder.append(s);
+					} else {
+						if (delimiter.equals(s)) {
+							if (valueBuilder.length() == 0 && (encString + encString + encString + encString).equals(enclosingBuilder.toString())) {
+								// end of the field with value = encString
+								values.add(encString);
+								enclosingBuilder.delete(0, enclosingBuilder.length());
+								flags[1] = true; // next first
+								flags[2] = false; // next not opened with enclosing
+							} else if (valueBuilder.length() == 0 && (encString + encString + encString).equals(enclosingBuilder.toString())) {
+								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found " + encString + encString + encString + " at index " + charIndex[0]);
+							} else if (valueBuilder.length() == 0 && (encString + encString).equals(enclosingBuilder.toString())) {
+								// empty enclosing field
+								values.add("");
+								enclosingBuilder.delete(0, enclosingBuilder.length());
+								flags[1] = true; // next first
+								flags[2] = false; // next not opened with enclosing
+							} else if (valueBuilder.length() == 0 && encString.equals(enclosingBuilder.toString())) {
+								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found empty enclosing field not closed at index " + charIndex[0]);
+							} else {
+								if (flags[2] && !encString.equals(enclosingBuilder.toString())) {
+									valueBuilder.append(s);
+								} else {
+									// end of the field
+									values.add(valueBuilder.toString());
+									valueBuilder.delete(0, valueBuilder.length());
+									enclosingBuilder.delete(0, enclosingBuilder.length());
+									flags[1] = true; // next first
+									flags[2] = false; // next not opened with enclosing
+								}
+							}
+						} else {
+							if (enclosingBuilder.length() > 1) {
+								if (enclosingBuilder.length() % 2 == 0) {
+									valueBuilder.append(enclosingBuilder.substring(0, enclosingBuilder.length() / 2)); 
+								} else {
+									throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found not valid odds double-enclosing field at index " + charIndex[0]);
+								}
+							}
+							
+							valueBuilder.append(s);
+							enclosingBuilder.delete(0, enclosingBuilder.length());
+						}
+					}
+				}
+			});
+		
+		// final value
+		if (valueBuilder.length() > 0) {
+			values.add(valueBuilder.toString());
+		}
+		
+		int recordValuesSize = fieldsMap.size();
+		if (fieldsMap.containsKey(FINAL_FILLER_NAME)) {
+			recordValuesSize--;
+		}
+		if (values.size() != recordValuesSize) {
+			throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found " + values.size() + " values but record must contains " + recordValuesSize + " values.");
+		}
+		
+		int[] valueIndex = {0};
+		fieldsMap.forEach((fieldName, field) -> {
+			if (!FINAL_FILLER_NAME.equals(fieldName)) {
+				field.setValue(values.get(valueIndex[0]), false);
+				valueIndex[0] = valueIndex[0] + 1;
+			}
+		});
+		
+		String toStringCSVRecord = toStringCSV(sep, otherSep, enclosing, flags[0]);
+		if (!toStringCSVRecord.equals(csvRecord)) {
+			throw new RecordException(ErrorCode.RE20, "Input csvRecord=[" + csvRecord + "] diff from toString csvRecord=[" + toStringCSVRecord + "]");
+		}
+	}
+	
+	/**
 	 * Valid the len of the <code>record</code> param. The len of the <code>record</code> param is valid if is equals the 
 	 * len of this record
 	 * 
@@ -262,6 +412,20 @@ public abstract class AbstractRecord {
 	
 	/**
      * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
+     * value of every field of this record, unpadded and trimmed. Every value is separated with the <code>CSVSep.COMMA</code>.
+     * The fields aren't enclosing, eccept those which contain the char <code>CSVSep.COMMA</code> or the char <code>CSVEnc.DOUBLE_QUOTE</code>. 
+     * In this case the fields are enclosing with <code>CSVEnc.DOUBLE_QUOTE</code>. Each of the embedded enclosing characters is represented 
+     * by a pair of double-enclosing characters.
+     *
+     * @return  a CSV string representation of this record
+     * @throws RecordException it the status of this record is ERROR
+     */
+	public String toStringCSV() throws RecordException {
+		return toStringCSV(CSVSep.COMMA, null, CSVEnc.DOUBLE_QUOTE, false);
+	}
+	
+	/**
+     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
      * value of every field of this record, unpadded and trimmed. Every value is separated with the <code>sep</code> param.
      * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. If <code>encloseAllFields</code> is true,
      * every field of the record is enclosed with the <code>enclosing</code> param. If the <code>enclosing</code> param is null,
@@ -270,12 +434,12 @@ public abstract class AbstractRecord {
      * double-enclosing characters.
      *
      * @param sep the field separator. If null the sep is <code>CSVSep.COMMA</code>
-     * @param otherSep the field separator if <code>sep</code> param is <code>CSVSep.OTHER</code>. If null the sep is <code>CSVSep.COMMA</code>
+     * @param otherSep the field separator if <code>sep</code> param is <code>CSVSep.OTHER</code>. Size must be eq 1. If null the default sep is <code>CSVSep.COMMA</code>
      * @param enclosing the enclosing char. If null the enclosing char is <code>CSVEnc.DOUBLE_QUOTE</code>
      * @param encloseAllFields if true every field of the record is enclosed with the enclosing char, otherwise only field which contains sep or enclosing chars
      * 
      * @return  a CSV string representation of this record
-     * @throws RecordException it the status of this record is ERROR
+     * @throws RecordException it the status of this record is ERROR or the separator size not eq 1
      */
 	public String toStringCSV(CSVSep sep, String otherSep, CSVEnc enclosing, boolean encloseAllFields) throws RecordException {
 		if (isErrorStatus()) {
@@ -287,22 +451,27 @@ public abstract class AbstractRecord {
 			otherSep = CSVSep.COMMA.getSep();
 		}
 		String delimiter = CSVSep.OTHER.equals(sep) ? otherSep : sep.getSep();
+		if (delimiter.length() != 1) {
+			throw new RecordException(ErrorCode.RE21, "sep not valid: " + delimiter + ". Must be size eq 1");
+		}
 		
 		enclosing = enclosing == null ? CSVEnc.DOUBLE_QUOTE : enclosing;
 		String encString = enclosing.getEnc();
 		
 		StringJoiner sj = new StringJoiner(delimiter);
 		fieldsMap.forEach((fieldName, field) -> {
-			String value = field.getValueWithNoPADAndTrimmed();
-			if (encloseAllFields || value.contains(delimiter) || value.contains(encString)) {
-				if (value.contains(encString)) {
-					value = value.replace(encString, encString + encString);
+			if (!FINAL_FILLER_NAME.equals(fieldName)) {
+				String value = field.getValueWithNoPADAndTrimmed();
+				if (encloseAllFields || value.contains(delimiter) || value.contains(encString)) {
+					if (value.contains(encString)) {
+						value = value.replace(encString, encString + encString);
+					}
+					
+					value = encString + value + encString;
 				}
 				
-				value = encString + value + encString;
+				sj.add(value);
 			}
-			
-			sj.add(value);
 		});
 		
 		return sj.toString();

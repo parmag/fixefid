@@ -85,6 +85,18 @@ public enum ErrorCode {
 	 * Field name must be unique (for type and super type)
 	 */
 	RE19,
+	/**
+	 * Init CSV record error cause input string diff vs record to string
+	 */
+	RE20,
+	/**
+	 * CSV separator size must be eq 1
+	 */
+	RE21,
+	/**
+	 * Init CSV record is malformed
+	 */
+	RE22,
 	
 	/**
 	 * NOT USED

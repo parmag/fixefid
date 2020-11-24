@@ -134,5 +134,52 @@ public class PersonRecordFieldTest {
 	public void testToStringCSV6() {
 		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_6.equals(PERSON_RECORD.toStringCSV(CSVSep.COMMA, null, CSVEnc.SINGLE_QUOTE, true)));
 	}
+	
+	@Test
+	public void testToStringCSV7() {
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING.equals(PERSON_RECORD.toStringCSV()));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV()));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV1() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_1);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_1.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, true)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV2() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_2);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_2.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, true)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV3() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV4() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_4, CSVSep.SEMICOLON, null, null);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_4.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(CSVSep.SEMICOLON, null, null, false)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV5() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_5, CSVSep.OTHER, "+", null);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_5.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(CSVSep.OTHER, "+", null, false)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV6() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_6, CSVSep.COMMA, null, CSVEnc.SINGLE_QUOTE);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_6.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(CSVSep.COMMA, null, CSVEnc.SINGLE_QUOTE, true)));
+	}
 
 }
