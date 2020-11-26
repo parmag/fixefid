@@ -1230,4 +1230,37 @@ public abstract class AbstractRecord {
 	public boolean isInfoStatus(String fieldName) {
 		return !isErrorStatus(fieldName) && !isWarnStatus(fieldName);
 	}
+	
+	/**
+	 * Returns the orderd map <code>fieldName, value</code> of this record's fields
+	 * 
+	 * @return the orderd map <code>fieldName, value</code> of this record's fields
+	 */
+	public Map<String, String> valuesMap() {
+		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
+		fieldsMap.forEach((fieldName, field) -> valuesMap.put(fieldName, field.getValue()));
+		return valuesMap;
+	}
+	
+	/**
+	 * Returns the orderd list of the values of this record's fields
+	 * 
+	 * @return the orderd list of the values of this record's fields
+	 */
+	public List<String> values() {
+		List<String> values = new ArrayList<String>();
+		fieldsMap.forEach((fieldName, field) -> values.add(field.getValue()));
+		return values;
+	}
+	
+	/**
+	 * Returns the orderd list of the names of this record's fields
+	 * 
+	 * @return the orderd list of the names of this record's fields
+	 */
+	public List<String> names() {
+		List<String> names = new ArrayList<String>();
+		fieldsMap.forEach((fieldName, field) -> names.add(fieldName));
+		return names;
+	}
 }
