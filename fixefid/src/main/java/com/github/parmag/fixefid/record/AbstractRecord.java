@@ -168,7 +168,7 @@ public abstract class AbstractRecord {
 	 * Every value must be separated with the <code>sep</code> param.
      * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. Every value can be (or not) enclosed with 
      * the <code>enclosing</code> param. If the <code>enclosing</code> param is null, the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. 
-     * A value must be enclosed if contains the char sep or the char enclosing. Each of the embedded enclosing characters must be represented by a pair of 
+     * A value must be enclosed if contains the char sep. Inside an eclosed value,  each of the embedded enclosing characters must be represented by a pair of 
      * double-enclosing characters.
 	 * 
 	 * @param csvRecord the formatted csv string
@@ -433,7 +433,7 @@ public abstract class AbstractRecord {
 	
 	/**
      * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
-     * value of every field of this record, unpadded and trimmed. Every value is separated with the <code>sep</code> param.
+     * unpadded value of every field of this record. Every value is separated with the <code>sep</code> param.
      * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. If <code>encloseAllFields</code> is true,
      * every field of the record is enclosed with the <code>enclosing</code> param. If the <code>enclosing</code> param is null,
      * the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. If the <code>encloseAllFields</code> param is false the fields aren't enclosing, 
