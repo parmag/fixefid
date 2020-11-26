@@ -190,91 +190,78 @@ public abstract class AbstractRecord {
 		enclosing = enclosing == null ? CSVEnc.DOUBLE_QUOTE : enclosing;
 		String encString = enclosing.getEnc();
 		
-		// [0] => all fields enclosed
-		// [1] => first field char
-		// [2] => field opened with enclosing
-		boolean[] flags = {true, true, false};
-		
-		int[] charIndex = {0};
+		// [0] => field opened without enclosing
+		// [1] => field opened with enclosing
+		boolean[] flags = {false, false};
 		
 		List<String> values = new ArrayList<String>(); 
 		StringBuilder valueBuilder = new StringBuilder();
-		StringBuilder enclosingBuilder = new StringBuilder();
+		
 		csvRecord.codePoints()
 			.mapToObj(c -> String.valueOf((char) c))
 			.forEachOrdered(s -> {
-				charIndex[0] = charIndex[0] + 1;
-				
-				if (flags[1]) {
-					// first field char
-					if (encString.equals(s)) {
-						enclosingBuilder.append(s);
-						flags[1] = false; // next not first
-						flags[2] = true; // opened with enclosing
-					} else  {
-						if (delimiter.equals(s)) {
-							// empty field
-							values.add("");
-							flags[1] = true; // next first
-							flags[2] = false; // not opened with enclosing
-						} else {
-							flags[0] = false; // not all fields enclosed
-							flags[1] = false; // next not first
-							flags[2] = false; // not opened with enclosing
-							valueBuilder.append(s);
-						}
-					}
-				} else  {
-					if (encString.equals(s)) {
-						enclosingBuilder.append(s);
+				if (!flags[0] && !flags[1]) {
+					// field not opened
+					if (s.equals(" ")) {
+						// space skipped
+					} else if (s.equals(encString)) {
+						// field opened with enclosing
+						valueBuilder.append(s);
+						flags[0] = false; // field opened without enclosing
+						flags[1] = true; // field opened with enclosing
+					} else if (s.equals(delimiter)) {
+						// field closed, delimiter skipped and added empty value
+						values.add("");
+						flags[0] = false; // field opened without enclosing
+						flags[1] = false; // field opened with enclosing
 					} else {
-						if (delimiter.equals(s)) {
-							if (valueBuilder.length() == 0 && (encString + encString + encString + encString).equals(enclosingBuilder.toString())) {
-								// end of the field with value = encString
-								values.add(encString);
-								enclosingBuilder.delete(0, enclosingBuilder.length());
-								flags[1] = true; // next first
-								flags[2] = false; // not opened with enclosing
-							} else if (valueBuilder.length() == 0 && (encString + encString + encString).equals(enclosingBuilder.toString())) {
-								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found " + encString + encString + encString + " at index " + charIndex[0]);
-							} else if (valueBuilder.length() == 0 && (encString + encString).equals(enclosingBuilder.toString())) {
-								// empty enclosing field
-								values.add("");
-								enclosingBuilder.delete(0, enclosingBuilder.length());
-								flags[1] = true; // next first
-								flags[2] = false; // not opened with enclosing
-							} else if (valueBuilder.length() == 0 && encString.equals(enclosingBuilder.toString())) {
-								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found empty enclosing field not closed at index " + charIndex[0]);
-							} else {
-								if (flags[2] && !encString.equals(enclosingBuilder.toString())) {
-									valueBuilder.append(s);
-								} else {
-									// end of the field
-									values.add(valueBuilder.toString());
-									valueBuilder.delete(0, valueBuilder.length());
-									enclosingBuilder.delete(0, enclosingBuilder.length());
-									flags[1] = true; // next first
-									flags[2] = false; // not opened with enclosing
-								}
-							}
-						} else {
-							if (enclosingBuilder.length() > 1) {
-								if (valueBuilder.length() == 0) {
-									enclosingBuilder.deleteCharAt(0);
-								}
-								
-								if (enclosingBuilder.length() % 2 == 0) {
-									valueBuilder.append(enclosingBuilder.substring(0, enclosingBuilder.length() / 2)); 
-								} else {
-									throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found not valid odds double-enclosing field at index " + charIndex[0]);
-								}
-							} else if ((!flags[2] || valueBuilder.length() > 0) && enclosingBuilder.length() == 1) {
-								throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found not valid double-enclosing field at index " + charIndex[0]);
-							}
-							
-							valueBuilder.append(s);
-							enclosingBuilder.delete(0, enclosingBuilder.length());
+						// field opened without enclosing
+						valueBuilder.append(s);
+						flags[0] = true; // field opened without enclosing
+						flags[1] = false; // field opened with enclosing
+					}
+				} else if (flags[0]) {
+					// field opened without enclosing
+					if (s.equals(delimiter)) {
+						// field closed, delimiter skipped and added value
+						values.add(valueBuilder.toString());
+						valueBuilder.delete(0, valueBuilder.length());
+						flags[0] = false; // field opened without enclosing
+						flags[1] = false; // field opened with enclosing
+					} else {
+						valueBuilder.append(s);
+					}
+				}  else if (flags[1]) {
+					// field opened with enclosing
+					if (s.equals(delimiter)) {
+						int encStringCount = 0;
+						int len = valueBuilder.length();
+						while (len > 0 && valueBuilder.substring(len - 1, len).equals(encString)) {
+							encStringCount++;
+							len--;
 						}
+						
+						if (encStringCount == valueBuilder.length()) {
+							if (encStringCount % 2 == 0) {
+								// field closed, delimiter skipped and added value
+								values.add(valueBuilder.toString());
+								valueBuilder.delete(0, valueBuilder.length());
+								flags[0] = false; // field opened without enclosing
+								flags[1] = false; // field opened with enclosing
+							} else {
+								valueBuilder.append(s);
+							}
+						} else if (encStringCount % 2 != 0) {
+							// field closed, delimiter skipped and added value
+							values.add(valueBuilder.toString());
+							valueBuilder.delete(0, valueBuilder.length());
+							flags[0] = false; // field opened without enclosing
+							flags[1] = false; // field opened with enclosing
+						} else {
+							valueBuilder.append(s);
+						}
+					} else {
+						valueBuilder.append(s);
 					}
 				}
 			});
@@ -289,21 +276,35 @@ public abstract class AbstractRecord {
 			recordValuesSize--;
 		}
 		if (values.size() != recordValuesSize) {
-			throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found " + values.size() + " values but record must contains " + recordValuesSize + " values.");
+			throw new RecordException(ErrorCode.RE20, "the CSV record is malformed: found " + values.size() + " values but record must contains " + recordValuesSize + " values.");
 		}
 		
 		int[] valueIndex = {0};
 		fieldsMap.forEach((fieldName, field) -> {
 			if (!FINAL_FILLER_NAME.equals(fieldName)) {
-				field.setValue(values.get(valueIndex[0]), false);
+				String value = values.get(valueIndex[0]);
+				
+				if (value.startsWith(encString)) {
+					value = value.substring(1, value.length());
+					
+					if (value.endsWith(encString)) {
+						value = value.substring(0, value.length() - 1);
+					} else {
+						throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found value=[" + value + "] which starts with enclosing string " + encString + " but not end.");
+					}
+				}
+				
+				long encStringCount = value.chars().filter(c -> c == encString.charAt(0)).count();
+				if (encStringCount % 2 == 0) {
+					value = value.replace(encString + encString, encString);
+				} else {
+					throw new RecordException(ErrorCode.RE23, "the CSV record is malformed: found value=[" + value + "]  with odd numbers of enclosing string " + encString + ".");
+				}
+				
+				field.setValue(value, false);
 				valueIndex[0] = valueIndex[0] + 1;
 			}
 		});
-		
-		String toStringCSVRecord = toStringCSV(sep, otherSep, enclosing, flags[0]);
-		if (!toStringCSVRecord.equals(csvRecord)) {
-			throw new RecordException(ErrorCode.RE20, "Input csvRecord=[" + csvRecord + "] diff from toString csvRecord=[" + toStringCSVRecord + "]");
-		}
 	}
 	
 	/**

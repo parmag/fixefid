@@ -26,6 +26,8 @@ public class PersonRecordFieldTest {
 	private static final String PERSON_RECORD_AS_CSV_STRING_3 = "\"Pao\"\"lo\",\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_1 = "\"\"ao\"\"lo\",\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_2 = "\"\"\"ao\"\"lo\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_3 = "\"\"\"ao\"\"l\"\"\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_4 = "\"\"\"ao\"\"l\"\"\",\",,s,,,\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_4 = "Paolo;Rossi;51;07102002;186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_5 = "Paolo+Rossi+51+07102002+186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_6 = "'Paolo','Rossi','51','07102002','186'";
@@ -158,7 +160,7 @@ public class PersonRecordFieldTest {
 	@Test
 	public void testInitRecordToStringCSV0_0() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_0_0);
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_0_0.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV()));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_0.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV()));
 	}
 	
 	@Test
@@ -175,14 +177,8 @@ public class PersonRecordFieldTest {
 	
 	@Test
 	public void testInitRecordToStringCSV1_2() {
-		ErrorCode errorCode = null;
-		try {
-			PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_1_2);
-		} catch (RecordException e) {
-			errorCode = e.getErrorCode();
-		}
-		
-		Assert.assertTrue(ErrorCode.RE22.equals(errorCode));
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_1_2);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_1_1.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, true)));
 	}
 	
 	@Test
@@ -200,7 +196,7 @@ public class PersonRecordFieldTest {
 			errorCode = e.getErrorCode();
 		}
 		
-		Assert.assertTrue(ErrorCode.RE22.equals(errorCode));
+		Assert.assertTrue(ErrorCode.RE23.equals(errorCode));
 	}
 	
 	@Test
@@ -218,13 +214,25 @@ public class PersonRecordFieldTest {
 			errorCode = e.getErrorCode();
 		}
 		
-		Assert.assertTrue(ErrorCode.RE22.equals(errorCode));
+		Assert.assertTrue(ErrorCode.RE23.equals(errorCode));
 	}
 	
 	@Test
 	public void testInitRecordToStringCSV3_2() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_2);
 		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_2.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV3_3() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_3);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_3.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV3_4() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_4);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_4.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
 	}
 	
 	@Test

@@ -86,7 +86,7 @@ public enum ErrorCode {
 	 */
 	RE19,
 	/**
-	 * Init CSV record error cause input string diff vs record to string
+	 * "Init CSV record is malformed: found number values diff from record number values
 	 */
 	RE20,
 	/**
@@ -94,9 +94,13 @@ public enum ErrorCode {
 	 */
 	RE21,
 	/**
-	 * Init CSV record is malformed
+	 * Init CSV record is malformed: found value which starts with enclosing string but not end
 	 */
 	RE22,
+	/**
+	 * Init CSV record is malformed: found value with odd numbers of enclosing string
+	 */
+	RE23,
 	
 	/**
 	 * NOT USED
