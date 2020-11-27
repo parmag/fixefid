@@ -18,16 +18,23 @@ public class PersonRecordFieldTest {
 	private static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_0 = "Paolo,Rossi,51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_0_0 = "Paolo, Rossi,51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_0_1 = "Pa\"\"o, Rossi,51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_0_1_RESP = "Pa\"\"o,Rossi,51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_1 = "\"Paolo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
 	private static final String PERSON_RECORD_AS_CSV_STRING_1_1 = "\"Paolo\",\" Rossi\",\"51\",\"07102002\",\"186\"";
 	private static final String PERSON_RECORD_AS_CSV_STRING_1_2 = "\"Paolo\", \" Rossi\",\"51\",\"07102002\",\"186\"";
 	private static final String PERSON_RECORD_AS_CSV_STRING_2 = "\"Pao\"\"lo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
 	private static final String PERSON_RECORD_AS_CSV_STRING_2_1 = "\"Pao\"lo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
+	private static final String PERSON_RECORD_AS_CSV_STRING_2_2 = "\"Pa\"o\"lo\",\"Rossi\",\"51\",\"07102002\",\"186\"";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3 = "\"Pao\"\"lo\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_RESP = "Pao\"lo,\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_1 = "\"\"ao\"\"lo\",\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_2 = "\"\"\"ao\"\"lo\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_2_RESP = "\"ao\"lo,\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_3 = "\"\"\"ao\"\"l\"\"\",\"Ros,si\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_3_RESP = "\"ao\"l\",\"Ros,si\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_3_4 = "\"\"\"ao\"\"l\"\"\",\",,s,,,\",51,07102002,186";
+	private static final String PERSON_RECORD_AS_CSV_STRING_3_4_RESP = "\"ao\"l\",\",,s,,,\",51,07102002,186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_4 = "Paolo;Rossi;51;07102002;186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_5 = "Paolo+Rossi+51+07102002+186";
 	private static final String PERSON_RECORD_AS_CSV_STRING_6 = "'Paolo','Rossi','51','07102002','186'";
@@ -126,7 +133,7 @@ public class PersonRecordFieldTest {
 	public void testToStringCSV3() {
 		PERSON_RECORD.setValue(PersonRecordField.firstName, "Pao\"lo");
 		PERSON_RECORD.setValue(PersonRecordField.lastName, "Ros,si");
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3.equals(PERSON_RECORD.toStringCSV(null, null, null, false)));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_RESP.equals(PERSON_RECORD.toStringCSV(null, null, null, false)));
 		PERSON_RECORD.setValue(PersonRecordField.firstName, "Paolo");
 		PERSON_RECORD.setValue(PersonRecordField.lastName, "Rossi");
 	}
@@ -161,6 +168,12 @@ public class PersonRecordFieldTest {
 	public void testInitRecordToStringCSV0_0() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_0_0);
 		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_0.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV()));
+	}
+	
+	@Test
+	public void testInitRecordToStringCSV0_1() {
+		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_0_1);
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_0_1_RESP.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV()));
 	}
 	
 	@Test
@@ -200,9 +213,21 @@ public class PersonRecordFieldTest {
 	}
 	
 	@Test
+	public void testInitRecordToStringCSV2_2() {
+		ErrorCode errorCode = null;
+		try {
+			PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_2_2);
+		} catch (RecordException e) {
+			errorCode = e.getErrorCode();
+		}
+		
+		Assert.assertTrue(ErrorCode.RE23.equals(errorCode));
+	}
+	
+	@Test
 	public void testInitRecordToStringCSV3() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3);
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_RESP.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
 	}
 	
 	@Test
@@ -220,19 +245,19 @@ public class PersonRecordFieldTest {
 	@Test
 	public void testInitRecordToStringCSV3_2() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_2);
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_2.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_2_RESP.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
 	}
 	
 	@Test
 	public void testInitRecordToStringCSV3_3() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_3);
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_3.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_3_RESP.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
 	}
 	
 	@Test
 	public void testInitRecordToStringCSV3_4() {
 		PERSON_RECORD_INIT_WITH_STRING.initRecordCSV(PERSON_RECORD_AS_CSV_STRING_3_4);
-		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_4.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
+		Assert.assertTrue(PERSON_RECORD_AS_CSV_STRING_3_4_RESP.equals(PERSON_RECORD_INIT_WITH_STRING.toStringCSV(null, null, null, false)));
 	}
 	
 	@Test

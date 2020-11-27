@@ -98,7 +98,7 @@ public enum ErrorCode {
 	 */
 	RE22,
 	/**
-	 * Init CSV record is malformed: found value with odd numbers of enclosing string
+	 * Init CSV record is malformed: found value with single-enclosing. Expected double-enclosing string.
 	 */
 	RE23,
 	

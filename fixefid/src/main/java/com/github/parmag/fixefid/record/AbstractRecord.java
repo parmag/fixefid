@@ -151,10 +151,10 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter.
+	 * Apply to the fields of this record, the formatted values present in the <code>csvRecord</code> parameter.
 	 * Every value must be separated with the <code>CSVSep.COMMA</code>.
-     * A value must be enclosed with <code>CSVEnc.DOUBLE_QUOTE</code> if contains <code>CSVSep.COMMA</code> or <code>CSVEnc.DOUBLE_QUOTE</code>. 
-     * Each of the embedded enclosing characters must be represented by a pair of double-enclosing characters.
+     * A value must be enclosed with <code>CSVEnc.DOUBLE_QUOTE</code> if contains <code>CSVSep.COMMA</code>. 
+     * Each of the embedded enclosing characters <code>CSVEnc.DOUBLE_QUOTE</code> must be represented by a pair of double-enclosing characters.
 	 * 
 	 * @param csvRecord the formatted csv string
 	 * @throws RecordException if the the <code>csvRecord</code> is malformed or the formatted csv string obtained from <code>toStringCSV</code> method diff from the <code>csvRecord</code> parameter
@@ -164,7 +164,7 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter.
+	 * Apply to the fields of this record, the formatted values present in the <code>csvRecord</code> parameter.
 	 * Every value must be separated with the <code>sep</code> param.
      * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. Every value can be (or not) enclosed with 
      * the <code>enclosing</code> param. If the <code>enclosing</code> param is null, the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. 
@@ -292,13 +292,32 @@ public abstract class AbstractRecord {
 					} else {
 						throw new RecordException(ErrorCode.RE22, "the CSV record is malformed: found value=[" + value + "] which starts with enclosing string " + encString + " but not end.");
 					}
-				}
-				
-				long encStringCount = value.chars().filter(c -> c == encString.charAt(0)).count();
-				if (encStringCount % 2 == 0) {
+					
+					// [0] => prev char was encString
+					boolean encStringFlags[] = {false};
+					if (value.contains(encString)) {
+						value.codePoints()
+							.mapToObj(c -> String.valueOf((char) c))
+							.forEachOrdered(s -> {
+								if (s.equals(encString)) {
+									if (encStringFlags[0]) {
+										// found double-enclosing characters => OK
+										encStringFlags[0] = false;
+									} else {
+										encStringFlags[0] = true;
+									}
+								} else {
+									if (encStringFlags[0]) {
+										// found single-enclosing characters => KO
+										throw new RecordException(ErrorCode.RE23, "the CSV record is malformed: found value=[" + 
+												values.get(valueIndex[0]) + "]  with single-enclosing string " + encString + 
+												". Expected double-enclosing string.");
+									}
+								}
+							});
+					}
+					
 					value = value.replace(encString + encString, encString);
-				} else {
-					throw new RecordException(ErrorCode.RE23, "the CSV record is malformed: found value=[" + value + "]  with odd numbers of enclosing string " + encString + ".");
 				}
 				
 				field.setValue(value, false);
@@ -418,11 +437,11 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
-     * value of every field of this record, unpadded and trimmed. Every value is separated with the <code>CSVSep.COMMA</code>.
-     * The fields aren't enclosing, eccept those which contain the char <code>CSVSep.COMMA</code> or the char <code>CSVEnc.DOUBLE_QUOTE</code>. 
-     * In this case the fields are enclosing with <code>CSVEnc.DOUBLE_QUOTE</code>. Each of the embedded enclosing characters is represented 
-     * by a pair of double-enclosing characters.
+     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted unpadded
+     * value of every field of this record. Every value is separated with the <code>CSVSep.COMMA</code>.
+     * The fields aren't enclosing, eccept those which contain the char <code>CSVSep.COMMA</code>. 
+     * In this case the fields are enclosing with <code>CSVEnc.DOUBLE_QUOTE</code>. Each of the embedded enclosing <code>CSVEnc.DOUBLE_QUOTE</code> 
+     * characters is represented by a pair of double-enclosing characters.
      *
      * @return  a CSV string representation of this record
      * @throws RecordException it the status of this record is ERROR
@@ -437,7 +456,7 @@ public abstract class AbstractRecord {
      * If the <code>sep</code> param is null, the default sep is <code>CSVSep.COMMA</code>. If <code>encloseAllFields</code> is true,
      * every field of the record is enclosed with the <code>enclosing</code> param. If the <code>enclosing</code> param is null,
      * the default enclosing is <code>CSVEnc.DOUBLE_QUOTE</code>. If the <code>encloseAllFields</code> param is false the fields aren't enclosing, 
-     * eccept they contain the char sep or the char enclosing. Each of the embedded enclosing characters is represented by a pair of 
+     * eccept they contain the char sep. Each of the embedded char enclosing characters is represented by a pair of 
      * double-enclosing characters.
      *
      * @param sep the field separator. If null the sep is <code>CSVSep.COMMA</code>
@@ -469,7 +488,7 @@ public abstract class AbstractRecord {
 		fieldsMap.forEach((fieldName, field) -> {
 			if (!FINAL_FILLER_NAME.equals(fieldName)) {
 				String value = field.getValueWithNoPAD();
-				if (encloseAllFields || value.contains(delimiter) || value.contains(encString)) {
+				if (encloseAllFields || value.contains(delimiter)) {
 					if (value.contains(encString)) {
 						value = value.replace(encString, encString + encString);
 					}
