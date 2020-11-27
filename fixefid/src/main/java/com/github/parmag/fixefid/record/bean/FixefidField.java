@@ -10,7 +10,7 @@ import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
 
 /**
- * Configures a java bean property for use with as a fixed field in a record
+ * Configures a java bean property for using as a fixed field in a record
  * 
  * @author Giancarlo Parma
  * 
