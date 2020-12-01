@@ -15,6 +15,7 @@ import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
+import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
 
 /**
@@ -79,7 +80,7 @@ public class BeanRecord extends AbstractRecord {
 	 * <li><code>FieldExtendedPropertyType.VALIDATOR</code></li>
 	 * </ul>
 	 * 
-	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
 	 * @param record the formatted string of this <code>BeanRecord</code>
 	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
 	 */
@@ -99,7 +100,7 @@ public class BeanRecord extends AbstractRecord {
 	 * </ul>
 	 * The extended property of every field can be overridden with the extended property present in the <code>mapFieldExtendedProperties</code>
 	 * 
-	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
 	 * @param record the formatted string of this <code>BeanRecord</code>
 	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
 	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
@@ -121,7 +122,7 @@ public class BeanRecord extends AbstractRecord {
 	 * </ul>
 	 * The extended property of every field can be overridden with the extended property present in the <code>mapFieldExtendedProperties</code>
 	 * 
-	 * @param bean bean the <code>bean</code> of this <code>BeanRecord</code>
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
 	 * @param record the formatted string of this <code>BeanRecord</code>
 	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the record
 	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
@@ -135,7 +136,14 @@ public class BeanRecord extends AbstractRecord {
 		initBean(bean, record, recordWay);
 	}
 	
-	private void initBean(Object bean, String record, RecordWay recordWay) {
+	/**
+	 * Init the record bean
+	 * 
+	 * @param bean the bean
+	 * @param record the record
+	 * @param recordWay the record way
+	 */
+	protected void initBean(Object bean, String record, RecordWay recordWay) {
 		if (bean == null) {
             throw new RecordException(ErrorCode.RE12, "Can't create record with a null bean");
         }
@@ -143,21 +151,34 @@ public class BeanRecord extends AbstractRecord {
 		this.bean = bean;
 
         Class<?> clazz = bean.getClass();
-        if (!clazz.isAnnotationPresent(FixefidRecord.class)) {
-            throw new RecordException(ErrorCode.RE13, "The class " + clazz.getSimpleName() + " is not annotated with FixefidRecord");
-        } else {
-        	initRecordLen(clazz);
-        	initRecordWay(clazz, recordWay);
-        	initFieldsMap();
-        	addFiller();
-        	if (record != null) {
-    			initRecord(record);
-    		}
-        	
-        }
+        checkBeanAnnotation(clazz);
+    	initRecordLen(clazz);
+    	initRecordWay(clazz, recordWay);
+    	initFieldsMap();
+    	addFiller();
+    	if (record != null) {
+			initRecord(record);
+		}
 	}
 	
-	private void initRecordLen(Class<?> clazz) {
+	/**
+	 * Check if the bean is annotated with <code>FixefidRecord.class</code>
+	 * 
+	 * @param clazz the class of the bean
+	 * @throws RecordException if the bean is not annotated with <code>FixefidRecord.class</code>
+	 */
+	protected void checkBeanAnnotation(Class<?> clazz) {
+		if (!clazz.isAnnotationPresent(FixefidRecord.class)) {
+            throw new RecordException(ErrorCode.RE13, "The class " + clazz.getSimpleName() + " is not annotated with FixefidRecord");
+        } 
+	}
+	
+	/**
+	 * init the record len
+	 * 
+	 * @param clazz the class of the bean
+	 */
+	protected void initRecordLen(Class<?> clazz) {
 		FixefidRecord fixefidRecord = clazz.getAnnotation(FixefidRecord.class);
 		int recordLen = fixefidRecord.recordLen();
     	if (recordLen == 0) {
@@ -173,7 +194,13 @@ public class BeanRecord extends AbstractRecord {
     	this.recordLen = recordLen;
 	}
 	
-	private void initRecordWay(Class<?> clazz, RecordWay recordWay) {
+	/**
+	 * init the record way 
+	 * 
+	 * @param clazz the class of the bean
+	 * @param recordWay the record way
+	 */
+	protected void initRecordWay(Class<?> clazz, RecordWay recordWay) {
 		FixefidRecord fixefidRecord = clazz.getAnnotation(FixefidRecord.class);
 		this.recordWay = recordWay != null ? recordWay : fixefidRecord.recordWay();
 	}
@@ -195,23 +222,13 @@ public class BeanRecord extends AbstractRecord {
 		Collections.sort(fields, new Comparator<Field>() {
 			@Override
 			public int compare(Field f1, Field f2) {
-				int fieldOrdinal1 = 0;
-				int fieldOrdinal2 = 0;
+				int fieldOrdinal1 = ordinalForBeanField(f1);
+				int fieldOrdinal2 = ordinalForBeanField(f2);
 				
-				FixefidField a1 = f1.getAnnotation(FixefidField.class);
-				FixefidField a2 = f2.getAnnotation(FixefidField.class);
-				
-				if (f1.isAnnotationPresent(FixefidField.class)) {
-					fieldOrdinal1 = a1.fieldOrdinal();
-				}
-				
-				if (f2.isAnnotationPresent(FixefidField.class)) {
-					fieldOrdinal2 = a2.fieldOrdinal();
-				}
 				
 				if (fieldOrdinal1 == fieldOrdinal2) {
-					fieldOrdinal1 = a1.fieldSubOrdinal();
-					fieldOrdinal2 = a2.fieldSubOrdinal();
+					fieldOrdinal1 = subOrdinalForBeanField(f1);
+					fieldOrdinal2 = subOrdinalForBeanField(f2);
 				}
 				
 				return fieldOrdinal1 - fieldOrdinal2;
@@ -220,11 +237,10 @@ public class BeanRecord extends AbstractRecord {
 		
 		for (Field field : fields) {
             field.setAccessible(true);
-            if (field.isAnnotationPresent(FixefidField.class)) {
-                FixefidField fixefidField = field.getAnnotation(FixefidField.class);
+            if (isAnnotationPresentForBeanField(field)) {
                 String fieldName = field.getName();
-                int fieldOrdinal = fixefidField.fieldOrdinal();
-                int fieldSubOrdinal = fixefidField.fieldSubOrdinal();
+                int fieldOrdinal = ordinalForBeanField(field);
+                int fieldSubOrdinal = subOrdinalForBeanField(field);
                 
                 // check ordinals => must be unique
                 if (ordinals.contains(fieldOrdinal)) {
@@ -253,7 +269,7 @@ public class BeanRecord extends AbstractRecord {
     				}
     			} 
                 
-				FieldType fieldType = fixefidField.fieldType();
+				FieldType fieldType = typeForBeanField(field);
 				if (FieldType.CMP.equals(fieldType)) {
 					Map<String, List<FieldExtendedProperty>> mapCmpFieldExtendedProperties = null;
 					if (mapFieldExtendedProperties != null) {
@@ -278,8 +294,8 @@ public class BeanRecord extends AbstractRecord {
 					List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
 	                		mapFieldExtendedProperties != null ? mapFieldExtendedProperties.get(fieldName) : null);
 					fieldsMap.put(fieldName, new com.github.parmag.fixefid.record.field.Field(
-                		fieldName, fieldOrdinal, fieldSubOrdinal, fieldType, fixefidField.fieldLen(), 
-                		fixefidField.fieldMandatory(), recordWay, fixefidField.fieldDefaultValue(), eps));
+                		fieldName, fieldOrdinal, fieldSubOrdinal, fieldType, lenForBeanField(field), 
+                		mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
 					
 					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap);
 				}
@@ -428,8 +444,137 @@ public class BeanRecord extends AbstractRecord {
 		    syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap);
 		} 
 	}
+	
+	/**
+	 * The ordinal of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the ordinal of the <code>f</code> param
+	 */
+	protected int ordinalForBeanField(Field f) {
+		int ordinal = 0;
+		
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			ordinal = a.fieldOrdinal();
+		}
+		
+		return ordinal;
+	}
+	
+	/**
+	 * The sub-ordinal of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the sub-ordinal of the <code>f</code> param
+	 */
+	protected int subOrdinalForBeanField(Field f) {
+		int subOrdinal = 0;
+		
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			subOrdinal = a.fieldSubOrdinal();
+		}
+		
+		return subOrdinal;
+	}
+	
+	/**
+	 * Returns true if the bena field param is annotated with the <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return true if the bena field param is annotated with the <code>FixefidField.class</code> annotation
+	 */
+	protected boolean isAnnotationPresentForBeanField(Field f) {
+		return f.isAnnotationPresent(FixefidField.class);
+	}
+	
+	/**
+	 * The field type of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the field type of the <code>f</code> param
+	 */
+	protected FieldType typeForBeanField(Field f) {
+		FieldType fieldType = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			fieldType = a.fieldType();
+		}
+		
+		return fieldType;
+	}
+	
+	/**
+	 * The len of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the len of the <code>f</code> param
+	 */
+	protected int lenForBeanField(Field f) {
+		int len = 0;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			len = a.fieldLen();
+		}
+		
+		return len;
+	}
+	
+	/**
+	 * The field mandatory of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the field mandatory of the <code>f</code> param
+	 */
+	protected FieldMandatory mandatoryForBeanField(Field f) {
+		FieldMandatory fieldMandatory = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			fieldMandatory = a.fieldMandatory();
+		}
+		
+		return fieldMandatory;
+	}
 
-	private static void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
+	/**
+	 * The default value of the bean field param
+	 * 
+	 * @param f the bean field
+	 * @return the default value of the <code>f</code> param
+	 */
+	protected String defaultValueForBeanField(Field f) {
+		String defaultValue = "";
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			defaultValue = a.fieldDefaultValue();
+		}
+		
+		return defaultValue;
+	}
+	
+	private void syncValueFromBeanFieldToRecordField(String parentFieldName, Field field, Object bean,
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+		field.setAccessible(true);
+		String fieldName = parentFieldName != null ? parentFieldName + CMP_FIELD_NAME_SEP + field.getName() : field.getName();
+	    try {
+	    	Object value = field.get(bean);
+			if (isAnnotationPresentForBeanField(field) && value != null) {
+				if (FieldType.CMP.equals(typeForBeanField(field))) {
+					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), field.get(bean).getClass());
+					for (Field cmpField : cmpFields) {
+						syncValueFromBeanFieldToRecordField(fieldName, cmpField, field.get(bean), fieldsMap);
+					}
+				} else {
+				    syncValueFromBeanFieldToRecordField(fieldName, field.getType().getName(), value, fieldsMap);
+				}
+			}
+	    } catch (Exception e) {
+	    	throw new RecordException(ErrorCode.RE4, e);
+	    }
+	}
+
+	private void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
 		if (FINAL_FILLER_NAME.equals(fieldName)) {
 			return;
@@ -439,7 +584,7 @@ public class BeanRecord extends AbstractRecord {
 		Field field = (Field) fieldAndBean[0];
 		bean = fieldAndBean[1];
 		field.setAccessible(true);
-		if (field.isAnnotationPresent(FixefidField.class)) {
+		if (isAnnotationPresentForBeanField(field)) {
 		    boolean error = false;
 		    
 		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
@@ -510,29 +655,7 @@ public class BeanRecord extends AbstractRecord {
 		}
 	}
 	
-	private static void syncValueFromBeanFieldToRecordField(String parentFieldName, Field field, Object bean,
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
-		field.setAccessible(true);
-		String fieldName = parentFieldName != null ? parentFieldName + CMP_FIELD_NAME_SEP + field.getName() : field.getName();
-	    try {
-	    	Object value = field.get(bean);
-			if (field.isAnnotationPresent(FixefidField.class) && value != null) {
-				FixefidField fixefidField = field.getAnnotation(FixefidField.class);
-				if (FieldType.CMP.equals(fixefidField.fieldType())) {
-					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), field.get(bean).getClass());
-					for (Field cmpField : cmpFields) {
-						syncValueFromBeanFieldToRecordField(fieldName, cmpField, field.get(bean), fieldsMap);
-					}
-				} else {
-				    syncValueFromBeanFieldToRecordField(fieldName, field.getType().getName(), value, fieldsMap);
-				}
-			}
-	    } catch (Exception e) {
-	    	throw new RecordException(ErrorCode.RE4, e);
-	    }
-	}
-	
-	private static void syncValueFromBeanFieldToRecordField(String fieldName, String typeName, Object value, 
+	private void syncValueFromBeanFieldToRecordField(String fieldName, String typeName, Object value, 
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
 		boolean error = false;
 	    
@@ -600,7 +723,7 @@ public class BeanRecord extends AbstractRecord {
 	    }
 	}
 	
-	private static List<Field> retrieveAllFields(List<Field> fields, Class<?> type) {
+	protected static List<Field> retrieveAllFields(List<Field> fields, Class<?> type) {
 	    fields.addAll(Arrays.asList(type.getDeclaredFields()));
 
 	    if (type.getSuperclass() != null) {
@@ -610,15 +733,14 @@ public class BeanRecord extends AbstractRecord {
 	    return fields;
 	}
 	
-	private static Object[] fieldAndBeanForName(String fieldName, Object bean) {
+	private Object[] fieldAndBeanForName(String fieldName, Object bean) {
 		Object[] result = null;
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		try {
 			for (Field field : fields) {
 				field.setAccessible(true);
-	            if (field.isAnnotationPresent(FixefidField.class)) {
-	            	FixefidField fixefidField = field.getAnnotation(FixefidField.class);
-					if (FieldType.CMP.equals(fixefidField.fieldType()) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
+	            if (isAnnotationPresentForBeanField(field)) {
+					if (FieldType.CMP.equals(typeForBeanField(field)) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
 						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), field.get(bean));
 						break;
 					} else if (fieldName.equals(field.getName())) {

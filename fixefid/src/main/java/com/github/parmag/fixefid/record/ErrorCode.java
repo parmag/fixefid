@@ -94,13 +94,17 @@ public enum ErrorCode {
 	 */
 	RE21,
 	/**
-	 * Init CSV record is malformed: found value which starts with enclosing string but not end
+	 * Init CSV record is malformed: found value which starts with enclosing string but not ends
 	 */
 	RE22,
 	/**
 	 * Init CSV record is malformed: found value with single-enclosing. Expected double-enclosing string.
 	 */
 	RE23,
+	/**
+	 * Missing Java Bean FixefidCSVRecord annnotation
+	 */
+	RE24,
 	
 	/**
 	 * NOT USED
