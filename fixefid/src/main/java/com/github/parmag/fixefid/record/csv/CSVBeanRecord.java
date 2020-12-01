@@ -145,7 +145,7 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * CSV Record has intial len equals to zero
+	 * CSV Record has initial len equals to zero
 	 * 
 	 * @param clazz the class of the bean
 	 */
@@ -172,10 +172,10 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * The ordinal of the bean field param
+	 * The ordinal of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the ordinal of the <code>f</code> param
+	 * @return the ordinal of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected int ordinalForBeanField(Field f) {
 		int ordinal = 0;
@@ -189,10 +189,10 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * The sub-ordinal of the bean field param
+	 * The sub-ordinal of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the sub-ordinal of the <code>f</code> param
+	 * @return the sub-ordinal of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected int subOrdinalForBeanField(Field f) {
 		int subOrdinal = 0;
@@ -216,10 +216,10 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * The field type of the bean field param
+	 * The field type of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the field type of the <code>f</code> param
+	 * @return the field type of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected FieldType typeForBeanField(Field f) {
 		FieldType fieldType = null;
@@ -232,20 +232,22 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * The len of the bean field param
+	 * The len of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation.
+	 * Cause the <code>FixefidCSVField.class</code> annotation doesn't have the len property, this method returns 
+     * the len of the default value, from the <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the len of the <code>f</code> param
+	 * @return the len of the default value of <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected int lenForBeanField(Field f) {
-		return 0;
+		return defaultValueForBeanField(f).length();
 	}
 	
 	/**
-	 * The field mandatory of the bean field param
+	 * The field mandatory of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the field mandatory of the <code>f</code> param
+	 * @return the field mandatory of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected FieldMandatory mandatoryForBeanField(Field f) {
 		FieldMandatory fieldMandatory = null;
@@ -258,10 +260,10 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * The default value of the bean field param
+	 * The default value of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the default value of the <code>f</code> param
+	 * @return the default value of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
 	 */
 	protected String defaultValueForBeanField(Field f) {
 		String defaultValue = "";
@@ -290,5 +292,52 @@ public class CSVBeanRecord extends BeanRecord {
 	 */
 	protected void doFill(String csvRecord) {
 		initRecordCSV(csvRecord, recordSep, recordOtherSep, recordEnclosing);
+	}
+	
+	/**
+	 * Set the value of a CSV field
+	 * 
+	 * @param field the CSV field
+	 * @param value the value to set
+	 */
+	protected void setCSVValue(com.github.parmag.fixefid.record.field.Field field, String value) {
+		if (value == null) {
+			return;
+		}
+		
+		field.setLen(value.length()); 
+		field.setValue(value, false);
+	}
+	
+	/**
+     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
+     * unpadded value of every field of this record. Every value is separated with the <code>CSVSep</code> defined for this CSV record.
+     * If <code>encloseAllFields</code> defined for this CSV record is true, every field of the record is enclosed with the <code>enclosing</code>
+     * defined for this CSV record. If the <code>encloseAllFields</code> is false the fields aren't enclosing, 
+     * eccept they contain the char sep. Each of the embedded char enclosing characters is represented by a pair of 
+     * double-enclosing characters.
+     *
+     * @return  a CSV string representation of this record
+     * @throws RecordException it the status of this record is ERROR
+     */
+	@Override
+	public String toString() throws RecordException {
+		return toStringCSV();
+	}
+	
+	/**
+     * Returns a CSV <code>String</code> object representing this record. The returned string is composed with the formatted
+     * unpadded value of every field of this record. Every value is separated with the <code>CSVSep</code> defined for this CSV record.
+     * If <code>encloseAllFields</code> defined for this CSV record is true, every field of the record is enclosed with the <code>enclosing</code>
+     * defined for this CSV record. If the <code>encloseAllFields</code> is false the fields aren't enclosing, 
+     * eccept they contain the char sep. Each of the embedded char enclosing characters is represented by a pair of 
+     * double-enclosing characters.
+     *
+     * @return  a CSV string representation of this record
+     * @throws RecordException it the status of this record is ERROR
+     */
+	@Override
+	public String toStringCSV() throws RecordException {
+		return toStringCSV(recordSep, recordOtherSep, recordEnclosing, recordEncloseAllFields);
 	}
 }

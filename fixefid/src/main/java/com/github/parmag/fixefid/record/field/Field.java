@@ -36,7 +36,7 @@ public class Field {
 	private String value;
 	private final String name;
 	private final FieldType type;
-	private final int len;
+	private int len;
 	private final FieldMandatory mandatory;
 	private RecordWay recordWay;
 	private DecimalFormat decimalFormat;
@@ -603,6 +603,10 @@ public class Field {
 	 */
 	public int getLen() {
 		return len;
+	}
+	
+	public void setLen(int len) {
+		this.len = len;
 	}
 
 	/**

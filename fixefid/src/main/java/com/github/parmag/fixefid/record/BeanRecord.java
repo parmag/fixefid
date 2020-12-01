@@ -446,10 +446,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The ordinal of the bean field param
+	 * The ordinal of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the ordinal of the <code>f</code> param
+	 * @return the ordinal of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected int ordinalForBeanField(Field f) {
 		int ordinal = 0;
@@ -463,10 +463,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The sub-ordinal of the bean field param
+	 * The sub-ordinal of the bean field param, retrieved from its <code>FixefidField.class<c/ode> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the sub-ordinal of the <code>f</code> param
+	 * @return the sub-ordinal of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected int subOrdinalForBeanField(Field f) {
 		int subOrdinal = 0;
@@ -490,10 +490,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The field type of the bean field param
+	 * The field type of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the field type of the <code>f</code> param
+	 * @return the field type of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected FieldType typeForBeanField(Field f) {
 		FieldType fieldType = null;
@@ -506,10 +506,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The len of the bean field param
+	 * The len of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the len of the <code>f</code> param
+	 * @return the len of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected int lenForBeanField(Field f) {
 		int len = 0;
@@ -522,10 +522,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The field mandatory of the bean field param
+	 * The field mandatory of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the field mandatory of the <code>f</code> param
+	 * @return the field mandatory of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected FieldMandatory mandatoryForBeanField(Field f) {
 		FieldMandatory fieldMandatory = null;
@@ -538,10 +538,10 @@ public class BeanRecord extends AbstractRecord {
 	}
 
 	/**
-	 * The default value of the bean field param
+	 * The default value of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
-	 * @return the default value of the <code>f</code> param
+	 * @return the default value of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
 	 */
 	protected String defaultValueForBeanField(Field f) {
 		String defaultValue = "";
