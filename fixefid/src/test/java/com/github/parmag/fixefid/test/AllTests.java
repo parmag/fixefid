@@ -16,7 +16,9 @@ import org.junit.runners.Suite.SuiteClasses;
 	
 	PersonTest.class,
 	StudentTest.class,
-	CustomerTest.class 
+	CustomerTest.class, 
+	
+	CarCSVTest.class
 })
 public class AllTests {
 

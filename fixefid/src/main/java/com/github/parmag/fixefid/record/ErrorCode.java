@@ -105,6 +105,10 @@ public enum ErrorCode {
 	 * Missing Java Bean FixefidCSVRecord annnotation
 	 */
 	RE24,
+	/**
+	 * The bean field len must be greater than zero
+	 */
+	RE25,
 	
 	/**
 	 * NOT USED
@@ -147,7 +151,7 @@ public enum ErrorCode {
 	 */
 	FE10,
 	/**
-	 * Field len < 1 error
+	 * NOT USED
 	 */
 	FE11,
 	/**

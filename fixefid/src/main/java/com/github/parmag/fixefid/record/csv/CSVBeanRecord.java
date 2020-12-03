@@ -123,6 +123,8 @@ public class CSVBeanRecord extends BeanRecord {
 	 */
 	protected void initBean(Object bean, String record, RecordWay recordWay) {
 		Class<?> clazz = bean.getClass();
+		checkBeanAnnotation(clazz);
+		
 		FixefidCSVRecord fixefidCSVRecord = clazz.getAnnotation(FixefidCSVRecord.class);
 		recordSep = fixefidCSVRecord.recordSep();
 		recordOtherSep = fixefidCSVRecord.recordOtherSep();
@@ -292,21 +294,6 @@ public class CSVBeanRecord extends BeanRecord {
 	 */
 	protected void doFill(String csvRecord) {
 		initRecordCSV(csvRecord, recordSep, recordOtherSep, recordEnclosing);
-	}
-	
-	/**
-	 * Set the value of a CSV field
-	 * 
-	 * @param field the CSV field
-	 * @param value the value to set
-	 */
-	protected void setCSVValue(com.github.parmag.fixefid.record.field.Field field, String value) {
-		if (value == null) {
-			return;
-		}
-		
-		field.setLen(value.length()); 
-		field.setValue(value, false);
 	}
 	
 	/**

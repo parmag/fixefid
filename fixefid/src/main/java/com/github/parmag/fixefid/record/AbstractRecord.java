@@ -320,20 +320,10 @@ public abstract class AbstractRecord {
 					value = value.replace(encString + encString, encString);
 				}
 				
-				setCSVValue(field, value);
+				setValue(fieldName, value);
 				valueIndex[0] = valueIndex[0] + 1;
 			}
 		});
-	}
-	
-	/**
-	 * Set the value of a CSV field
-	 * 
-	 * @param field the CSV field
-	 * @param value the value to set
-	 */
-	protected void setCSVValue(Field field, String value) {
-		field.setValue(value, false);
 	}
 	
 	/**

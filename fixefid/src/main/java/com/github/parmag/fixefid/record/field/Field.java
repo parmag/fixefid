@@ -53,6 +53,7 @@ public class Field {
 	private FieldExtendedPropertyType pad;
 	private String padStr;
 	private List<FieldExtendedProperty> fieldExtendedProperties;
+	private boolean lenNormalized;
 	
 	/**
 	 * Constructs a new <code>Field</code> that represents the fixed field formatted text
@@ -87,10 +88,6 @@ public class Field {
 		} else {
 			this.pad = FieldExtendedPropertyType.RPAD;
 			padStr = DEFAULT_AN_PAD_VALUE;
-		}
-		
-		if (len < 1) {
-			throw new FieldException(ErrorCode.FE11, "The field name=[" + name + "] has wrong length=[" + len + "]. Len > 0 expected.");
 		}
 		
 		if (FieldType.N.equals(type) && len > 19) {
@@ -217,7 +214,7 @@ public class Field {
 		if (isNumericSpace(value)) {
 			return null;
 		} else {
-			if (isLong()) {
+			if (isLong() || isLenNormalized()) {
 				try {
 					String longValueAsString = undoPad(value);
 					if (longValueAsString.isEmpty()) {
@@ -275,7 +272,7 @@ public class Field {
 		if (isNumericSpace(value)) {
 			return null;
 		} else {
-			if (isDouble()) {
+			if (isDouble() || isLenNormalized()) {
 				String doubleValueAsString = undoPad(value);
 				if (removeDecimalSeparator) {
 					doubleValueAsString = redoDecimalSeparator(doubleValueAsString);
@@ -439,6 +436,10 @@ public class Field {
 			value = customFormat.format(value);
 		}
 		
+		if (isLenToNormalize()) {
+			doLenNormalization(value);
+		}
+		
 		this.value = doFormat(value);
 		validValue();
 	}
@@ -454,8 +455,13 @@ public class Field {
 			return;
 		}
 		
-		if (isLong()) {
-			setValue(String.valueOf(value), false);
+		String valueAsString = String.valueOf(value);
+		if (isLenToNormalize()) {
+			doLenNormalization(valueAsString);
+		}
+		
+		if (isLong() || isLenNormalized()) {
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE34, parseTypeErrorMessage("Long"));
 		}
@@ -472,8 +478,13 @@ public class Field {
 			return;
 		}
 		
+		String valueAsString = String.valueOf(value);
+		if (isLenToNormalize()) {
+			doLenNormalization(valueAsString);
+		}
+		
 		if (isInteger()) {
-			setValue(String.valueOf(value), false);
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE35, parseTypeErrorMessage("Integer"));
 		}
@@ -490,13 +501,20 @@ public class Field {
 			return;
 		}
 		
-		if (isDouble()) {
-			if (removeDecimalSeparator) {
-				char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
-				setValue(decimalFormat.format(value).replace(Character.toString(decimalSeparator), ""), false);
-			} else {
-				setValue(decimalFormat.format(value), false);
-			}
+		String valueAsString = null;
+		if (removeDecimalSeparator && decimalFormat != null) {
+			char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
+			valueAsString = decimalFormat.format(value).replace(Character.toString(decimalSeparator), "");
+		} else if (decimalFormat != null) {
+			valueAsString = decimalFormat.format(value);
+		}
+		
+		if (isLenToNormalize() && valueAsString != null) {
+			doLenNormalization(valueAsString);
+		}
+		
+		if (isDouble() || isLenNormalized()) {
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE36, parseTypeErrorMessage("Double"));
 		} 
@@ -513,13 +531,20 @@ public class Field {
 			return;
 		}
 		
+		String valueAsString = null;
+		if (removeDecimalSeparator && decimalFormat != null) {
+			char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
+			valueAsString = decimalFormat.format(value).replace(Character.toString(decimalSeparator), "");
+		} else if (decimalFormat != null) {
+			valueAsString = decimalFormat.format(value);
+		}
+		
+		if (isLenToNormalize() && valueAsString != null) {
+			doLenNormalization(valueAsString);
+		}
+		
 		if (isFloat()) {
-			if (removeDecimalSeparator) {
-				char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
-				setValue(decimalFormat.format(value).replace(Character.toString(decimalSeparator), ""), false);
-			} else {
-				setValue(decimalFormat.format(value), false);
-			}
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE37, parseTypeErrorMessage("Float"));
 		} 
@@ -536,13 +561,20 @@ public class Field {
 			return;
 		}
 		
+		String valueAsString = null;
+		if (removeDecimalSeparator && decimalFormat != null) {
+			char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
+			valueAsString = decimalFormat.format(value).replace(Character.toString(decimalSeparator), "");
+		} else if (decimalFormat != null) {
+			valueAsString = decimalFormat.format(value);
+		}
+		
+		if (isLenToNormalize() && valueAsString != null) {
+			doLenNormalization(valueAsString);
+		}
+		
 		if (isBigDecimal()) {
-			if (removeDecimalSeparator) {
-				char decimalSeparator = decimalFormat.getDecimalFormatSymbols().getDecimalSeparator();
-				setValue(decimalFormat.format(value).replace(Character.toString(decimalSeparator), ""), false);
-			} else {
-				setValue(decimalFormat.format(value), false);
-			}
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE38, parseTypeErrorMessage("BigDecimal"));
 		} 
@@ -559,8 +591,17 @@ public class Field {
 			return;
 		}
 		
+		String valueAsString = null;
+		if (dateFormat != null) {
+			valueAsString = dateFormat.format(value);
+		}
+		
+		if (isLenToNormalize() && valueAsString != null) {
+			doLenNormalization(valueAsString);
+		}
+		
 		if (isDate()) {
-			setValue(dateFormat.format(value), false);
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE39, parseTypeErrorMessage("Date"));
 		}
@@ -577,8 +618,17 @@ public class Field {
 			return;
 		}
 		
+		String valueAsString = null;
+		if (booleanFormat != null) {
+			valueAsString = booleanFormat.format(value);
+		}
+		
+		if (isLenToNormalize() && valueAsString != null) {
+			doLenNormalization(valueAsString);
+		}
+		
 		if (isBoolean()) {
-			setValue(booleanFormat.format(value), false);
+			setValue(valueAsString, false);
 		} else {
 			throw new FieldException(ErrorCode.FE40, parseTypeErrorMessage("Boolean"));
 		}
@@ -605,10 +655,6 @@ public class Field {
 		return len;
 	}
 	
-	public void setLen(int len) {
-		this.len = len;
-	}
-
 	/**
 	 * Returns true if this <code>Field</code> is mandatory. This field is mandatory if
 	 * <ul>
@@ -937,7 +983,7 @@ public class Field {
 	 * @return true if the value param si a numeric space
 	 */
 	protected boolean isNumericSpace(String value) {
-		return FieldType.N.equals(getType()) && value != null && value.trim().isEmpty();
+		return FieldType.N.equals(getType()) && value != null && value.trim().isEmpty() && len > 0;
 	}
 	
 	/**
@@ -1117,5 +1163,23 @@ public class Field {
 	protected String redoDecimalSeparator(String value) {
 		int fractionDigits = decimalFormat.getMaximumFractionDigits();
 		return value.substring(0, value.length() - fractionDigits) + "." + value.substring(value.length() - fractionDigits);
+	}
+	
+	private boolean isLenToNormalize() {
+		return len < 1;
+	}
+	
+	private void doLenNormalization(String v) {
+		len = v.length();
+		lenNormalized = true;
+	}
+	
+	/**
+	 * Returns true if the len has been normalized, that's the initial len was zero
+	 * 
+	 * @return true if the len has been normalized
+	 */
+	public boolean isLenNormalized() {
+		return lenNormalized;
 	}
 }

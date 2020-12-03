@@ -516,6 +516,9 @@ public class BeanRecord extends AbstractRecord {
 		FixefidField a = f.getAnnotation(FixefidField.class);
 		if (a != null) {
 			len = a.fieldLen();
+			if (len == 0) {
+				throw new RecordException(ErrorCode.RE25, "The len of the field " + f.getName() + " must be greater than zero");
+			}
 		}
 		
 		return len;
@@ -616,7 +619,7 @@ public class BeanRecord extends AbstractRecord {
 		    		error = true;
 		    	}
 		    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
-		    	if (rf.isDouble()) {
+		    	if (rf.isDouble() || rf.isLenNormalized()) {
 		    		value = rf.getValueAsDouble();
 		    	} else {
 		    		error = true;
@@ -628,7 +631,7 @@ public class BeanRecord extends AbstractRecord {
 		    		error = true;
 		    	}
 		    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
-		    	if (rf.isLong()) {
+		    	if (rf.isLong() || rf.isLenNormalized()) {
 		    		value = rf.getValueAsLong();
 		    	} else {
 		    		error = true;
@@ -663,12 +666,7 @@ public class BeanRecord extends AbstractRecord {
 	    
 	    if (JAVA_LANG_STRING.equals(typeName)) {
 	    	if (rf.isString()) {
-	    		String valueAsString = (String) value;
-	    		if (valueAsString.length() > rf.getLen()) { 
-	    			valueAsString = valueAsString.substring(0, rf.getLen());
-	    		}
-	    		
-	    		rf.setValue(valueAsString, true);
+	    		rf.setValue((String) value, true);
 	    	} else {
 	    		error = true;
 	    	}
@@ -691,7 +689,7 @@ public class BeanRecord extends AbstractRecord {
 	    		error = true;
 	    	}
 	    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
-	    	if (rf.isDouble()) {
+	    	if (rf.isDouble() || rf.isLenNormalized()) {
 	    		rf.setValue((Double)value);
 	    	} else {
 	    		error = true;
@@ -703,7 +701,7 @@ public class BeanRecord extends AbstractRecord {
 	    		error = true;
 	    	}
 	    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
-	    	if (rf.isLong()) {
+	    	if (rf.isLong() || rf.isLenNormalized()) {
 	    		rf.setValue((Long)value);
 	    	} else {
 	    		error = true;
