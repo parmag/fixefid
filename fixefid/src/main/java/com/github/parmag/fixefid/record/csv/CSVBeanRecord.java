@@ -327,4 +327,11 @@ public class CSVBeanRecord extends BeanRecord {
 	public String toStringCSV() throws RecordException {
 		return toStringCSV(recordSep, recordOtherSep, recordEnclosing, recordEncloseAllFields);
 	}
+	
+	/**
+	 * @return the record len
+	 */
+	public int getRecordLen() {
+		return toString().length();
+	}
 }
