@@ -109,6 +109,10 @@ public enum ErrorCode {
 	 * The bean field len must be greater than zero
 	 */
 	RE25,
+	/**
+	 * The field len must be greater than zero
+	 */
+	RE26,
 	
 	/**
 	 * NOT USED

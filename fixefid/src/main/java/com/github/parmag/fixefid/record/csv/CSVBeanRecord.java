@@ -167,7 +167,7 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
-	 * CSV Record has not final filler
+	 * CSV Bean Record has not final filler
 	 */
 	protected void addFiller() {
 		// NOT FOR CSV RECORD

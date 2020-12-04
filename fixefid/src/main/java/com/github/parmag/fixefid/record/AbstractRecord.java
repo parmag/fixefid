@@ -462,7 +462,7 @@ public abstract class AbstractRecord {
      * @param sep the field separator. If null the sep is <code>CSVSep.COMMA</code>
      * @param otherSep the field separator if <code>sep</code> param is <code>CSVSep.OTHER</code>. Size must be eq 1. If null the default sep is <code>CSVSep.COMMA</code>
      * @param enclosing the enclosing char. If null the enclosing char is <code>CSVEnc.DOUBLE_QUOTE</code>
-     * @param encloseAllFields if true every field of the record is enclosed with the enclosing char, otherwise only field which contains sep or enclosing chars
+     * @param encloseAllFields if true every field of the record is enclosed with the enclosing char, otherwise only field which contains sep
      * 
      * @return  a CSV string representation of this record
      * @throws RecordException it the status of this record is ERROR or the separator size not eq 1

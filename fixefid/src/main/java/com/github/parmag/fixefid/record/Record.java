@@ -580,7 +580,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 			
 			List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(p.fieldExtendedProperties());
 			
-			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 0, p.fieldType(), p.fieldLen(), 
+			int fieldLen = p.fieldLen();
+			if (fieldLen == 0) {
+				throw new RecordException(ErrorCode.RE26, "The len of the field " + p.name() + " must be greater than zero");
+			}
+			
+			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 0, p.fieldType(), fieldLen, 
 				p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
         }
 	}
