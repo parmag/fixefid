@@ -18,7 +18,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	StudentTest.class,
 	CustomerTest.class, 
 	
-	CarCSVTest.class
+	CarCSVTest.class,
+	CarCSVRecordFieldTest.class
 })
 public class AllTests {
 

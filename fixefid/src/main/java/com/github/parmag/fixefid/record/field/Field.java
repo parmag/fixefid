@@ -29,7 +29,7 @@ public class Field {
 	private static final Logger LOG = LoggerFactory.getLogger(Field.class);
 	
 	private static final String DEFAULT_AN_VALUE = "";
-	private static final String DEFAULT_N_VALUE = "0";
+	private static final String DEFAULT_N_VALUE = "";
 	private static final String DEFAULT_AN_PAD_VALUE = " ";
 	private static final String DEFAULT_N_PAD_VALUE = "0";
 	
@@ -1166,7 +1166,7 @@ public class Field {
 	}
 	
 	private boolean isLenToNormalize() {
-		return len < 1;
+		return len < 1 || lenNormalized;
 	}
 	
 	private void doLenNormalization(String v) {

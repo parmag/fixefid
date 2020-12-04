@@ -113,7 +113,7 @@ public class CarCSVTest {
 	}
 	
 	@Test
-	public void testPersonFieldInitRecordToString() {
+	public void testCarFieldInitRecordToString() {
 		CAR_CSV_BEAN_RECORD_INIT_WITH_STRING.initRecord(CAR_CSV_RECORD_AS_STRING);
 		Assert.assertTrue("Citroen".equals(CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getName()));
 		Assert.assertTrue("C3 Picasso".equals(CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getModel()));
@@ -142,10 +142,10 @@ public class CarCSVTest {
 	
 	@Test
 	public void testCarSyncValuesFromRecordToBean() {
-		CAR_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("speed", 35); 
+		CAR_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("speed", 3500); 
 		CAR_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 		
-		Assert.assertTrue(35 == CAR_CSV_BEAN_FOR_INIT_FIELD.getSpeed()); 
+		Assert.assertTrue(3500 == CAR_CSV_BEAN_FOR_INIT_FIELD.getSpeed()); 
 		
 		CAR_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("speed", 183); 
 		CAR_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();

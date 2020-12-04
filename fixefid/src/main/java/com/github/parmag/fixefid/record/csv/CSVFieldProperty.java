@@ -35,7 +35,7 @@ public interface CSVFieldProperty {
 	 * @return the default value of the field. The default implementation returns <code>null</code>
 	 */
 	default String fieldDefaultValue() {
-		return null;
+		return "";
 	}
 	
 	/**
