@@ -12,6 +12,7 @@ import com.github.parmag.fixefid.record.field.FieldProperty;
 import com.github.parmag.fixefid.record.field.FieldType;
 import com.github.parmag.fixefid.record.format.BooleanFormat;
 import com.github.parmag.fixefid.record.format.CustomFormat;
+import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 
 public enum AlphaNumericRecordField implements FieldProperty {
 	str(20, FieldMandatory.INOUT, null, null),
@@ -37,34 +38,14 @@ public enum AlphaNumericRecordField implements FieldProperty {
 				}
 			}))),
 	strBooleanNotMandatory(1, FieldMandatory.NO, null, Arrays.asList(
-			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-				@Override
-				public String format(Boolean value) {
-					return (value != null && value.booleanValue()) ? "Y" : "N";
-				}
-
-				@Override
-				public Boolean parse(String value) {
-					return "Y".equals(value) ? true : false;
-				}
-			}))),
+			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N")))),
 	strRPAD(20, FieldMandatory.INOUT, null, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.RPAD, " "))),
 	strRPADWithXPAD(20, FieldMandatory.INOUT, null, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.RPAD, "X"))),
 	strLPAD(20, FieldMandatory.INOUT, null, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " "))),
 	strLPADWithXPAD(20, FieldMandatory.INOUT, null, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, "X"))),
 	strBooleanLPADWithXPAD(20, FieldMandatory.INOUT, null, Arrays.asList(
 			new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, "X"),
-			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-				@Override
-				public String format(Boolean value) {
-					return (value != null && value.booleanValue()) ? "Y" : "N";
-				}
-
-				@Override
-				public Boolean parse(String value) {
-					return "Y".equals(value) ? true : false;
-				}
-	}))),
+			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N")))),
 	strDateLPADWithXPAD(20, FieldMandatory.INOUT, null, Arrays.asList(
 			new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, "X"),
 			new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)))),

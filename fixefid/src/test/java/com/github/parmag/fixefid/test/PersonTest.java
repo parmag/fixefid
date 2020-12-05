@@ -21,8 +21,8 @@ import com.github.parmag.fixefid.record.RecordWay;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
-import com.github.parmag.fixefid.record.format.BooleanFormat;
 import com.github.parmag.fixefid.record.format.CustomFormat;
+import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 import com.github.parmag.fixefid.test.bean.FakePerson;
 import com.github.parmag.fixefid.test.bean.Person;
 import com.github.parmag.fixefid.test.bean.Person1000;
@@ -85,17 +85,7 @@ public class PersonTest {
 		
 		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDistrict", CUSTOM_FORMAT_LIST);
 		MAP_FIELD_EXTENDED_PROPERTIES.put("vip", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-					@Override
-					public String format(Boolean value) {
-						return value ? "Y" : "N";
-					}
-
-					@Override
-					public Boolean parse(String value) {
-						return "Y".equals(value) ? true : false;
-					}
-		})));
+				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N"))));
 		MAP_FIELD_EXTENDED_PROPERTIES.put("tor", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.0000", new DecimalFormatSymbols(Locale.ENGLISH)))));
 		MAP_FIELD_EXTENDED_PROPERTIES.put("turnover", Arrays.asList(

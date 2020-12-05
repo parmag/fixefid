@@ -20,25 +20,15 @@ import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 import com.github.parmag.fixefid.record.field.FieldValidator;
-import com.github.parmag.fixefid.record.format.BooleanFormat;
 import com.github.parmag.fixefid.record.format.CustomFormat;
+import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 import com.github.parmag.fixefid.test.bean.Customer;
 
 public class CustomerTest {
 	private static final Calendar CAL = Calendar.getInstance();
 	
 	private static final List<FieldExtendedProperty> BOOLEAN_FORMAT_LIST = Arrays.asList(
-			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-				@Override
-				public String format(Boolean value) {
-					return value ? "Y" : "N";
-				}
-
-				@Override
-				public Boolean parse(String value) {
-					return "Y".equals(value) ? true : false;
-				}
-	}));
+			new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N")));
 	
 	private static final Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
 			new HashMap<String, List<FieldExtendedProperty>>();

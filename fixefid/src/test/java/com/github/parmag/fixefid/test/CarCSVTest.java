@@ -16,7 +16,7 @@ import org.junit.Test;
 import com.github.parmag.fixefid.record.csv.CSVBeanRecord;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
-import com.github.parmag.fixefid.record.format.BooleanFormat;
+import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 import com.github.parmag.fixefid.test.csv.Car;
 
 public class CarCSVTest {
@@ -57,17 +57,7 @@ public class CarCSVTest {
 				new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, DATE_FORMAT))
 		);
 		MAP_FIELD_EXTENDED_PROPERTIES.put("used", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-					@Override
-					public String format(Boolean value) {
-						return value ? "Y" : "N";
-					}
-
-					@Override
-					public Boolean parse(String value) {
-						return "Y".equals(value) ? true : false;
-					}
-		})));
+				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N"))));
 		
 		CAR_CSV_BEAN_RECORD = new CSVBeanRecord(CAR_CSV_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		CAR_CSV_BEAN_RECORD.setValue("name", "Citroen");
