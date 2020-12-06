@@ -22,7 +22,7 @@ public class CustomerRecordFieldTest {
 	
 	@Test
 	public void testFieldPrettyPrint() {
-		Assert.assertTrue("email=[2][20][50][paul.robinson@serverxyz.com                       ][INFO][]".equals(
+		Assert.assertTrue("email=[2][1][1][20][50][paul.robinson@serverxyz.com                       ][INFO][]".equals(
 				CUSTOMER_RECORD.prettyPrint(CustomerRecordField.email.name()))); 
 	}
 }

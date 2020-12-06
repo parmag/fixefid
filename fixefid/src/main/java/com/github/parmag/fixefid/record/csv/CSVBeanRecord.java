@@ -278,6 +278,22 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
+	 * The field occurs of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the field occurs of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 */
+	protected int occursForBeanField(Field f) {
+		int occurs = 1;
+		FixefidCSVField a = f.getAnnotation(FixefidCSVField.class);
+		if (a != null) {
+			occurs = a.fieldOccurs();
+		}
+		
+		return occurs;
+	}
+	
+	/**
 	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter
 	 * 
 	 * @param csvRecord the formatted string

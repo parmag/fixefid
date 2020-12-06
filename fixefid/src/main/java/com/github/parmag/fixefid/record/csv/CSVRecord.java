@@ -12,6 +12,7 @@ import com.github.parmag.fixefid.record.field.Field;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldProperty;
+import com.github.parmag.fixefid.record.field.FieldType;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 
 /**
@@ -602,8 +603,21 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 			
 			List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(p.fieldExtendedProperties());
 			
-			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 0, p.fieldType(), 0, 
-				p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+			int fieldOccurs = p.fieldOccurs();
+			if (fieldOccurs < 1) {
+				throw new RecordException(ErrorCode.RE28, "The occurs of the CSV field " + p.name() + " must be greater than zero");
+			}
+			
+			FieldType fieldType = p.fieldType();
+			if (!FieldType.AN.equals(fieldType) && !FieldType.N.equals(fieldType)) {
+				throw new RecordException(ErrorCode.RE32, "The fiel type of the field " + p.name() + " must be equals to " + 
+						FieldType.AN.name() + " or " + FieldType.N.name() );
+			}
+			
+			for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
+				fieldsMap.put(keyForFieldNameAndFieldOccur(p.name(), fieldOccur), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 1, fieldOccur, 
+					fieldType, 0, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+			}
         }
 	}
 	

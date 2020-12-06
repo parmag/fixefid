@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
@@ -281,23 +282,53 @@ public class BeanRecord extends AbstractRecord {
 						}
 					}
 					
+					int fieldOccurs = occursForBeanField(field);
+					if (fieldOccurs != 1) {
+						throw new RecordException(ErrorCode.RE29, "The occurs of the bean field " + field.getName() + " of type " + 
+								fieldType.name() + " must be equals to 1");
+					}
+					
 					try {
 						Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap =
 							new BeanRecord(field.get(bean), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
 						for (String cmpFieldName : cmpFieldsMap.keySet()) {
-							fieldsMap.put(fieldName + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
+							fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, DEF_OCCUR) + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
 						}
 					} catch (Exception e) {
 						throw new RecordException(ErrorCode.RE1, e);
 					}
+				} else if (FieldType.LIST.equals(fieldType)) {
+					List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
+	                		mapFieldExtendedProperties != null ? mapFieldExtendedProperties.get(fieldName) : null);
+					
+					int fieldOccurs = occursForBeanField(field);
+					if (fieldOccurs < 1) {
+						throw new RecordException(ErrorCode.RE33, "The occurs of the bean field " + field.getName() + " of type " + 
+								fieldType.name() + " must be greater then zero");
+					}
+					
+					for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
+						fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur), new com.github.parmag.fixefid.record.field.Field (
+							fieldName, fieldOrdinal, fieldSubOrdinal, fieldOccur, fieldType, lenForBeanField(field), 
+							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
+						
+						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, fieldOccur);
+					}
 				} else {
 					List<FieldExtendedProperty> eps = normalizeFieldExtendedProperties(
 	                		mapFieldExtendedProperties != null ? mapFieldExtendedProperties.get(fieldName) : null);
-					fieldsMap.put(fieldName, new com.github.parmag.fixefid.record.field.Field(
-                		fieldName, fieldOrdinal, fieldSubOrdinal, fieldType, lenForBeanField(field), 
-                		mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
 					
-					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap);
+					int fieldOccurs = occursForBeanField(field);
+					if (fieldOccurs != 1) {
+						throw new RecordException(ErrorCode.RE30, "The occurs of the bean field " + field.getName() + " of type " + 
+								fieldType.name() + " must be equals to 1");
+					}
+					
+					fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, DEF_OCCUR), new com.github.parmag.fixefid.record.field.Field (
+						fieldName, fieldOrdinal, fieldSubOrdinal, DEF_OCCUR, fieldType, lenForBeanField(field), 
+						mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
+					
+					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
 				}
 				
             }
@@ -430,8 +461,8 @@ public class BeanRecord extends AbstractRecord {
 	 * update the value of every fields from record to the backed bean
 	 */
 	public void syncValuesFromRecordToBean() {
-		for (String fieldName : fieldsMap.keySet()) {
-		    syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		for (String key : fieldsMap.keySet()) {
+		    syncValueFromRecordFieldToBeanField(fieldNameForKey(key), bean, fieldsMap);
 		} 
 	}
 	
@@ -441,7 +472,9 @@ public class BeanRecord extends AbstractRecord {
 	public void syncValuesFromBeanToRecord() {
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
-		    syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap);
+			//TODO retrieve id field type implements java.util.List
+			
+		    syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
 		} 
 	}
 	
@@ -556,28 +589,52 @@ public class BeanRecord extends AbstractRecord {
 		return defaultValue;
 	}
 	
+	/**
+	 * The field occurs of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the field occurs of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
+	 */
+	protected int occursForBeanField(Field f) {
+		int occurs = 1;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			occurs = a.fieldOccurs();
+		}
+		
+		return occurs;
+	}
+	
 	private void syncValueFromBeanFieldToRecordField(String parentFieldName, Field field, Object bean,
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int fieldOccur) {
 		field.setAccessible(true);
 		String fieldName = parentFieldName != null ? parentFieldName + CMP_FIELD_NAME_SEP + field.getName() : field.getName();
 	    try {
 	    	Object value = field.get(bean);
 			if (isAnnotationPresentForBeanField(field) && value != null) {
-				if (FieldType.CMP.equals(typeForBeanField(field))) {
+				FieldType fieldType = typeForBeanField(field);
+				if (FieldType.CMP.equals(fieldType)) {
 					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), field.get(bean).getClass());
 					for (Field cmpField : cmpFields) {
-						syncValueFromBeanFieldToRecordField(fieldName, cmpField, field.get(bean), fieldsMap);
+						syncValueFromBeanFieldToRecordField(fieldName, cmpField, field.get(bean), fieldsMap, fieldOccur);
 					}
+				} else if (FieldType.LIST.equals(fieldType)) {
+					// TODO
 				} else {
-				    syncValueFromBeanFieldToRecordField(fieldName, field.getType().getName(), value, fieldsMap);
+				    syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, field.getType().getName(), value, fieldsMap);
 				}
 			}
 	    } catch (Exception e) {
 	    	throw new RecordException(ErrorCode.RE4, e);
 	    }
 	}
-
+	
 	private void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+		syncValueFromRecordFieldToBeanField(fieldName, DEF_OCCUR, bean, fieldsMap); 
+	}
+
+	private void syncValueFromRecordFieldToBeanField(String fieldName, int fieldOccur, Object bean,
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
 		if (FINAL_FILLER_NAME.equals(fieldName)) {
 			return;
@@ -590,7 +647,7 @@ public class BeanRecord extends AbstractRecord {
 		if (isAnnotationPresentForBeanField(field)) {
 		    boolean error = false;
 		    
-		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
+		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(keyForFieldNameAndFieldOccur(fieldName, fieldOccur));
 		    String typeName = field.getType().getName();
 		    Object value = null;
 		    
@@ -658,11 +715,11 @@ public class BeanRecord extends AbstractRecord {
 		}
 	}
 	
-	private void syncValueFromBeanFieldToRecordField(String fieldName, String typeName, Object value, 
+	private void syncValueFromBeanFieldToRecordField(String fieldName, int fieldOccur, String typeName, Object value, 
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
 		boolean error = false;
 	    
-	    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(fieldName);
+	    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(keyForFieldNameAndFieldOccur(fieldName, fieldOccur));
 	    
 	    if (JAVA_LANG_STRING.equals(typeName)) {
 	    	if (rf.isString()) {
@@ -756,5 +813,54 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns the key of the fields map for the given params
+	 * 
+	 * @param fieldName the field name
+	 * @param fieldOccur the field occur
+	 * 
+	 * @return the key of the fieldsMap for the given params
+	 */
+	protected String keyForFieldNameAndFieldOccur(String fieldName, int fieldOccur) {
+		String key = null;
+		if (fieldName.contains(CMP_FIELD_NAME_SEP)) {
+			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
+			String[] fieldNameTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
+			for (int i = 0; i < fieldNameTokens.length; i++) {
+				sj.add(super.keyForFieldNameAndFieldOccur(fieldNameTokens[i], fieldOccur));
+			}
+			
+			key = sj.toString();
+		} else {
+			key = super.keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
+		}
+		
+		return key;
+	}
+	
+	/**
+	 * Returns the field name of the field with the given fields map <code>key</code> param
+	 * 
+	 * @param key the key of the fields map
+	 * 
+	 * @return the field name of the field with the given fields map <code>key</code> param
+	 */
+	protected String fieldNameForKey(String key) {
+		String fieldName = null;
+		if (key.contains(CMP_FIELD_NAME_SEP)) {
+			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
+			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
+			for (int i = 0; i < keyTokens.length; i++) {
+				sj.add(super.fieldNameForKey(keyTokens[i]));
+			}
+			
+			fieldName = sj.toString();
+		} else {
+			fieldName = super.fieldNameForKey(key);
+		}
+		
+		return fieldName;
 	}
 }

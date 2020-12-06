@@ -19,5 +19,9 @@ public enum FieldType {
 	/**
 	 * the composite type
 	 */
-	CMP 
+	CMP,
+	/**
+	 * the list type
+	 */
+	LIST 
 }

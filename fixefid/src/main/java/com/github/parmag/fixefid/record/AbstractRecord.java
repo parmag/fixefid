@@ -27,8 +27,11 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
  *
  */
 public abstract class AbstractRecord {
+	private static final String KEY_SEP = "-";
 	protected static final String FINAL_FILLER_NAME = "finalFiller";
 	protected static final String NO_VALIDATION_INFO = "NO VALIDATION INFO";
+	protected static final int DEF_OCCUR = 1;
+	protected static final int DEF_SUB_INDEX = 0;
 	
 	protected final Map<String, Field> fieldsMap = new LinkedHashMap<String, Field>();
 	protected RecordWay recordWay; 
@@ -58,20 +61,20 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * mix the list <code>eps</code> of field extended properties with the relative list at record level.
+	 * mix the list <code>feps</code> of field extended properties with the relative list at record level.
 	 * If the same property is present at record and field level, the second one win
 	 * 
-	 * @param eps field extended properties at field level
+	 * @param feps field extended properties at field level
 	 * @return a list of field extended properties
 	 */
-	protected List<FieldExtendedProperty> normalizeFieldExtendedProperties(List<FieldExtendedProperty> eps) {
-		if (eps == null) {
-			eps = fieldExtendedProperties;
+	protected List<FieldExtendedProperty> normalizeFieldExtendedProperties(List<FieldExtendedProperty> feps) {
+		if (feps == null) {
+			feps = fieldExtendedProperties;
 		} else if (fieldExtendedProperties != null) {
 			for (FieldExtendedProperty rep : fieldExtendedProperties) {
 				boolean found = false;
 				FieldExtendedPropertyType repType = rep.getType();
-				for (FieldExtendedProperty fep : eps) {
+				for (FieldExtendedProperty fep : feps) {
 					if (repType.equals(fep.getType())) {
 						found = true;
 						break;
@@ -81,12 +84,12 @@ public abstract class AbstractRecord {
 				if (!found) {
 					// index 0 => it win the last => it win the field vs record
 					// think for example to LPAD and RPAD
-					eps.add(0, rep);
+					feps.add(0, rep);
 				}
 			}
 		}
 		
-		return eps;
+		return feps;
 	}
 	
 	/**
@@ -101,8 +104,8 @@ public abstract class AbstractRecord {
 		int fillerLen = getRecordLen() - fillerIndex;
 		
 		if (fillerLen > 0) {
-			fieldsMap.put(FINAL_FILLER_NAME, new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1, 0,
-				FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null));
+			fieldsMap.put(keyForFieldNameAndFieldOccur(FINAL_FILLER_NAME, DEF_OCCUR), new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1, 
+				DEF_SUB_INDEX, DEF_OCCUR, FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null));
 		}
 	}
 	
@@ -280,8 +283,8 @@ public abstract class AbstractRecord {
 		}
 		
 		int[] valueIndex = {0};
-		fieldsMap.forEach((fieldName, field) -> {
-			if (!FINAL_FILLER_NAME.equals(fieldName)) {
+		fieldsMap.forEach((key, field) -> {
+			if (!FINAL_FILLER_NAME.equals(key)) {
 				String value = values.get(valueIndex[0]);
 				
 				if (value.startsWith(encString)) {
@@ -320,7 +323,7 @@ public abstract class AbstractRecord {
 					value = value.replace(encString + encString, encString);
 				}
 				
-				setValue(fieldName, value);
+				setValue(fieldNameForKey(key), value);
 				valueIndex[0] = valueIndex[0] + 1;
 			}
 		});
@@ -363,12 +366,25 @@ public abstract class AbstractRecord {
 	 * @return the field represented by the <code>fieldName</code> param
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
-	public Field getRecordField(String fieldName) throws RecordException {
-		if (!fieldsMap.containsKey(fieldName)) {
-			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "]");
+	protected Field getRecordField(String fieldName) throws RecordException {
+		return getRecordField(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 *  
+	 * @param fieldName the field name to get the field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the field represented by the <code>fieldName</code> param
+	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
+	 */
+	protected Field getRecordField(String fieldName, int fieldOccur) throws RecordException {
+		String key = keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
+		if (!fieldsMap.containsKey(key)) {
+			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "] with key=[" + key + "]");
 		}
 		
-		return fieldsMap.get(fieldName);
+		return fieldsMap.get(key);
 	}
 	
 	/**
@@ -387,7 +403,7 @@ public abstract class AbstractRecord {
 	 * @param status the status of tthe fields to return 
 	 * @return the list of fields with status equals the <code>status</code> param
 	 */
-	public List<Field> getRecordFields(FieldValidationInfo.RecordFieldValidationStatus status) {
+	protected List<Field> getRecordFields(FieldValidationInfo.RecordFieldValidationStatus status) {
 		List<Field> result = new ArrayList<Field>();
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
@@ -404,7 +420,7 @@ public abstract class AbstractRecord {
 	 *  
 	 * @return the list of fields of this record
 	 */
-	public List<Field> getRecordFields() {
+	protected List<Field> getRecordFields() {
 		List<Field> result = new ArrayList<Field>();
 		for (String key : fieldsMap.keySet()) {
 			result.add(fieldsMap.get(key));
@@ -485,8 +501,8 @@ public abstract class AbstractRecord {
 		String encString = enclosing.getEnc();
 		
 		StringJoiner sj = new StringJoiner(delimiter);
-		fieldsMap.forEach((fieldName, field) -> {
-			if (!FINAL_FILLER_NAME.equals(fieldName)) {
+		fieldsMap.forEach((key, field) -> {
+			if (!FINAL_FILLER_NAME.equals(key)) {
 				String value = field.getValueWithNoPAD();
 				if (encloseAllFields || value.contains(delimiter)) {
 					if (value.contains(encString)) {
@@ -507,7 +523,7 @@ public abstract class AbstractRecord {
 	 * Returns a <code>String</code> object representing the pretty print of this record.
 	 * The pretty print is composed as following:
 	 * <p>
-	 * name=[index][offset][len][value][validation status][validation msg (if present)]
+	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
 	 * 
 	 * @return the pretty print of this record
 	 */
@@ -517,7 +533,7 @@ public abstract class AbstractRecord {
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
 			int len = rf.getLen(); 
-			sb.append(key + "=[" + rf.getIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
+			sb.append(fieldNameForKey(key) + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
 			FieldValidationInfo vi = rf.getValidationInfo();
 			if (vi != null) {
 				sb.append("[" + vi.getValidationStatus().name() + "][" + vi.getValidationMessage() + "]\n");
@@ -534,14 +550,33 @@ public abstract class AbstractRecord {
 	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code> param.
 	 * The pretty print is composed as following:
 	 * <p>
-	 * name=[index][offset][len][value][validation status][validation msg (if present)]
+	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
+	 * 
+	 * @param fieldName the field name
 	 * 
 	 * @return the pretty print of the field represented by the <code>fieldName</code> param.
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
 	public String prettyPrint(String fieldName) {
-		if (!fieldsMap.containsKey(fieldName)) {
-			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "]");
+		return prettyPrint(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code> param.
+	 * The pretty print is composed as following:
+	 * <p>
+	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
+	 * 
+	 * @param fieldName the field name
+	 * @param fieldOccur the field occur
+	 * 
+	 * @return the pretty print of the field represented by the <code>fieldName</code> param.
+	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
+	 */
+	public String prettyPrint(String fieldName, int fieldOccur) {
+		String keyForFieldName = keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
+		if (!fieldsMap.containsKey(keyForFieldName)) {
+			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "] with key=[" + keyForFieldName + "]");
 		}
 		
 		StringBuilder sb = new StringBuilder();
@@ -549,8 +584,8 @@ public abstract class AbstractRecord {
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
 			int len = rf.getLen(); 
-			if (key.equals(fieldName)) {
-				sb.append(key + "=[" + rf.getIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
+			if (key.equals(keyForFieldName)) {
+				sb.append(fieldName + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
 				FieldValidationInfo vi = rf.getValidationInfo();
 				if (vi != null) {
 					sb.append("[" + vi.getValidationStatus().name() + "][" + vi.getValidationMessage() + "]");
@@ -1257,7 +1292,7 @@ public abstract class AbstractRecord {
 	 */
 	public Map<String, String> valuesMap() {
 		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
-		fieldsMap.forEach((fieldName, field) -> valuesMap.put(fieldName, field.getValue()));
+		fieldsMap.forEach((key, field) -> valuesMap.put(fieldNameForKey(key), field.getValue()));
 		return valuesMap;
 	}
 	
@@ -1268,7 +1303,7 @@ public abstract class AbstractRecord {
 	 */
 	public List<String> values() {
 		List<String> values = new ArrayList<String>();
-		fieldsMap.forEach((fieldName, field) -> values.add(field.getValue()));
+		fieldsMap.forEach((key, field) -> values.add(field.getValue()));
 		return values;
 	}
 	
@@ -1279,7 +1314,30 @@ public abstract class AbstractRecord {
 	 */
 	public List<String> names() {
 		List<String> names = new ArrayList<String>();
-		fieldsMap.forEach((fieldName, field) -> names.add(fieldName));
+		fieldsMap.forEach((key, field) -> names.add(fieldNameForKey(key)));
 		return names;
+	}
+	
+	/**
+	 * Returns the key of the fields map for the given params
+	 * 
+	 * @param fieldName the field name
+	 * @param fieldOccur the field occur
+	 * 
+	 * @return the key of the fieldsMap for the given params
+	 */
+	protected String keyForFieldNameAndFieldOccur(String fieldName, int fieldOccur) {
+		return FINAL_FILLER_NAME.equals(fieldName) ? fieldName : fieldName + KEY_SEP + fieldOccur;
+	}
+	
+	/**
+	 * Returns the field name of the field with the given fields map <code>key</code> param
+	 * 
+	 * @param key the key of the fields map
+	 * 
+	 * @return the field name of the field with the given fields map <code>key</code> param
+	 */
+	protected String fieldNameForKey(String key) {
+		return FINAL_FILLER_NAME.equals(key) ? key : key.substring(0, key.lastIndexOf(KEY_SEP));
 	}
 }

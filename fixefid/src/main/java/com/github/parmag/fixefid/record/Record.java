@@ -8,6 +8,7 @@ import com.github.parmag.fixefid.record.field.Field;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldProperty;
+import com.github.parmag.fixefid.record.field.FieldType;
 import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 
 /**
@@ -458,7 +459,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * @return the field represented by the <code>fieldProperty</code> param
 	 * @throws RecordException if the <code>fieldProperty</code> param doesn't represent any field of the record
 	 */
-	public Field getRecordField(FieldProperty fieldProperty) throws RecordException {
+	protected Field getRecordField(FieldProperty fieldProperty) throws RecordException {
 		return getRecordField(fieldProperty.name());
 	}
 	
@@ -585,8 +586,21 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 				throw new RecordException(ErrorCode.RE26, "The len of the field " + p.name() + " must be greater than zero");
 			}
 			
-			fieldsMap.put(p.name(), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 0, p.fieldType(), fieldLen, 
-				p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+			int fieldOccurs = p.fieldOccurs();
+			if (fieldOccurs < 1) {
+				throw new RecordException(ErrorCode.RE27, "The occurs of the field " + p.name() + " must be greater than zero");
+			}
+			
+			FieldType fieldType = p.fieldType();
+			if (!FieldType.AN.equals(fieldType) && !FieldType.N.equals(fieldType)) {
+				throw new RecordException(ErrorCode.RE31, "The fiel type of the field " + p.name() + " must be equals to " + 
+						FieldType.AN.name() + " or " + FieldType.N.name() );
+			}
+			
+			for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
+				fieldsMap.put(keyForFieldNameAndFieldOccur(p.name(), fieldOccur), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 1, fieldOccur, 
+					fieldType, fieldLen, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+			}
         }
 	}
 	

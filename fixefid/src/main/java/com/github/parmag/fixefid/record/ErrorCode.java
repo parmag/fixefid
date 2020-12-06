@@ -113,6 +113,34 @@ public enum ErrorCode {
 	 * The field len must be greater than zero
 	 */
 	RE26,
+	/**
+	 * The field occurs must be greater than zero
+	 */
+	RE27,
+	/**
+	 * The CSV field occurs must be greater than zero
+	 */
+	RE28,
+	/**
+	 * The <code>FieldType.CMP</code> bean field occurs must be equals to 1
+	 */
+	RE29,
+	/**
+	 * The bean field occurs must be equals to 1
+	 */
+	RE30,
+	/**
+	 * The record field type must be equals to <code>FieldType.AN</code> or <code>FieldType.N</code>
+	 */
+	RE31,
+	/**
+	 * The CSV record field type must be equals to <code>FieldType.AN</code> or <code>FieldType.N</code>
+	 */
+	RE32,
+	/**
+	 * The <code>FieldType.LIST</code> bean field occurs must be greater than zero
+	 */
+	RE33,
 	
 	/**
 	 * NOT USED

@@ -77,7 +77,7 @@ public class StudentTest {
 		MAP_FIELD_EXTENDED_PROPERTIES.put("age", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
 			@Override
-			public FieldValidationInfo valid(String name, int index, int subIndex, FieldType type, FieldMandatory mandatory, String value,
+			public FieldValidationInfo valid(String name, int index, int subIndex, int occurIndex, FieldType type, FieldMandatory mandatory, String value,
 					List<FieldExtendedProperty> fieldExtendedProperties) {
 				int age = Integer.valueOf(value);
 				return age >= 18 ? new FieldValidationInfo() : new FieldValidationInfo(FieldValidationInfo.RecordFieldValidationStatus.ERROR, "Student age must be >= 18", 100);

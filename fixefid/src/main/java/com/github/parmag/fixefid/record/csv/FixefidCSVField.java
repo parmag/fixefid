@@ -40,4 +40,11 @@ public @interface FixefidCSVField {
 	 * @return the sub ordinal of the java bean property
 	 */
 	public int fieldSubOrdinal() default 0;
+	/**
+	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.List</code>.
+	 * The implementation of the java.util.List must guarantee the order, like <code>java.util.ArrayList</code>.
+	 * 
+	 * @return the occurs of the java bean property
+	 */
+	public int fieldOccurs() default 1;
 }
