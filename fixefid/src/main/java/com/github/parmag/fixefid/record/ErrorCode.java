@@ -141,6 +141,10 @@ public enum ErrorCode {
 	 * The <code>FieldType.LIST</code> bean field occurs must be greater than zero
 	 */
 	RE33,
+	/**
+	 * The <code>FieldType.LIST</code> bean field must be an instance of <code>java.util.ArrayList</code>
+	 */
+	RE34,
 	
 	/**
 	 * NOT USED

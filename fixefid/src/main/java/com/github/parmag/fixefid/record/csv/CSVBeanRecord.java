@@ -294,6 +294,22 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
+	 * The field type list of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the field type list of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotationn
+	 */
+	protected FieldType typeListForBeanField(Field f) {
+		FieldType fieldTypeList = null;
+		FixefidCSVField a = f.getAnnotation(FixefidCSVField.class);
+		if (a != null) {
+			fieldTypeList = a.fieldTypeList();
+		}
+		
+		return fieldTypeList;
+	}
+	
+	/**
 	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter
 	 * 
 	 * @param csvRecord the formatted string

@@ -42,6 +42,7 @@ public class BeanRecord extends AbstractRecord {
 	private static final String JAVA_LANG_BOOLEAN_PR = "boolean";
 	private static final String JAVA_UTIL_DATE = "java.util.Date"; 
 	private static final String JAVA_LANG_STRING = "java.lang.String";
+	private static final String JAVA_UTIL_ARRAY_LIST = "java.util.ArrayList";
 	
 	private Object bean;
 	private Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties;
@@ -212,6 +213,7 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws RecordException if a field has the name equals to "finalFiller" or some reflection field access problem
 	 * @throws FieldException if the properties of the fields are in some non valid status
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void initFieldsMap() throws RecordException, FieldException {
 		Class<?> clazz = bean.getClass();
 		
@@ -271,7 +273,8 @@ public class BeanRecord extends AbstractRecord {
     			} 
                 
 				FieldType fieldType = typeForBeanField(field);
-				if (FieldType.CMP.equals(fieldType)) {
+				FieldType fieldTypeList = typeListForBeanField(field);
+				if (FieldType.CMP.equals(fieldType) || (FieldType.LIST.equals(fieldType) && FieldType.CMP.equals(fieldTypeList))) {
 					Map<String, List<FieldExtendedProperty>> mapCmpFieldExtendedProperties = null;
 					if (mapFieldExtendedProperties != null) {
 						mapCmpFieldExtendedProperties = new HashMap<String, List<FieldExtendedProperty>>();
@@ -283,16 +286,34 @@ public class BeanRecord extends AbstractRecord {
 					}
 					
 					int fieldOccurs = occursForBeanField(field);
-					if (fieldOccurs != 1) {
+					if (fieldOccurs != 1 && FieldType.CMP.equals(fieldType)) {
 						throw new RecordException(ErrorCode.RE29, "The occurs of the bean field " + field.getName() + " of type " + 
 								fieldType.name() + " must be equals to 1");
+					} else if (fieldOccurs < 1 && FieldType.LIST.equals(fieldType)) {
+						throw new RecordException(ErrorCode.RE33, "The occurs of the bean field " + field.getName() + " of type " + 
+								fieldType.name() + " must be greater then zero");
 					}
 					
 					try {
-						Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap =
-							new BeanRecord(field.get(bean), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
-						for (String cmpFieldName : cmpFieldsMap.keySet()) {
-							fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, DEF_OCCUR) + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
+						Object value = field.get(bean);
+						ArrayList list = null;
+						if (FieldType.LIST.equals(fieldType)) {
+							if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
+								list = (ArrayList) value;
+							} else {
+								throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
+										fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+							}
+						} else {
+							list = new ArrayList(); 
+							list.add(value);
+						}
+						for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
+							Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap =
+								new BeanRecord(list.get(fieldOccur - 1), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
+							for (String cmpFieldName : cmpFieldsMap.keySet()) {
+								fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur) + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
+							}
 						}
 					} catch (Exception e) {
 						throw new RecordException(ErrorCode.RE1, e);
@@ -469,12 +490,22 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * update the value of every fields from the backed bean the the record
 	 */
+	@SuppressWarnings("rawtypes")
 	public void syncValuesFromBeanToRecord() {
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
-			//TODO retrieve id field type implements java.util.List
-			
-		    syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
+			if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
+				try {
+					ArrayList list = (ArrayList) field.get(bean);
+					for (int i = 0; i < list.size(); i++) {
+						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, i);
+					}
+				} catch (Exception e) {
+					throw new RecordException(ErrorCode.RE4, e);
+				} 
+			} else {
+				syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
+			}
 		} 
 	}
 	
@@ -605,6 +636,23 @@ public class BeanRecord extends AbstractRecord {
 		return occurs;
 	}
 	
+	/**
+	 * The field type list of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the field type list of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotationn
+	 */
+	protected FieldType typeListForBeanField(Field f) {
+		FieldType fieldTypeList = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			fieldTypeList = a.fieldTypeList();
+		}
+		
+		return fieldTypeList;
+	}
+	
+	@SuppressWarnings("rawtypes")
 	private void syncValueFromBeanFieldToRecordField(String parentFieldName, Field field, Object bean,
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int fieldOccur) {
 		field.setAccessible(true);
@@ -613,13 +661,35 @@ public class BeanRecord extends AbstractRecord {
 	    	Object value = field.get(bean);
 			if (isAnnotationPresentForBeanField(field) && value != null) {
 				FieldType fieldType = typeForBeanField(field);
-				if (FieldType.CMP.equals(fieldType)) {
-					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), field.get(bean).getClass());
+				FieldType fieldTypeList = typeListForBeanField(field);
+				if (FieldType.CMP.equals(fieldType) || (FieldType.LIST.equals(fieldType) && FieldType.CMP.equals(fieldTypeList))) {
+					if (FieldType.LIST.equals(fieldType)) {
+						ArrayList list = null;
+						if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
+							list = (ArrayList) value;
+						} else {
+							throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
+									fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+						}
+						
+						value = list.get(fieldOccur - 1);
+					}
+					
+					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), value.getClass());
 					for (Field cmpField : cmpFields) {
-						syncValueFromBeanFieldToRecordField(fieldName, cmpField, field.get(bean), fieldsMap, fieldOccur);
+						syncValueFromBeanFieldToRecordField(fieldName, cmpField, value, fieldsMap, fieldOccur);
 					}
 				} else if (FieldType.LIST.equals(fieldType)) {
-					// TODO
+					ArrayList list = null;
+					if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
+						list = (ArrayList) value;
+					} else {
+						throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
+								fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+					}
+					
+					Object listValue = list.get(fieldOccur - 1);
+					syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, listValue.getClass().getName(), listValue, fieldsMap);
 				} else {
 				    syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, field.getType().getName(), value, fieldsMap);
 				}

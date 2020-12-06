@@ -46,10 +46,15 @@ public @interface FixefidField {
 	public int fieldSubOrdinal() default 0;
 	
 	/**
-	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.List</code>.
-	 * The implementation of the java.util.List must guarantee the order, like <code>java.util.ArrayList</code>.
+	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.ArrayList</code>
 	 * 
 	 * @return the occurs of the java bean property
 	 */
 	public int fieldOccurs() default 1;
+	/**
+	 * The type of the java bean property <code>FieldType.LIST</code>. It has a meaning only if the type of this field is <code>FieldType.LIST</code>
+	 * 
+	 * @return the type of the java bean property <code>FieldType.LIST</code>
+	 */
+	public FieldType fieldTypeList() default FieldType.AN;
 }
