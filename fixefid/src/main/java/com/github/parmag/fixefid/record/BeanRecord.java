@@ -330,7 +330,7 @@ public class BeanRecord extends AbstractRecord {
 					
 					for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
 						fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur), new com.github.parmag.fixefid.record.field.Field (
-							fieldName, fieldOrdinal, fieldSubOrdinal, fieldOccur, fieldType, lenForBeanField(field), 
+							fieldName, fieldOrdinal, fieldSubOrdinal, fieldOccur, fieldTypeList, lenForBeanField(field), 
 							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
 						
 						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, fieldOccur);
