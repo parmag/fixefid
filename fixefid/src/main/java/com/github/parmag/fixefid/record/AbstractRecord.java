@@ -1627,11 +1627,11 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd map <code>fieldName with occurs awareness, value</code> of this record's fields
+	 * Returns the orderd map <code>fieldName with occurs aware, value</code> of this record's fields
 	 * 
-	 * @return the orderd map <code>fieldName with occurs awareness, value</code> of this record's fields
+	 * @return the orderd map <code>fieldName with occurs aware, value</code> of this record's fields
 	 */
-	public Map<String, String> valuesMapWithOccursAwareness() {
+	public Map<String, String> valuesMapWithOccursAware() {
 		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
 		fieldsMap.forEach((key, field) -> valuesMap.put(key, field.getValue()));
 		return valuesMap;
@@ -1660,11 +1660,11 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd list of the names of this record's fields with occurs awareness
+	 * Returns the orderd list of the names of this record's fields with occurs aware
 	 * 
-	 * @return the orderd list of the names of this record's fields with occurs awareness
+	 * @return the orderd list of the names of this record's fields with occurs aware
 	 */
-	public List<String> namesWithOccursAwareness() {
+	public List<String> namesWithOccursAware() {
 		List<String> names = new ArrayList<String>();
 		fieldsMap.forEach((key, field) -> names.add(key));
 		return names;
