@@ -394,7 +394,19 @@ public abstract class AbstractRecord {
 	 * @return the len of the record represented by the <code>fieldName</code> param
 	 */
 	public int getFieldLen(String fieldName) {
-		return getRecordField(fieldName).getLen();
+		return getFieldLen(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the len of the record represented by the <code>fieldName</code> 
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the property of the field to know the len
+	 * @param fieldOccur the field occur to get the field
+	 * @return the len of the record represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 */
+	public int getFieldLen(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).getLen();
 	}
 	
 	/**
@@ -562,7 +574,8 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code> param.
+	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params.
 	 * The pretty print is composed as following:
 	 * <p>
 	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
@@ -570,7 +583,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field name
 	 * @param fieldOccur the field occur
 	 * 
-	 * @return the pretty print of the field represented by the <code>fieldName</code> param.
+	 * @return the pretty print of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
 	public String prettyPrint(String fieldName, int fieldOccur) {
@@ -974,7 +987,19 @@ public abstract class AbstractRecord {
 	 * @return the formatted value of the field represented by the <code>fieldName</code> param
 	 */
 	public String getValue(String fieldName) {
-		return getRecordField(fieldName).getValue();
+		return getValue(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the formatted value of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the formatted value of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the formatted value of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 */
+	public String getValue(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).getValue();
 	}
 	
 	/**
@@ -985,7 +1010,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a String
 	 */
 	public String getValueAsString(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsString();
+		return getValueAsString(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>String</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>String</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>String</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a String
+	 */
+	public String getValueAsString(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsString();
 	}
 	
 	/**
@@ -996,7 +1034,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public Long getValueAsLong(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsLong();
+		return getValueAsLong(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Long</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Long</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Long
+	 */
+	public Long getValueAsLong(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsLong();
 	}
 	
 	/**
@@ -1007,7 +1058,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Integer
 	 */
 	public Integer getValueAsInteger(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsInteger();
+		return getValueAsInteger(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Integer</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Integer</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Integer</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Integer
+	 */
+	public Integer getValueAsInteger(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsInteger();
 	}
 	
 	/**
@@ -1018,7 +1082,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public Double getValueAsDouble(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsDouble();
+		return getValueAsDouble(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Double</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Double</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Double
+	 */
+	public Double getValueAsDouble(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsDouble();
 	}
 	
 	/**
@@ -1029,7 +1106,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public Float getValueAsFloat(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsFloat();
+		return getValueAsFloat(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Float</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Float</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Float</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Float
+	 */
+	public Float getValueAsFloat(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsFloat();
 	}
 	
 	/**
@@ -1040,7 +1130,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public BigDecimal getValueAsBigDecimal(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsBigDecimal();
+		return getValueAsBigDecimal(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>BigDecimal</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public BigDecimal getValueAsBigDecimal(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsBigDecimal();
 	}
 	
 	/**
@@ -1051,7 +1154,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public Date getValueAsDate(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsDate();
+		return getValueAsDate(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Date</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Date</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Date</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Date
+	 */
+	public Date getValueAsDate(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsDate();
 	}
 	
 	/**
@@ -1062,7 +1178,20 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public Boolean getValueAsBoolean(String fieldName) throws FieldException {
-		return getRecordField(fieldName).getValueAsBoolean();
+		return getValueAsBoolean(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property to get the value as <code>Boolean</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Boolean</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public Boolean getValueAsBoolean(String fieldName, int fieldOccur) throws FieldException {
+		return getRecordField(fieldName, fieldOccur).getValueAsBoolean();
 	}
 	
 	/**
@@ -1072,7 +1201,18 @@ public abstract class AbstractRecord {
 	 * @param value the value to set
 	 */
 	public void setValue(String fieldName, String value) {
-		getRecordField(fieldName).setValue(value, true); 
+		setValue(fieldName, DEF_OCCUR, value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 */
+	public void setValue(String fieldName, int fieldOccur, String value) {
+		getRecordField(fieldName, fieldOccur).setValue(value, true); 
 	}
 	
 	/**
@@ -1086,7 +1226,22 @@ public abstract class AbstractRecord {
 	 * greater than the len of the field
 	 */
 	public void setValue(String fieldName, String value, boolean truncate) throws RecordException {
-		int fieldLen = getFieldLen(fieldName);
+		setValue(fieldName, DEF_OCCUR, value, truncate);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * 
+	 * @param fieldName the field property of the field to set the specified value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
+	 * field, the specified value will be truncated at the len od the field. 
+	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
+	 * greater than the len of the field
+	 */
+	public void setValue(String fieldName, int fieldOccur, String value, boolean truncate) throws RecordException {
+		int fieldLen = getFieldLen(fieldName, fieldOccur);
 		if (value != null && value.length() > fieldLen) { 
 			if (truncate) {
 				value = value.substring(0, fieldLen);
@@ -1095,7 +1250,7 @@ public abstract class AbstractRecord {
 			} 
 		}
 		
-		setValue(fieldName, value);
+		setValue(fieldName, fieldOccur, value);
 	}
 	
 	/**
@@ -1106,7 +1261,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public void setValue(String fieldName, Long value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+		setValue(fieldName, DEF_OCCUR, value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Long
+	 */
+	public void setValue(String fieldName, int fieldOccur, Long value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
 	/**
@@ -1117,7 +1284,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not an Integer
 	 */
 	public void setValue(String fieldName, Integer value) throws FieldException {
-		getRecordField(fieldName).setValue(value);
+		setValue(fieldName, DEF_OCCUR, value);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not an Integer
+	 */
+	public void setValue(String fieldName, int fieldOccur, Integer value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value);
 	}
 	
 	/**
@@ -1128,7 +1307,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public void setValue(String fieldName, Double value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+		setValue(fieldName, DEF_OCCUR, value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Double
+	 */
+	public void setValue(String fieldName, int fieldOccur, Double value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
 	/**
@@ -1139,7 +1330,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public void setValue(String fieldName, Float value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+		setValue(fieldName, DEF_OCCUR, value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Float
+	 */
+	public void setValue(String fieldName, int fieldOccur, Float value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
 	/**
@@ -1150,7 +1353,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public void setValue(String fieldName, BigDecimal value) throws FieldException {
-		getRecordField(fieldName).setValue(value);
+		setValue(fieldName, DEF_OCCUR, value);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public void setValue(String fieldName, int fieldOccur, BigDecimal value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value);
 	}
 	
 	/**
@@ -1161,7 +1376,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public void setValue(String fieldName, Date value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+		setValue(fieldName, DEF_OCCUR, value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Date
+	 */
+	public void setValue(String fieldName, int fieldOccur, Date value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
 	/**
@@ -1182,7 +1409,18 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the upper case
 	 */
 	public void toUpperCase(String fieldName) {
-		getRecordField(fieldName).toUpperCase();
+		toUpperCase(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Apply the method {@link String#toUpperCase} to the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to apply the upper case
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toUpperCase(String fieldName, int fieldOccur) {
+		getRecordField(fieldName, fieldOccur).toUpperCase();
 	}
 	
 	/**
@@ -1195,7 +1433,21 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to removing accents
 	 */
 	public void toRemoveAccents(String fieldName) {
-		getRecordField(fieldName).toRemoveAccents();
+		toRemoveAccents(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Apply the method toRemoveAccents to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character with accent present in the value of the field of type <code>FieldType.AN</code>, is replaced with the relative
+	 * character without accent. For example the character ï¿½ is replaced with the character a
+	 * 
+	 * @param fieldName the field property of the field to removing accents
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toRemoveAccents(String fieldName, int fieldOccur) {
+		getRecordField(fieldName, fieldOccur).toRemoveAccents();
 	}
 	
 	/**
@@ -1208,7 +1460,21 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the encoding
 	 */
 	public void toAscii(String fieldName) {
-		getRecordField(fieldName).toAscii();
+		toAscii(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Apply the encoding with the Charset "US-ASCII" to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character out of the Charset "US-ASCII" present in the value of the field of type <code>FieldType.AN</code>, 
+	 * is replaced with the character ?. For example the character ï¿½ is replaced with the character ?
+	 * 
+	 * @param fieldName the field property of the field to apply the encoding
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toAscii(String fieldName, int fieldOccur) {
+		getRecordField(fieldName, fieldOccur).toAscii();
 	}
 	
 	/**
@@ -1218,7 +1484,18 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the normalize
 	 */
 	public void toNormalize(String fieldName) {
-		getRecordField(fieldName).toNormalize();
+		toNormalize(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to apply the normalize
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toNormalize(String fieldName, int fieldOccur) {
+		getRecordField(fieldName, fieldOccur).toNormalize();
 	}
 	
 	/**
@@ -1228,7 +1505,19 @@ public abstract class AbstractRecord {
 	 * @return the validation info of the field represented by the <code>fieldName</code> param
 	 */
 	public FieldValidationInfo getRecordFieldValidationInfo(String fieldName) {
-		return getRecordField(fieldName).getValidationInfo();
+		return getRecordFieldValidationInfo(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns the validion info of the field represented by the <code>fieldName</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to return the validation info
+	 * @param fieldOccur the field occur to get the field
+	 * @return the validation info of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 */
+	public FieldValidationInfo getRecordFieldValidationInfo(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).getValidationInfo();
 	}
 	
 	/**
@@ -1240,9 +1529,22 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isErrorStatus(String fieldName) {
+		return isErrorStatus(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param fieldName the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isErrorStatus(String fieldName, int fieldOccur) {
 		boolean result = false;
 		
-		Field rf = getRecordField(fieldName);
+		Field rf = getRecordField(fieldName, fieldOccur);
 		FieldValidationInfo vi = rf.getValidationInfo();
 		if (vi != null && FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(vi.getValidationStatus())) {
 			result = true;
@@ -1260,9 +1562,22 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 */
 	public boolean isWarnStatus(String fieldName) {
+		return isWarnStatus(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 * 
+	 * @param fieldName the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 */
+	public boolean isWarnStatus(String fieldName, int fieldOccur) {
 		boolean result = false;
 		
-		Field rf = getRecordField(fieldName);
+		Field rf = getRecordField(fieldName, fieldOccur);
 		FieldValidationInfo vi = rf.getValidationInfo();
 		if (vi != null && FieldValidationInfo.RecordFieldValidationStatus.WARN.equals(vi.getValidationStatus())) {
 			result = true;
@@ -1282,7 +1597,22 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isInfoStatus(String fieldName) {
-		return !isErrorStatus(fieldName) && !isWarnStatus(fieldName);
+		return isInfoStatus(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param fieldName the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isInfoStatus(String fieldName, int fieldOccur) {
+		return !isErrorStatus(fieldName, fieldOccur) && !isWarnStatus(fieldName, fieldOccur);
 	}
 	
 	/**
