@@ -188,7 +188,9 @@ public class BeanRecord extends AbstractRecord {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(FixefidField.class)) {
                     FixefidField fixefidField = field.getAnnotation(FixefidField.class);
-                    recordLen += fixefidField.fieldLen();
+                    int fieldLen = fixefidField.fieldLen();
+                    int fieldOccurs = fixefidField.fieldOccurs();
+					recordLen += (fieldLen * fieldOccurs);
                 }
             }
     	}

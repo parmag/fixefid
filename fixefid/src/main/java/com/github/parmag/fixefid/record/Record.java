@@ -607,7 +607,9 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	private int retrieveRecordLen() {
 		int recordLen = 0;
 		for(FieldProperty p : fields.getEnumConstants()) {
-			recordLen += p.fieldLen();
+			int fieldLen = p.fieldLen();
+			int fieldOccurs = p.fieldOccurs();
+			recordLen += (fieldLen * fieldOccurs);
 		}
 		
 		return recordLen;
