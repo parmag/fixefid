@@ -42,7 +42,7 @@ public class BeanRecord extends AbstractRecord {
 	private static final String JAVA_LANG_BOOLEAN_PR = "boolean";
 	private static final String JAVA_UTIL_DATE = "java.util.Date"; 
 	private static final String JAVA_LANG_STRING = "java.lang.String";
-	private static final String JAVA_UTIL_ARRAY_LIST = "java.util.ArrayList";
+	private static final String JAVA_UTIL_LIST = "java.util.List";
 	
 	private Object bean;
 	private Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties;
@@ -298,13 +298,13 @@ public class BeanRecord extends AbstractRecord {
 					
 					try {
 						Object value = field.get(bean);
-						ArrayList list = null;
+						List list = null;
 						if (FieldType.LIST.equals(fieldType)) {
-							if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
-								list = (ArrayList) value;
+							if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
+								list = (List) value;
 							} else {
 								throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
-										fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+										fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
 							}
 						} else {
 							list = new ArrayList(); 
@@ -496,9 +496,9 @@ public class BeanRecord extends AbstractRecord {
 	public void syncValuesFromBeanToRecord() {
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		for (Field field : fields) {
-			if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
+			if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
 				try {
-					ArrayList list = (ArrayList) field.get(bean);
+					List list = (List) field.get(bean);
 					for (int i = 0; i < list.size(); i++) {
 						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, i);
 					}
@@ -666,12 +666,12 @@ public class BeanRecord extends AbstractRecord {
 				FieldType fieldTypeList = typeListForBeanField(field);
 				if (FieldType.CMP.equals(fieldType) || (FieldType.LIST.equals(fieldType) && FieldType.CMP.equals(fieldTypeList))) {
 					if (FieldType.LIST.equals(fieldType)) {
-						ArrayList list = null;
-						if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
-							list = (ArrayList) value;
+						List list = null;
+						if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
+							list = (List) value;
 						} else {
 							throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
-									fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+									fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
 						}
 						
 						value = list.get(fieldOccur - 1);
@@ -682,16 +682,18 @@ public class BeanRecord extends AbstractRecord {
 						syncValueFromBeanFieldToRecordField(fieldName, cmpField, value, fieldsMap, fieldOccur);
 					}
 				} else if (FieldType.LIST.equals(fieldType)) {
-					ArrayList list = null;
-					if (JAVA_UTIL_ARRAY_LIST.equals(field.getType().getName())) {
-						list = (ArrayList) value;
+					List list = null;
+					if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
+						list = (List) value;
 					} else {
 						throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
-								fieldType.name() + " must be an instance of " + JAVA_UTIL_ARRAY_LIST);
+								fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
 					}
 					
-					Object listValue = list.get(fieldOccur - 1);
-					syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, listValue.getClass().getName(), listValue, fieldsMap);
+					if (list.size() >= (fieldOccur)) {
+						Object listValue = list.get(fieldOccur - 1);
+						syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, listValue.getClass().getName(), listValue, fieldsMap);
+					}
 				} else {
 				    syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, field.getType().getName(), value, fieldsMap);
 				}

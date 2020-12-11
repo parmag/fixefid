@@ -1,7 +1,8 @@
 package com.github.parmag.fixefid.record.field;
 
 /**
- * The enum that represents the field type. A field can be alphanumeric or numeric
+ * The enum that represents the field type. A field can be alphanumeric, numeric, composite or list.
+ * The composite and list types can be used only with a bean record
  * 
  * @author Giancarlo Parma
  *

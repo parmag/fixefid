@@ -46,7 +46,9 @@ public @interface FixefidField {
 	public int fieldSubOrdinal() default 0;
 	
 	/**
-	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.ArrayList</code>
+	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.List</code>
+	 * and the field type is <code>FieldType.LIST</code>. The impl of the <code>java.util.List</code> must guarantee the insert order,
+	 * like <code>java.util.ArrayList</code>
 	 * 
 	 * @return the occurs of the java bean property
 	 */
