@@ -160,6 +160,17 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is mandatory
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is mandatory
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is mandatory
+	 */
+	public boolean isMandatory(FieldProperty fieldProperty, int fieldOccur) {
+		return isMandatory(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is a <code>String</code>.
 	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
 	 * 
@@ -168,6 +179,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public boolean isString(FieldProperty fieldProperty) {
 		return isString(fieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>String</code>.
+	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>String</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>String</code>
+	 */
+	public boolean isString(FieldProperty fieldProperty, int fieldOccur) {
+		return isString(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -183,6 +206,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Long</code>.
+	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Long</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Long</code>
+	 */
+	public boolean isLong(FieldProperty fieldProperty, int fieldOccur) {
+		return isLong(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Integer</code>.
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
@@ -192,6 +228,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public boolean isInteger(FieldProperty fieldProperty) {
 		return isInteger(fieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Integer</code>.
+	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Integer</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Integer</code>
+	 */
+	public boolean isInteger(FieldProperty fieldProperty, int fieldOccur) {
+		return isInteger(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -207,6 +256,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>Date</code>.
+	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Date</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>Date</code>
+	 */
+	public boolean isDate(FieldProperty fieldProperty, int fieldOccur) {
+		return isDate(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is a <code>Boolean</code>.
 	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
 	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
@@ -216,6 +278,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public boolean isBoolean(FieldProperty fieldProperty) {
 		return isBoolean(fieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>Boolean</code>.
+	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Boolean</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is a <code>Boolean</code>
+	 */
+	public boolean isBoolean(FieldProperty fieldProperty, int fieldOccur) {
+		return isBoolean(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -231,6 +306,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isDouble(FieldProperty fieldProperty, int fieldOccur) {
+		return isDouble(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> param is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
@@ -240,6 +328,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public boolean isFloat(FieldProperty fieldProperty) {
 		return isFloat(fieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isFloat(FieldProperty fieldProperty, int fieldOccur) {
+		return isFloat(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -254,6 +355,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
+	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
+	 * 
+	 * @param fieldProperty the field property to know if the relative field is a <code>BigDecimal</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>
+	 */
+	public boolean isBigDecimal(FieldProperty fieldProperty, int fieldOccur) {
+		return isBigDecimal(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the formatted value of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property to get the formatted value of the relative field
@@ -261,6 +374,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public String getValue(FieldProperty fieldProperty) {
 		return getValue(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the formatted value of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the formatted value of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the formatted value of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public String getValue(FieldProperty fieldProperty, int fieldOccur) {
+		return getValue(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -275,6 +400,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the value as <code>String</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>String</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>String</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a String
+	 */
+	public String getValueAsString(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsString(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property to get the value as <code>Long</code> of the relative field
@@ -283,6 +421,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public Long getValueAsLong(FieldProperty fieldProperty) throws FieldException {
 		return getValueAsLong(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Long</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Long</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Long
+	 */
+	public Long getValueAsLong(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsLong(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -297,6 +448,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the value as <code>Integer</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Integer</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Integer</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Integer
+	 */
+	public Integer getValueAsInteger(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsInteger(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property to get the value as <code>Double</code> of the relative field
@@ -305,6 +469,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public Double getValueAsDouble(FieldProperty fieldProperty) throws FieldException {
 		return getValueAsDouble(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Double</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Double</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Double
+	 */
+	public Double getValueAsDouble(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsDouble(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -319,6 +496,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the value as <code>Float</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Float</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Float</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Float
+	 */
+	public Float getValueAsFloat(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsFloat(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property to get the value as <code>BigDecimal</code> of the relative field
@@ -327,6 +517,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public BigDecimal getValueAsBigDecimal(FieldProperty fieldProperty) throws FieldException {
 		return getValueAsBigDecimal(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>BigDecimal</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>BigDecimal</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public BigDecimal getValueAsBigDecimal(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsBigDecimal(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -341,6 +544,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the value as <code>Date</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Date</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Date</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Date
+	 */
+	public Date getValueAsDate(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsDate(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property to get the value as <code>Boolean</code> of the relative field
@@ -352,6 +568,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldProperty</code>
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property to get the value as <code>Boolean</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Boolean</code> of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public Boolean getValueAsBoolean(FieldProperty fieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsBoolean(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
@@ -359,6 +588,17 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void setValue(FieldProperty fieldProperty, String value) {
 		setValue(fieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, String value) {
+		setValue(fieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -376,6 +616,21 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the specified value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
+	 * field, the specified value will be truncated at the len od the field. 
+	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
+	 * greater than the len of the field
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, String value, boolean truncate) throws RecordException {
+		setValue(fieldProperty.name(), fieldOccur, value, truncate);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
@@ -384,6 +639,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void setValue(FieldProperty fieldProperty, Long value) throws FieldException {
 		setValue(fieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Long
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Long value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -398,6 +665,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not an Integer
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Integer value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
@@ -406,6 +685,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void setValue(FieldProperty fieldProperty, Double value) throws FieldException {
 		setValue(fieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Double
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Double value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -420,6 +711,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Float
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Float value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property of the field to set the value
@@ -428,6 +731,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void setValue(FieldProperty fieldProperty, BigDecimal value) throws FieldException {
 		setValue(fieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, BigDecimal value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -442,6 +757,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Date
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Date value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
@@ -450,6 +777,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void setValue(FieldProperty fieldProperty, Boolean value) throws FieldException {
 		setValue(fieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public void setValue(FieldProperty fieldProperty, int fieldOccur, Boolean value) throws FieldException {
+		setValue(fieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -464,6 +803,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns the field represented by the <code>fieldProperty</code> param
+	 *  
+	 * @param fieldProperty the field property to get the field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws RecordException if the <code>fieldProperty</code> param doesn't represent any field of the record
+	 */
+	protected Field getRecordField(FieldProperty fieldProperty, int fieldOccur) throws RecordException {
+		return getRecordField(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the len of the record represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the property of the field to know the len
@@ -471,6 +822,18 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public int getFieldLen(FieldProperty fieldProperty) {
 		return getFieldLen(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the len of the record represented by the <code>fieldProperty</code> 
+	 * and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the property of the field to know the len
+	 * @param fieldOccur the field occur to get the field
+	 * @return the len of the record represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public int getFieldLen(FieldProperty fieldProperty, int fieldOccur) {
+		return getFieldLen(fieldProperty.name(), fieldOccur);
 	}
 
 	/**
@@ -481,6 +844,17 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public void toUpperCase(FieldProperty fieldProperty) {
 		toUpperCase(fieldProperty.name());
+	}
+	
+	/**
+	 * Apply the method {@link String#toUpperCase} to the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property of the field to apply the upper case
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toUpperCase(FieldProperty fieldProperty, int fieldOccur) {
+		toUpperCase(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -497,6 +871,20 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Apply the method toRemoveAccents to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character with accent present in the value of the field of type <code>FieldType.AN</code>, is replaced with the relative
+	 * character without accent. For example the character ï¿½ is replaced with the character a
+	 * 
+	 * @param fieldProperty the field property of the field to removing accents
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toRemoveAccents(FieldProperty fieldProperty, int fieldOccur) {
+		toRemoveAccents(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Apply the encoding with the Charset "US-ASCII" to the value of the field of type <code>FieldType.AN</code> represented by 
 	 * the <code>fieldProperty</code> param
 	 * <p>
@@ -510,6 +898,20 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Apply the encoding with the Charset "US-ASCII" to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character out of the Charset "US-ASCII" present in the value of the field of type <code>FieldType.AN</code>, 
+	 * is replaced with the character ?. For example the character ï¿½ is replaced with the character ?
+	 * 
+	 * @param fieldProperty the field property of the field to apply the encoding
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toAscii(FieldProperty fieldProperty, int fieldOccur) {
+		toAscii(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
 	 * the <code>fieldProperty</code> param
 	 * 
@@ -520,6 +922,17 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldProperty the field property of the field to apply the normalize
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toNormalize(FieldProperty fieldProperty, int fieldOccur) {
+		toNormalize(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the validion info of the field represented by the <code>fieldProperty</code> param
 	 * 
 	 * @param fieldProperty the field property of the field to return the validation info
@@ -527,6 +940,17 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public FieldValidationInfo getRecordFieldValidationInfo(FieldProperty fieldProperty) {
 		return getRecordFieldValidationInfo(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns the validion info of the field represented by the <code>fieldProperty</code> param
+	 * 
+	 * @param fieldProperty the field property of the field to return the validation info
+	 * @param fieldOccur the field occur to get the field
+	 * @return the validation info of the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public FieldValidationInfo getRecordFieldValidationInfo(FieldProperty fieldProperty, int fieldOccur) {
+		return getRecordFieldValidationInfo(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -542,6 +966,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	}
 	
 	/**
+	 * Returns true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param fieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isErrorStatus(FieldProperty fieldProperty, int fieldOccur) {
+		return isErrorStatus(fieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns true if the field represented by the <code>fieldProperty</code> param has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 * 
@@ -551,6 +988,19 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 */
 	public boolean isWarnStatus(FieldProperty fieldProperty) {
 		return isWarnStatus(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 * 
+	 * @param fieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 */
+	public boolean isWarnStatus(FieldProperty fieldProperty, int fieldOccur) {
+		return isWarnStatus(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -564,7 +1014,22 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isInfoStatus(FieldProperty fieldProperty) {
-		return !isErrorStatus(fieldProperty) && !isWarnStatus(fieldProperty);
+		return isInfoStatus(fieldProperty.name());
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param fieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isInfoStatus(FieldProperty fieldProperty, int fieldOccur) {
+		return isInfoStatus(fieldProperty.name(), fieldOccur);
 	}
 	
 	/**

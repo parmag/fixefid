@@ -883,7 +883,18 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is mandatory
 	 */
 	public boolean isMandatory(String fieldName) {
-		return getRecordField(fieldName).isMandatory();
+		return isMandatory(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory
+	 * 
+	 * @param fieldName the field name to know if the relative field is mandatory
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory
+	 */
+	public boolean isMandatory(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isMandatory();
 	}
 	
 	/**
@@ -894,7 +905,19 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>String</code>
 	 */
 	public boolean isString(String fieldName) {
-		return getRecordField(fieldName).isString();
+		return isString(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>.
+	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>String</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>
+	 */
+	public boolean isString(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isString();
 	}
 	
 	/**
@@ -906,7 +929,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Long</code>
 	 */
 	public boolean isLong(String fieldName) {
-		return getRecordField(fieldName).isLong();
+		return isLong(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Long</code>.
+	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Long</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Long</code>
+	 */
+	public boolean isLong(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isLong();
 	}
 	
 	/**
@@ -918,7 +954,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Integer</code>
 	 */
 	public boolean isInteger(String fieldName) {
-		return getRecordField(fieldName).isInteger();
+		return isInteger(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Integer</code>.
+	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Integer</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Integer</code>
+	 */
+	public boolean isInteger(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isInteger();
 	}
 	
 	/**
@@ -930,7 +979,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>Date</code>
 	 */
 	public boolean isDate(String fieldName) {
-		return getRecordField(fieldName).isDate();
+		return isDate(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Date</code>.
+	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Date</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Date</code>
+	 */
+	public boolean isDate(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isDate();
 	}
 	
 	/**
@@ -942,7 +1004,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>Boolean</code>
 	 */
 	public boolean isBoolean(String fieldName) {
-		return getRecordField(fieldName).isBoolean();
+		return isBoolean(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Boolean</code>.
+	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Boolean</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Boolean</code>
+	 */
+	public boolean isBoolean(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isBoolean();
 	}
 	
 	/**
@@ -954,7 +1029,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Double</code>
 	 */
 	public boolean isDouble(String fieldName) {
-		return getRecordField(fieldName).isDouble();
+		return isDouble(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isDouble(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isDouble();
 	}
 	
 	/**
@@ -966,7 +1054,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Double</code>
 	 */
 	public boolean isFloat(String fieldName) {
-		return getRecordField(fieldName).isFloat();
+		return isFloat(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isFloat(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isFloat();
 	}
 	
 	/**
@@ -977,7 +1078,19 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>BigDecimal</code>
 	 */
 	public boolean isBigDecimal(String fieldName) {
-		return getRecordField(fieldName).isBigDecimal();
+		return isBigDecimal(fieldName, DEF_OCCUR);
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
+	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
+	 * 
+	 * @param fieldName the field property to know if the relative field is a <code>BigDecimal</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>
+	 */
+	public boolean isBigDecimal(String fieldName, int fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).isBigDecimal();
 	}
 	
 	/**
@@ -1399,7 +1512,19 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public void setValue(String fieldName, Boolean value) throws FieldException {
-		getRecordField(fieldName).setValue(value); 
+		setValue(fieldName, DEF_OCCUR, value);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public void setValue(String fieldName, int fieldOccur, Boolean value) throws FieldException {
+		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
 	/**
