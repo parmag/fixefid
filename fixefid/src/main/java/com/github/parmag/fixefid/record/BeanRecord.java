@@ -1,6 +1,7 @@
 package com.github.parmag.fixefid.record;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -828,6 +829,7 @@ public class BeanRecord extends AbstractRecord {
 		syncValueFromRecordFieldToBeanField(fieldName, DEF_OCCUR, bean, fieldsMap); 
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void syncValueFromRecordFieldToBeanField(String fieldName, int fieldOccur, Object bean,
 			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
 		if (FINAL_FILLER_NAME.equals(fieldName)) {
@@ -839,73 +841,24 @@ public class BeanRecord extends AbstractRecord {
 		bean = fieldAndBean[1];
 		field.setAccessible(true);
 		if (isAnnotationPresentForBeanField(field)) {
-		    boolean error = false;
-		    
 		    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(keyForFieldNameAndFieldOccur(fieldName, fieldOccur));
 		    String typeName = field.getType().getName();
-		    Object value = null;
+		    Object value = valueForTypeName(field, rf, typeName);
 		    
-		    if (JAVA_LANG_STRING.equals(typeName)) {
-		    	if (rf.isString()) {
-		    		value = rf.getValueAsString();
+		    try {
+		    	if (JAVA_UTIL_LIST.equals(typeName)) {
+		    		List list = (List) field.get(bean);
+		    		int endIndex = fieldOccur - list.size();
+		    		for (int i = 0; i < endIndex; i++) {
+						list.add(null);
+					}
+		    		list.set(fieldOccur - 1, value);
 		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_UTIL_DATE.equals(typeName)) {
-		    	if (rf.isDate()) {
-		    		value = rf.getValueAsDate();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_LANG_BOOLEAN.equals(typeName) || JAVA_LANG_BOOLEAN_PR.equals(typeName)) {
-		    	if (rf.isBoolean()) {
-		    		value = rf.getValueAsBoolean();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_LANG_FLOAT.equals(typeName) || JAVA_LANG_FLOAT_PR.equals(typeName)) {
-		    	if (rf.isFloat()) {
-		    		value = rf.getValueAsFloat();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
-		    	if (rf.isDouble() || rf.isLenNormalized()) {
-		    		value = rf.getValueAsDouble();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_LANG_INTEGER.equals(typeName) || JAVA_LANG_INTEGER_PR.equals(typeName)) {
-		    	if (rf.isInteger()) {
-		    		value = rf.getValueAsInteger();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
-		    	if (rf.isLong() || rf.isLenNormalized()) {
-		    		value = rf.getValueAsLong();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else if (JAVA_MATH_BIG_DECIMAL.equals(typeName)) {
-		    	if (rf.isBigDecimal()) {
-		    		value = rf.getValueAsBigDecimal();
-		    	} else {
-		    		error = true;
-		    	}
-		    } else {
-		    	error = true;
-		    }
-		    
-		    if (error) {
-		    	throw new RecordException(ErrorCode.RE2, "Cannot set to field " + fieldName + " of type " + typeName + " the value from " + rf.toString());
-		    } else {
-		    	try {
 		    		field.set(bean, value);
-		    	} catch (Exception e) {
-					throw new RecordException(ErrorCode.RE3, e);
-				} 
-		    }
+		    	}
+	    	} catch (Exception e) {
+				throw new RecordException(ErrorCode.RE3, e);
+			} 
 		}
 	}
 	
@@ -1057,5 +1010,76 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		return fieldName;
+	}
+	
+	private Object valueForTypeName(Field field, com.github.parmag.fixefid.record.field.Field rf, String typeName) {
+		boolean error = false;
+		Object value = null;
+	    
+	    if (JAVA_LANG_STRING.equals(typeName)) {
+	    	if (rf.isString()) {
+	    		value = rf.getValueAsString();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_UTIL_DATE.equals(typeName)) {
+	    	if (rf.isDate()) {
+	    		value = rf.getValueAsDate();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_LANG_BOOLEAN.equals(typeName) || JAVA_LANG_BOOLEAN_PR.equals(typeName)) {
+	    	if (rf.isBoolean()) {
+	    		value = rf.getValueAsBoolean();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_LANG_FLOAT.equals(typeName) || JAVA_LANG_FLOAT_PR.equals(typeName)) {
+	    	if (rf.isFloat()) {
+	    		value = rf.getValueAsFloat();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_LANG_DOUBLE.equals(typeName) || JAVA_LANG_DOUBLE_PR.equals(typeName)) {
+	    	if (rf.isDouble() || rf.isLenNormalized()) {
+	    		value = rf.getValueAsDouble();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_LANG_INTEGER.equals(typeName) || JAVA_LANG_INTEGER_PR.equals(typeName)) {
+	    	if (rf.isInteger()) {
+	    		value = rf.getValueAsInteger();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_LANG_LONG.equals(typeName) || JAVA_LANG_LONG_PR.equals(typeName)) {
+	    	if (rf.isLong() || rf.isLenNormalized()) {
+	    		value = rf.getValueAsLong();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_MATH_BIG_DECIMAL.equals(typeName)) {
+	    	if (rf.isBigDecimal()) {
+	    		value = rf.getValueAsBigDecimal();
+	    	} else {
+	    		error = true;
+	    	}
+	    } else if (JAVA_UTIL_LIST.equals(typeName)) {
+	    	try {
+				ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+				String typeArgumentName = genericType.getActualTypeArguments()[0].getTypeName();
+				value = valueForTypeName(field, rf, typeArgumentName);
+	    	} catch (Exception e) {
+				throw new RecordException(ErrorCode.RE3, e);
+			}
+	    } else {
+	    	error = true;
+	    }
+	    
+	    if (error) {
+	    	throw new RecordException(ErrorCode.RE2, "Cannot retrieve value for the given java type name " + typeName + " from " + rf.toString());
+	    } 
+	    
+	    return value;
 	}
 }

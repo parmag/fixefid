@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	PersonTest.class,
 	StudentTest.class,
 	CustomerTest.class, 
-	//FlagTest.class,
+	FlagTest.class,
 	
 	CarCSVTest.class,
 	CarCSVRecordFieldTest.class,
