@@ -323,7 +323,7 @@ public abstract class AbstractRecord {
 					value = value.replace(encString + encString, encString);
 				}
 				
-				setValue(fieldNameForKey(key), value);
+				setValue(fieldNameForKey(key, field.getOccurIndex()), field.getOccurIndex(), value);
 				valueIndex[0] = valueIndex[0] + 1;
 			}
 		});
@@ -545,7 +545,7 @@ public abstract class AbstractRecord {
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
 			int len = rf.getLen(); 
-			sb.append(fieldNameForKey(key) + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
+			sb.append(fieldNameForKey(key, rf.getOccurIndex()) + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
 			FieldValidationInfo vi = rf.getValidationInfo();
 			if (vi != null) {
 				sb.append("[" + vi.getValidationStatus().name() + "][" + vi.getValidationMessage() + "]\n");
@@ -1747,7 +1747,7 @@ public abstract class AbstractRecord {
 	 */
 	public Map<String, String> valuesMap() {
 		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
-		fieldsMap.forEach((key, field) -> valuesMap.put(fieldNameForKey(key), field.getValue()));
+		fieldsMap.forEach((key, field) -> valuesMap.put(fieldNameForKey(key, field.getOccurIndex()), field.getValue()));
 		return valuesMap;
 	}
 	
@@ -1780,7 +1780,7 @@ public abstract class AbstractRecord {
 	 */
 	public List<String> names() {
 		List<String> names = new ArrayList<String>();
-		fieldsMap.forEach((key, field) -> names.add(fieldNameForKey(key)));
+		fieldsMap.forEach((key, field) -> names.add(fieldNameForKey(key, field.getOccurIndex())));
 		return names;
 	}
 	
@@ -1811,10 +1811,19 @@ public abstract class AbstractRecord {
 	 * Returns the field name of the field with the given fields map <code>key</code> param
 	 * 
 	 * @param key the key of the fields map
+	 * @parama fieldOccur the field occur
 	 * 
 	 * @return the field name of the field with the given fields map <code>key</code> param
 	 */
-	protected String fieldNameForKey(String key) {
-		return FINAL_FILLER_NAME.equals(key) ? key : key.substring(0, key.lastIndexOf(KEY_SEP));
+	protected String fieldNameForKey(String key, int fieldOccur) {
+		String result = null;
+		
+		if (key.endsWith(KEY_SEP  + fieldOccur)) {
+			result = key.substring(0, key.lastIndexOf(KEY_SEP));
+		} else {
+			result = key;
+		}
+		
+		return result;
 	}
 }

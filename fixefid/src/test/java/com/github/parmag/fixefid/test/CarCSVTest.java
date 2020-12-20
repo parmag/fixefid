@@ -110,8 +110,8 @@ public class CarCSVTest {
 		Assert.assertTrue(1408.00 == CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getWeight());
 		Assert.assertTrue(4078 == CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getLength());
 		Assert.assertTrue(1730 == CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getWidth());
-		Assert.assertTrue(1624 == CAR_CSV_BEAN_FOR_STRING.getHeight());
-		Assert.assertTrue(183 == CAR_CSV_BEAN_FOR_STRING.getSpeed());
+		Assert.assertTrue(1624 == CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getHeight());
+		Assert.assertTrue(183 == CAR_CSV_BEAN_FOR_INIT_WITH_STRING.getSpeed());
 	}
 	
 	@Test

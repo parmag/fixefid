@@ -21,7 +21,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	//FlagTest.class,
 	
 	CarCSVTest.class,
-	CarCSVRecordFieldTest.class
+	CarCSVRecordFieldTest.class,
+	FlagCSVRecordFieldTest.class
 })
 public class AllTests {
 

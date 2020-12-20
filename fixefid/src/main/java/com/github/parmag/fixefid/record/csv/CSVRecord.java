@@ -50,18 +50,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	/**
 	 * Constructs a new <code>CSVRecord</code> that represents the CSV fields indicated by the <code>fields</code> parameter.
 	 * The record way is <code>RecordWay.IN</code>. The value of every field is initialized with the formatted value present in 
-	 * the relative position of the <code>record</code> parameter
+	 * the relative position of the <code>csvRecord</code> parameter
 	 * 
 	 * Every value is separated with the <code>CSVSep.COMMA</code>. The fields aren't enclosing, 
      * eccept they contain the char <code>CSVSep.COMMA</code>. The enclosing char is <code>CSVEnc.DOUBLE_QUOTE</code>. 
      * Each of the embedded <code>CSVEnc.DOUBLE_QUOTE</code> characters is represented by a pair of 
      * double-enclosing characters.
 	 * 
-	 * @param record the formatted string of this <code>Record</code>
+	 * @param csvRecord the formatted string of this <code>Record</code>
 	 * @param fields the <code>fields</code> of this <code>Record</code>
 	 */
-	public CSVRecord(String record, Class<T> fields) {
-		this(RecordWay.IN, record, fields, null);
+	public CSVRecord(String csvRecord, Class<T> fields) {
+		this(RecordWay.IN, csvRecord, fields, null);
 	}
 	
 	/**
@@ -182,6 +182,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is mandatory
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is mandatory
+	 * @param fieldOccur the field occur to get the field
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is mandatory
+	 */
+	public boolean isMandatory(FieldProperty csvFieldProperty, int fieldOccur) {
+		return isMandatory(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> param is a <code>String</code>.
 	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
 	 * 
@@ -190,6 +202,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isString(CSVFieldProperty csvFieldProperty) {
 		return isString(csvFieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>String</code>.
+	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>String</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>String</code>
+	 */
+	public boolean isString(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isString(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -205,6 +229,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Long</code>.
+	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Long</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Long</code>
+	 */
+	public boolean isLong(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isLong(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> param is <code>Integer</code>.
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
@@ -214,6 +251,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isInteger(CSVFieldProperty csvFieldProperty) {
 		return isInteger(csvFieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Integer</code>.
+	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Integer</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Integer</code>
+	 */
+	public boolean isInteger(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isInteger(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -229,6 +279,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>Date</code>.
+	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Date</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>Date</code>
+	 */
+	public boolean isDate(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isDate(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> param is a <code>Boolean</code>.
 	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
 	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
@@ -238,6 +301,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isBoolean(CSVFieldProperty csvFieldProperty) {
 		return isBoolean(csvFieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>Boolean</code>.
+	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
+	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Boolean</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is a <code>Boolean</code>
+	 */
+	public boolean isBoolean(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isBoolean(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -253,6 +329,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isDouble(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isDouble(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> param is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
@@ -262,6 +351,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isFloat(CSVFieldProperty csvFieldProperty) {
 		return isFloat(csvFieldProperty.name());
+	}
+	
+	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>.
+	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>Double</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>Double</code>
+	 */
+	public boolean isFloat(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isFloat(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -276,6 +378,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * The result is <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
+	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
+	 * 
+	 * @param csvFieldProperty the field property to know if the relative field is a <code>BigDecimal</code>
+	 * @param fieldOccur the field occur to get the field
+	 * @return <code>true</code> if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>
+	 */
+	public boolean isBigDecimal(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isBigDecimal(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the formatted value of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property to get the formatted value of the relative field
@@ -283,6 +397,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public String getValue(CSVFieldProperty csvFieldProperty) {
 		return getValue(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the formatted value of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the formatted value of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the formatted value of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public String getValue(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return getValue(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -297,6 +422,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns the value as <code>String</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>String</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>String</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a String
+	 */
+	public String getValueAsString(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsString(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Long</code> of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property to get the value as <code>Long</code> of the relative field
@@ -305,6 +442,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public Long getValueAsLong(CSVFieldProperty csvFieldProperty) throws FieldException {
 		return getValueAsLong(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>Long</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Long</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Long</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Long
+	 */
+	public Long getValueAsLong(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsLong(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -319,6 +468,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns the value as <code>Integer</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Integer</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Integer</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Integer
+	 */
+	public Integer getValueAsInteger(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsInteger(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Double</code> of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property to get the value as <code>Double</code> of the relative field
@@ -327,6 +488,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public Double getValueAsDouble(CSVFieldProperty csvFieldProperty) throws FieldException {
 		return getValueAsDouble(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>Double</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Double</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Double</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Double
+	 */
+	public Double getValueAsDouble(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsDouble(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -341,6 +514,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns the value as <code>Float</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Float</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Float</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Float
+	 */
+	public Float getValueAsFloat(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsFloat(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property to get the value as <code>BigDecimal</code> of the relative field
@@ -349,6 +534,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public BigDecimal getValueAsBigDecimal(CSVFieldProperty csvFieldProperty) throws FieldException {
 		return getValueAsBigDecimal(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>BigDecimal</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>BigDecimal</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public BigDecimal getValueAsBigDecimal(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsBigDecimal(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -363,6 +560,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns the value as <code>Date</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Date</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Date</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Date
+	 */
+	public Date getValueAsDate(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsDate(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the value as <code>Boolean</code> of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property to get the value as <code>Boolean</code> of the relative field
@@ -374,6 +583,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns the value as <code>Boolean</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property to get the value as <code>Boolean</code> of the relative field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the value as <code>Boolean</code> of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public Boolean getValueAsBoolean(CSVFieldProperty csvFieldProperty, int fieldOccur) throws FieldException {
+		return getValueAsBoolean(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
@@ -381,6 +602,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public void setValue(CSVFieldProperty csvFieldProperty, String value) {
 		setValue(csvFieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, String value) {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -398,6 +630,21 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params. 
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the specified value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
+	 * field, the specified value will be truncated at the len od the field. 
+	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
+	 * greater than the len of the field
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, String value, boolean truncate) throws RecordException {
+		setValue(csvFieldProperty.name(), fieldOccur, value, truncate);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
@@ -406,6 +653,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public void setValue(CSVFieldProperty csvFieldProperty, Long value) throws FieldException {
 		setValue(csvFieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Long
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Long value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -420,6 +679,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not an Integer
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Integer value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
@@ -428,6 +699,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public void setValue(CSVFieldProperty csvFieldProperty, Double value) throws FieldException {
 		setValue(csvFieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Double
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Double value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -442,6 +725,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Float
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Float value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property of the field to set the value
@@ -450,6 +745,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public void setValue(CSVFieldProperty csvFieldProperty, BigDecimal value) throws FieldException {
 		setValue(csvFieldProperty.name(), value); 
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, BigDecimal value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
 	}
 	
 	/**
@@ -464,6 +771,18 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Date
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Date value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
@@ -475,14 +794,38 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Boolean value) throws FieldException {
+		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	}
+	
+	/**
 	 * Returns the field represented by the <code>csvFieldProperty</code> param
 	 *  
 	 * @param csvFieldProperty the field property to get the field
 	 * @return the field represented by the <code>fieldProperty</code> param
 	 * @throws RecordException if the <code>csvFieldProperty</code> param doesn't represent any field of the record
 	 */
-	public Field getRecordField(CSVFieldProperty csvFieldProperty) throws RecordException {
+	protected Field getRecordField(CSVFieldProperty csvFieldProperty) throws RecordException {
 		return getRecordField(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 *  
+	 * @param csvFieldProperty the field property to get the field
+	 * @param fieldOccur the field occur to get the field
+	 * @return the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
+	 * @throws RecordException if the <code>csvFieldProperty</code> param doesn't represent any field of the record
+	 */
+	protected Field getRecordField(CSVFieldProperty csvFieldProperty, int fieldOccur) throws RecordException {
+		return getRecordField(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -494,6 +837,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	public int getFieldLen(CSVFieldProperty csvFieldProperty) {
 		return getFieldLen(csvFieldProperty.name());
 	}
+	
+	/**
+	 * Returns the len of the record represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the property of the field to know the len
+	 * @param fieldOccur the field occur to get the field
+	 * @return the len of the record represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public int getFieldLen(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return getFieldLen(csvFieldProperty.name(), fieldOccur);
+	}
 
 	/**
 	 * Apply the method {@link String#toUpperCase} to the field of type <code>FieldType.AN</code> represented by 
@@ -503,6 +857,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public void toUpperCase(CSVFieldProperty csvFieldProperty) {
 		toUpperCase(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Apply the method {@link String#toUpperCase} to the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property of the field to apply the upper case
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toUpperCase(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		toUpperCase(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -519,6 +884,20 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Apply the method toRemoveAccents to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character with accent present in the value of the field of type <code>FieldType.AN</code>, is replaced with the relative
+	 * character without accent. For example the character ï¿½ is replaced with the character a
+	 * 
+	 * @param csvFieldProperty the field property of the field to removing accents
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toRemoveAccents(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		toRemoveAccents(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Apply the encoding with the Charset "US-ASCII" to the value of the field of type <code>FieldType.AN</code> represented by 
 	 * the <code>csvFieldProperty</code> param
 	 * <p>
@@ -532,6 +911,20 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Apply the encoding with the Charset "US-ASCII" to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * <p>
+	 * Every character out of the Charset "US-ASCII" present in the value of the field of type <code>FieldType.AN</code>, 
+	 * is replaced with the character ?. For example the character ï¿½ is replaced with the character ?
+	 * 
+	 * @param csvFieldProperty the field property of the field to apply the encoding
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toAscii(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		toAscii(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
 	 * the <code>csvFieldProperty</code> param
 	 * 
@@ -542,6 +935,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
+	 * the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property of the field to apply the normalize
+	 * @param fieldOccur the field occur to get the field
+	 */
+	public void toNormalize(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		toNormalize(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns the validion info of the field represented by the <code>csvFieldProperty</code> param
 	 * 
 	 * @param csvFieldProperty the field property of the field to return the validation info
@@ -549,6 +953,17 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public FieldValidationInfo getRecordFieldValidationInfo(CSVFieldProperty csvFieldProperty) {
 		return getRecordFieldValidationInfo(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns the validion info of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param csvFieldProperty the field property of the field to return the validation info
+	 * @param fieldOccur the field occur to get the field
+	 * @return the validation info of the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
+	 */
+	public FieldValidationInfo getRecordFieldValidationInfo(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return getRecordFieldValidationInfo(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -564,6 +979,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	}
 	
 	/**
+	 * Returns true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param csvFieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isErrorStatus(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isErrorStatus(csvFieldProperty.name(), fieldOccur);
+	}
+	
+	/**
 	 * Returns true if the field represented by the <code>csvFieldProperty</code> param has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 * 
@@ -573,6 +1001,19 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isWarnStatus(CSVFieldProperty csvFieldProperty) {
 		return isWarnStatus(csvFieldProperty.name());
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 * 
+	 * @param csvFieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has 
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 */
+	public boolean isWarnStatus(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return isWarnStatus(csvFieldProperty.name(), fieldOccur);
 	}
 	
 	/**
@@ -587,6 +1028,21 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 */
 	public boolean isInfoStatus(CSVFieldProperty csvFieldProperty) {
 		return !isErrorStatus(csvFieldProperty) && !isWarnStatus(csvFieldProperty);
+	}
+	
+	/**
+	 * Returns true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @param csvFieldProperty the field property of the field to check the validation status
+	 * @param fieldOccur the field occur to get the field
+	 * @return true if the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params has NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public boolean isInfoStatus(CSVFieldProperty csvFieldProperty, int fieldOccur) {
+		return !isErrorStatus(csvFieldProperty, fieldOccur) && !isWarnStatus(csvFieldProperty, fieldOccur);
 	}
 	
 	/**

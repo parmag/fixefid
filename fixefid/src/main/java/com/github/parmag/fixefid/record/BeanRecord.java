@@ -371,6 +371,18 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 */
+	public void setValue(String fieldName, int fieldOccur, String value) {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param. 
 	 * 
 	 * @param fieldName the field proerty of the field to set the specified value
@@ -386,6 +398,22 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * 
+	 * @param fieldName the field proerty of the field to set the specified value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
+	 * field, the specified value will be truncated at the len od the field. 
+	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
+	 * greater than the len of the field
+	 */
+	public void setValue(String fieldName, int fieldOccur, String value, boolean truncate) throws RecordException {
+		super.setValue(fieldName, fieldOccur, value, truncate);
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
@@ -395,6 +423,19 @@ public class BeanRecord extends AbstractRecord {
 	public void setValue(String fieldName, Long value) throws FieldException {
 		super.setValue(fieldName, value); 
 		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Long
+	 */
+	public void setValue(String fieldName, int fieldOccur, Long value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
 	}
 	
 	/**
@@ -410,6 +451,19 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not an Integer
+	 */
+	public void setValue(String fieldName, int fieldOccur, Integer value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value);
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
@@ -419,6 +473,19 @@ public class BeanRecord extends AbstractRecord {
 	public void setValue(String fieldName, Double value) throws FieldException {
 		super.setValue(fieldName, value); 
 		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Double
+	 */
+	public void setValue(String fieldName, int fieldOccur, Double value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
 	}
 	
 	/**
@@ -434,6 +501,19 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Float
+	 */
+	public void setValue(String fieldName, int fieldOccur, Float value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
 	 * @param fieldName the field property of the field to set the value
@@ -443,6 +523,19 @@ public class BeanRecord extends AbstractRecord {
 	public void setValue(String fieldName, BigDecimal value) throws FieldException {
 		super.setValue(fieldName, value);
 		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field property of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a BigDecimal
+	 */
+	public void setValue(String fieldName, int fieldOccur, BigDecimal value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value);
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
 	}
 	
 	/**
@@ -458,6 +551,19 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Date
+	 */
+	public void setValue(String fieldName, int fieldOccur, Date value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	}
+	
+	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> param
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
@@ -467,6 +573,19 @@ public class BeanRecord extends AbstractRecord {
 	public void setValue(String fieldName, Boolean value) throws FieldException {
 		super.setValue(fieldName, value); 
 		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+	}
+	
+	/**
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * 
+	 * @param fieldName the field proerty of the field to set the value
+	 * @param fieldOccur the field occur to get the field
+	 * @param value the value to set
+	 * @throws FieldException if the field is not a Boolean
+	 */
+	public void setValue(String fieldName, int fieldOccur, Boolean value) throws FieldException {
+		super.setValue(fieldName, fieldOccur, value); 
+		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
 	}
 	
 	/**
@@ -485,7 +604,8 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void syncValuesFromRecordToBean() {
 		for (String key : fieldsMap.keySet()) {
-		    syncValueFromRecordFieldToBeanField(fieldNameForKey(key), bean, fieldsMap);
+			com.github.parmag.fixefid.record.field.Field field = fieldsMap.get(key);
+		    syncValueFromRecordFieldToBeanField(fieldNameForKey(key, field.getOccurIndex()), bean, fieldsMap);
 		} 
 	}
 	
@@ -918,21 +1038,22 @@ public class BeanRecord extends AbstractRecord {
 	 * Returns the field name of the field with the given fields map <code>key</code> param
 	 * 
 	 * @param key the key of the fields map
+	 * @param fieldOccur the field occur
 	 * 
 	 * @return the field name of the field with the given fields map <code>key</code> param
 	 */
-	protected String fieldNameForKey(String key) {
+	protected String fieldNameForKey(String key, int fieldOccur) {
 		String fieldName = null;
 		if (key.contains(CMP_FIELD_NAME_SEP)) {
 			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
 			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
 			for (int i = 0; i < keyTokens.length; i++) {
-				sj.add(super.fieldNameForKey(keyTokens[i]));
+				sj.add(super.fieldNameForKey(keyTokens[i], fieldOccur));
 			}
 			
 			fieldName = sj.toString();
 		} else {
-			fieldName = super.fieldNameForKey(key);
+			fieldName = super.fieldNameForKey(key, fieldOccur);
 		}
 		
 		return fieldName;
