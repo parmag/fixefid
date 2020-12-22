@@ -15,6 +15,7 @@ public class FlagTest {
 	
 	private static final BeanRecord FLAG_BEAN_RECORD; 
 	private static final BeanRecord FLAG_BEAN_RECORD_STRING;
+	private static final BeanRecord FLAG_BEAN_RECORD_INIT_WITH_STRING;
 	
 	static {
 		FLAG_BEAN_RECORD = new BeanRecord(FLAG_BEAN);
@@ -32,6 +33,7 @@ public class FlagTest {
 		FLAG_BEAN_RECORD.setValue("program", "CX34ZY7"); 
 		
 		FLAG_BEAN_RECORD_STRING = new BeanRecord(FLAG_BEAN_FOR_STRING, FLAG_RECORD_AS_STRING);
+		FLAG_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(FLAG_BEAN_FOR_STRING);
 	}
 
 	@Test
@@ -42,5 +44,26 @@ public class FlagTest {
 	@Test
 	public void testFlagToStringConstructor() {
 		Assert.assertTrue(FLAG_RECORD_AS_STRING.contentEquals(FLAG_BEAN_RECORD_STRING.toString()));
+	}
+	
+	@Test
+	public void testToStringConstructorGetStringValue() {
+		Assert.assertTrue("CX34ZY7".equals(FLAG_BEAN_RECORD_STRING.getValueAsString("program")));
+	}
+	
+	@Test
+	public void testToStringConstructorGetStringNValueWithOccur() {
+		Assert.assertTrue("N".equals(FLAG_BEAN_RECORD_STRING.getValueAsString("flags", 5)));
+	}
+	
+	@Test
+	public void testToStringConstructorGetStringSValueWithOccur() {
+		Assert.assertTrue("S".equals(FLAG_BEAN_RECORD_STRING.getValueAsString("flags", 7)));
+	}
+	
+	@Test
+	public void testInitRecordToString() {
+		FLAG_BEAN_RECORD_INIT_WITH_STRING.initRecord(FLAG_RECORD_AS_STRING);
+		Assert.assertTrue(FLAG_RECORD_AS_STRING.equals(FLAG_BEAN_RECORD_INIT_WITH_STRING.toString()));
 	}
 }

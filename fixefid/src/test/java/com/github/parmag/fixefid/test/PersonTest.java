@@ -27,6 +27,7 @@ import com.github.parmag.fixefid.test.bean.FakePerson;
 import com.github.parmag.fixefid.test.bean.Person;
 import com.github.parmag.fixefid.test.bean.Person1000;
 import com.github.parmag.fixefid.test.bean.PersonWithAddress;
+import com.github.parmag.fixefid.test.bean.PersonWithAddressOccurs;
 import com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal;
 
 public class PersonTest {
@@ -55,9 +56,15 @@ public class PersonTest {
 	private static final Person1000 PERSON_1000_BEAN = new Person1000();
 	private static final Person1000 PERSON_1000_BEAN_FOR_STRING = new Person1000();
 	private static final PersonWithAddress PERSON_WITH_ADDRESS_BEAN = new PersonWithAddress();
+	private static final PersonWithAddressOccurs PERSON_WITH_ADDRESS_OCCURS_BEAN = new PersonWithAddressOccurs();
 	
 	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
-	public static final String PERSON_WITH_ADDRESS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
+	public static final String ADDRESS1_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
+	public static final String ADDRESS2_AS_STRING = "Modena                   41100MOITAVia Modenese                  81        ";
+	public static final String ADDRESS3_AS_STRING = "Piacenza                 29121PCITAVia Piacentina                34        ";
+	
+	public static final String PERSON_WITH_ADDRESS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_AS_STRING;
+	public static final String PERSON_WITH_ADDRESS_OCCURS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_AS_STRING + ADDRESS2_AS_STRING + ADDRESS3_AS_STRING;
 			
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_BEAN_RECORD_WAY_OUT; 
@@ -67,6 +74,7 @@ public class PersonTest {
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_FIELD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_BEAN_RECORD;
+	private static final BeanRecord PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD;
 	
 	static {
 		CAL.set(Calendar.DAY_OF_MONTH, 7);
@@ -91,6 +99,7 @@ public class PersonTest {
 		MAP_FIELD_EXTENDED_PROPERTIES.put("turnover", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))));
 		MAP_FIELD_EXTENDED_PROPERTIES.put("address.district", CUSTOM_FORMAT_LIST);
+		MAP_FIELD_EXTENDED_PROPERTIES.put("addresses.district", CUSTOM_FORMAT_LIST);
 		
 		PERSON_BEAN_RECORD = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		PERSON_BEAN_RECORD.setValue("firstName", "Paolo");
@@ -153,6 +162,36 @@ public class PersonTest {
 		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.address", "Via Ugo Bassi");
 		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.num", "77");
 		
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD = new BeanRecord(PERSON_WITH_ADDRESS_OCCURS_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("firstName", "Paolo");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("lastName", "Rossi");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("age", 51);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("stature", 1.86f);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("birthDistrict", "bo");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("vip", "N");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("id", "0000000001");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("tor", "00001.0001");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("turnover", "0100000.00");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 1, "Bologna");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 1, "40128");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 1, "bo");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 1, "ITA");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 1, "Via Ugo Bassi");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 1, "77");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 2, "Modena");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 2, "41100");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 2, "mo");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 2, "ITA");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 2, "Via Modenese");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 2, "81");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 3, "Piacenza");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 3, "29121");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 3, "pc");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 3, "ITA");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 3, "Via Piacentina");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 3, "34");
+		
 	}
 	
 	@Test
@@ -163,6 +202,11 @@ public class PersonTest {
 	@Test
 	public void testPersonWithAddressToString() { 
 		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.contentEquals(PERSON_WITH_ADDRESS_BEAN_RECORD.toString()));
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursToString() { 
+		Assert.assertTrue(PERSON_WITH_ADDRESS_OCCURS_RECORD_AS_STRING.contentEquals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.toString()));
 	}
 	
 	@Test
@@ -183,6 +227,11 @@ public class PersonTest {
 	@Test
 	public void testPersonWithAddressLen() {
 		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.length() == PERSON_WITH_ADDRESS_BEAN_RECORD.getRecordLen());
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursLen() {
+		Assert.assertTrue(PERSON_WITH_ADDRESS_OCCURS_RECORD_AS_STRING.length() == PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getRecordLen());
 	}
 	
 	@Test
@@ -218,6 +267,26 @@ public class PersonTest {
 	@Test
 	public void testPersonWithAddressGetLocationAsStringValue() {  
 		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_BEAN_RECORD.getValueAsString("address.location")));
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursGetLocation1AsString() {  
+		Assert.assertTrue("Bologna                  ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 1)));
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursGetLocation1AsStringValue() {  
+		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 1)));
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursGetLocation2AsString() {  
+		Assert.assertTrue("Modena                   ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 2)));
+	}
+	
+	@Test
+	public void testPersonWithAddressOccursGetLocation2AsStringValue() {  
+		Assert.assertTrue("Modena".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 2)));
 	}
 	
 	@Test

@@ -836,7 +836,7 @@ public class BeanRecord extends AbstractRecord {
 			return;
 		}
 		
-		Object[] fieldAndBean = fieldAndBeanForName(fieldName, bean); 
+		Object[] fieldAndBean = fieldAndBeanForName(fieldName, fieldOccur, bean); 
 		Field field = (Field) fieldAndBean[0];
 		bean = fieldAndBean[1];
 		field.setAccessible(true);
@@ -935,16 +935,22 @@ public class BeanRecord extends AbstractRecord {
 	    return fields;
 	}
 	
-	private Object[] fieldAndBeanForName(String fieldName, Object bean) {
+	@SuppressWarnings({"rawtypes" })
+	private Object[] fieldAndBeanForName(String fieldName, int fieldOccur, Object bean) {
 		Object[] result = null;
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		try {
 			for (Field field : fields) {
 				field.setAccessible(true);
 	            if (isAnnotationPresentForBeanField(field)) {
-					if (FieldType.CMP.equals(typeForBeanField(field)) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
-						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), field.get(bean));
+					FieldType fieldType = typeForBeanField(field);
+					FieldType fieldTypeList = typeListForBeanField(field);
+					if (FieldType.CMP.equals(fieldType) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
+						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), fieldOccur, field.get(bean));
 						break;
+					} else if (FieldType.LIST.equals(fieldType) && FieldType.CMP.equals(fieldTypeList) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
+						List list = (List) field.get(bean);
+						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), fieldOccur, list.get(fieldOccur - 1));
 					} else if (fieldName.equals(field.getName())) {
 						result = new Object[] {field, bean};
 						break;
@@ -976,7 +982,8 @@ public class BeanRecord extends AbstractRecord {
 			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
 			String[] fieldNameTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
 			for (int i = 0; i < fieldNameTokens.length; i++) {
-				sj.add(super.keyForFieldNameAndFieldOccur(fieldNameTokens[i], fieldOccur));
+				// ATT => LIST SUPPORTS ONLY COMPOSITE WITHOUT A LIST INSIDE
+				sj.add(super.keyForFieldNameAndFieldOccur(fieldNameTokens[i], i == 0 ? fieldOccur : DEF_OCCUR));
 			}
 			
 			key = sj.toString();
