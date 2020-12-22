@@ -12,16 +12,6 @@ public class PersonWithAddressOccurs extends Person {
 	@FixefidField(fieldOrdinal = 11, fieldLen = 75, fieldType = FieldType.LIST, fieldOccurs = 3, fieldTypeList = FieldType.CMP)
 	private List<Address> addresses = new ArrayList<Address>();
 	
-	public PersonWithAddressOccurs() {
-		initAddresses();
-	}
-
-	private void initAddresses() {
-		for (int i = 0; i < 3; i++) {
-			addresses.add(new Address());
-		}
-	}
-
 	public List<Address> getAddresses() {
 		return addresses;
 	}

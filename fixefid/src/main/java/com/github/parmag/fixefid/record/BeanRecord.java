@@ -303,6 +303,14 @@ public class BeanRecord extends AbstractRecord {
 						if (FieldType.LIST.equals(fieldType)) {
 							if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
 								list = (List) value;
+								
+								ParameterizedType genericType = (ParameterizedType) field.getGenericType();
+								String typeArgumentName = genericType.getActualTypeArguments()[0].getTypeName();
+								Class<?> typeArgumentClazz = Class.forName(typeArgumentName);
+								int endIndex = fieldOccurs - list.size();
+					    		for (int i = 0; i < endIndex; i++) {
+									list.add(typeArgumentClazz.newInstance());
+								}
 							} else {
 								throw new RecordException(ErrorCode.RE34, "The field " + field.getName() + " of type " + 
 										fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
