@@ -320,8 +320,8 @@ public class BeanRecord extends AbstractRecord {
 							list.add(value);
 						}
 						for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
-							Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap =
-								new BeanRecord(list.get(fieldOccur - 1), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
+							Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap = 
+								createBeanRecord(list.get(fieldOccur - 1), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
 							for (String cmpFieldName : cmpFieldsMap.keySet()) {
 								com.github.parmag.fixefid.record.field.Field cmpField = cmpFieldsMap.get(cmpFieldName);
 								cmpField.setOccurIndex(fieldOccur); 
@@ -368,6 +368,21 @@ public class BeanRecord extends AbstractRecord {
             }
         }
 		
+	}
+	
+	/**
+	 * Create a new instance of <code>BeanRecord</code>
+	 * 
+	 * @param bean the <code>bean</code> of the new <code>BeanRecord</code>
+	 * @param record the formatted string of the new <code>BeanRecord</code>
+	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the the new
+	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
+	 * 
+	 * @return a new instance of <code>BeanRecord</code>
+	 */
+	protected BeanRecord createBeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
+			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties) {
+		return new BeanRecord(bean, record, fieldExtendedProperties, mapFieldExtendedProperties);
 	}
 	
 	/**
@@ -1118,5 +1133,13 @@ public class BeanRecord extends AbstractRecord {
 	    } 
 	    
 	    return value;
+	}
+
+	/**
+	 * @return true if the instance of this record is a CSV record
+	 */
+	@Override
+	protected boolean isCSVRecord() {
+		return false;
 	}
 }

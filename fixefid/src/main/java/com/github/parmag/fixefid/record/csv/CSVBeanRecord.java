@@ -135,6 +135,21 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
+	 * Create a new instance of <code>BeanRecord</code>
+	 * 
+	 * @param bean the <code>bean</code> of the new <code>BeanRecord</code>
+	 * @param record the formatted string of the new <code>BeanRecord</code>
+	 * @param fieldExtendedProperties the extended properties of field applied to every fields of the the new
+	 * @param mapFieldExtendedProperties the extended properties of fields to override the relative property at record level
+	 * 
+	 * @return a new instance of <code>BeanRecord</code>
+	 */
+	protected BeanRecord createBeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
+			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties) {
+		return new CSVBeanRecord(bean, record, fieldExtendedProperties, mapFieldExtendedProperties);
+	}
+	
+	/**
 	 * Check if the bean is annotated with <code>FixefidCSVRecord.class</code>
 	 * 
 	 * @param clazz the class of the bean
@@ -365,5 +380,13 @@ public class CSVBeanRecord extends BeanRecord {
 	 */
 	public int getRecordLen() {
 		return toString().length();
+	}
+	
+	/**
+	 * @return true if the instance of this record is a CSV record
+	 */
+	@Override
+	protected boolean isCSVRecord() {
+		return true;
 	}
 }

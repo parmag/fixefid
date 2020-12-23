@@ -1079,4 +1079,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 		
 		return recordLen;
 	}
+
+	/**
+	 * @return true if the instance of this record is a CSV record
+	 */
+	@Override
+	protected boolean isCSVRecord() {
+		return false;
+	}
 }

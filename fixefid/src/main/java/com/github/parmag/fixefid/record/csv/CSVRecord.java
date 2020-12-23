@@ -1141,4 +1141,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	public int getRecordLen() {
 		return toString().length();
 	}
+
+	/**
+	 * @return true if the instance of this record is a CSV record
+	 */
+	@Override
+	protected boolean isCSVRecord() {
+		return true;
+	}
 }

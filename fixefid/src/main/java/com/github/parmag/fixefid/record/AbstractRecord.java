@@ -38,7 +38,18 @@ public abstract class AbstractRecord {
 	protected int recordLen;
 	protected List<FieldExtendedProperty> fieldExtendedProperties;
 	
+	/**
+	 * Init the fields map
+	 * 
+	 * @throws RecordException if a field has the name equals to "finalFiller" or some reflection field access problem
+	 * @throws FieldException if the properties of the fields are in some non valid status
+	 */
 	abstract protected void initFieldsMap() throws RecordException, FieldException;
+	
+	/**
+	 * @return true if the instance of this record is a CSV record
+	 */
+	abstract protected boolean isCSVRecord();
 	
 	/**
 	 * check field extended properties at record level and set the list 
