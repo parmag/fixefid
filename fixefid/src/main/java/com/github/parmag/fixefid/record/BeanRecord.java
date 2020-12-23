@@ -323,7 +323,9 @@ public class BeanRecord extends AbstractRecord {
 							Map<String, com.github.parmag.fixefid.record.field.Field> cmpFieldsMap =
 								new BeanRecord(list.get(fieldOccur - 1), null, fieldExtendedProperties, mapCmpFieldExtendedProperties).getFieldsMap();
 							for (String cmpFieldName : cmpFieldsMap.keySet()) {
-								fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur) + CMP_FIELD_NAME_SEP + cmpFieldName, cmpFieldsMap.get(cmpFieldName));
+								com.github.parmag.fixefid.record.field.Field cmpField = cmpFieldsMap.get(cmpFieldName);
+								cmpField.setOccurIndex(fieldOccur); 
+								fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur) + CMP_FIELD_NAME_SEP + cmpFieldName, cmpField);
 							}
 						}
 					} catch (Exception e) {
@@ -380,7 +382,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -408,6 +412,8 @@ public class BeanRecord extends AbstractRecord {
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the specified value
 	 * @param fieldOccur the field occur to get the field
@@ -435,7 +441,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -460,7 +468,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -485,7 +495,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -510,7 +522,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -535,7 +549,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -560,7 +576,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -585,7 +603,9 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -614,7 +634,8 @@ public class BeanRecord extends AbstractRecord {
 	public void syncValuesFromRecordToBean() {
 		for (String key : fieldsMap.keySet()) {
 			com.github.parmag.fixefid.record.field.Field field = fieldsMap.get(key);
-		    syncValueFromRecordFieldToBeanField(fieldNameForKey(key, field.getOccurIndex()), bean, fieldsMap);
+		    int occurIndex = field.getOccurIndex();
+			syncValueFromRecordFieldToBeanField(fieldNameForKey(key, occurIndex), occurIndex, bean, fieldsMap);
 		} 
 	}
 	
@@ -627,9 +648,10 @@ public class BeanRecord extends AbstractRecord {
 		for (Field field : fields) {
 			if (JAVA_UTIL_LIST.equals(field.getType().getName())) {
 				try {
+					field.setAccessible(true);
 					List list = (List) field.get(bean);
 					for (int i = 0; i < list.size(); i++) {
-						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, i);
+						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, i + 1);
 					}
 				} catch (Exception e) {
 					throw new RecordException(ErrorCode.RE4, e);
@@ -1016,7 +1038,7 @@ public class BeanRecord extends AbstractRecord {
 			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
 			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
 			for (int i = 0; i < keyTokens.length; i++) {
-				sj.add(super.fieldNameForKey(keyTokens[i], fieldOccur));
+				sj.add(super.fieldNameForKey(keyTokens[i], i == 0 ? fieldOccur : DEF_OCCUR));
 			}
 			
 			fieldName = sj.toString();

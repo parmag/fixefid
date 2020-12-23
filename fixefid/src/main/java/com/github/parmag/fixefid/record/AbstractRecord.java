@@ -399,7 +399,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the len of the record represented by the <code>fieldName</code> 
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the property of the field to know the len
 	 * @param fieldOccur the field occur to get the field
@@ -575,7 +577,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params.
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * The pretty print is composed as following:
 	 * <p>
 	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
@@ -887,7 +891,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field name to know if the relative field is mandatory
 	 * @param fieldOccur the field occur to get the field
@@ -910,7 +916,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>.
-	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>
+	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>String</code>
 	 * @param fieldOccur the field occur to get the field
@@ -935,7 +943,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Long</code>.
 	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Long</code>
 	 * @param fieldOccur the field occur to get the field
@@ -960,7 +970,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Integer</code>.
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Integer</code>
 	 * @param fieldOccur the field occur to get the field
@@ -985,7 +997,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Date</code>.
 	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
-	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
+	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Date</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1010,7 +1024,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Boolean</code>.
 	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
-	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
+	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Boolean</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1035,7 +1051,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1060,7 +1078,9 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1084,6 +1104,8 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
 	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>BigDecimal</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1105,7 +1127,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the formatted value of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the formatted value of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1128,7 +1152,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>String</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>String</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1152,7 +1178,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Long</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1176,7 +1204,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Integer</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Integer</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1200,7 +1230,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Double</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1224,7 +1256,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Float</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Float</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1248,7 +1282,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>BigDecimal</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1272,7 +1308,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Date</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Date</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1296,7 +1334,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property to get the value as <code>Boolean</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1318,7 +1358,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1344,6 +1386,8 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the specified value
 	 * @param fieldOccur the field occur to get the field
@@ -1378,7 +1422,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1401,7 +1447,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1424,7 +1472,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1447,7 +1497,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1470,7 +1522,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1493,7 +1547,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1516,7 +1572,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param fieldOccur the field occur to get the field
@@ -1539,7 +1597,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Apply the method {@link String#toUpperCase} to the field of type <code>FieldType.AN</code> represented by 
-	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to apply the upper case
 	 * @param fieldOccur the field occur to get the field
@@ -1563,7 +1623,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Apply the method toRemoveAccents to the value of the field of type <code>FieldType.AN</code> represented by 
-	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * <p>
 	 * Every character with accent present in the value of the field of type <code>FieldType.AN</code>, is replaced with the relative
 	 * character without accent. For example the character ï¿½ is replaced with the character a
@@ -1614,7 +1676,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Applay toUpperCase, toRemoveAccents and toAscii to the value of the field of type <code>FieldType.AN</code> represented by 
-	 * the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * the <code>fieldName</code> and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to apply the normalize
 	 * @param fieldOccur the field occur to get the field
@@ -1635,7 +1699,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns the validion info of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params
+	 * and <code>fieldOccur</code> params. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to return the validation info
 	 * @param fieldOccur the field occur to get the field
@@ -1659,7 +1725,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1692,7 +1760,9 @@ public abstract class AbstractRecord {
 	
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1728,7 +1798,9 @@ public abstract class AbstractRecord {
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has NOT
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status. 
+	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
+	 * meaning only for the most left side of the name, in this case <code>addresses</code>
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
