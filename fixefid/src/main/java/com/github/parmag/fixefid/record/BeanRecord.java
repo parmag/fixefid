@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
@@ -29,7 +28,6 @@ import com.github.parmag.fixefid.record.field.FieldType;
  *
  */
 public class BeanRecord extends AbstractRecord {
-	private static final String CMP_FIELD_NAME_SEP = ".";
 	private static final String JAVA_MATH_BIG_DECIMAL = "java.math.BigDecimal";
 	private static final String JAVA_LANG_LONG = "java.lang.Long";
 	private static final String JAVA_LANG_LONG_PR = "long";
@@ -392,22 +390,22 @@ public class BeanRecord extends AbstractRecord {
 	 * @param value the value to set
 	 */
 	public void setValue(String fieldName, String value) {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 */
-	public void setValue(String fieldName, int fieldOccur, String value) {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, String value, int... fieldOccur) {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -421,26 +419,26 @@ public class BeanRecord extends AbstractRecord {
 	 * greater than the len of the field
 	 */
 	public void setValue(String fieldName, String value, boolean truncate) throws RecordException {
-		super.setValue(fieldName, value, truncate);
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, truncate, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 *If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the specified value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
 	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
 	 * field, the specified value will be truncated at the len od the field. 
+	 * @param fieldOccur the field occur to get the field
 	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
 	 * greater than the len of the field
 	 */
-	public void setValue(String fieldName, int fieldOccur, String value, boolean truncate) throws RecordException {
-		super.setValue(fieldName, fieldOccur, value, truncate);
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, String value, boolean truncate, int... fieldOccur) throws RecordException {
+		super.setValue(fieldName, value, truncate, fieldOccur);
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -451,23 +449,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public void setValue(String fieldName, Long value) throws FieldException {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Long
 	 */
-	public void setValue(String fieldName, int fieldOccur, Long value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Long value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -478,23 +476,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not an Integer
 	 */
 	public void setValue(String fieldName, Integer value) throws FieldException {
-		super.setValue(fieldName, value);
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not an Integer
 	 */
-	public void setValue(String fieldName, int fieldOccur, Integer value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value);
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Integer value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur);
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -505,23 +503,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public void setValue(String fieldName, Double value) throws FieldException {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Double
 	 */
-	public void setValue(String fieldName, int fieldOccur, Double value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Double value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -532,23 +530,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public void setValue(String fieldName, Float value) throws FieldException {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Float
 	 */
-	public void setValue(String fieldName, int fieldOccur, Float value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Float value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -559,23 +557,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public void setValue(String fieldName, BigDecimal value) throws FieldException {
-		super.setValue(fieldName, value);
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 *If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public void setValue(String fieldName, int fieldOccur, BigDecimal value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value);
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, BigDecimal value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur);
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -586,23 +584,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public void setValue(String fieldName, Date value) throws FieldException {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Date
 	 */
-	public void setValue(String fieldName, int fieldOccur, Date value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Date value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -613,23 +611,23 @@ public class BeanRecord extends AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public void setValue(String fieldName, Boolean value) throws FieldException {
-		super.setValue(fieldName, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public void setValue(String fieldName, int fieldOccur, Boolean value) throws FieldException {
-		super.setValue(fieldName, fieldOccur, value); 
-		syncValueFromRecordFieldToBeanField(fieldName, fieldOccur, bean, fieldsMap);
+	public void setValue(String fieldName, Boolean value, int... fieldOccur) throws FieldException {
+		super.setValue(fieldName, value, fieldOccur); 
+		syncValueFromRecordFieldToBeanField(fieldName, bean, fieldsMap, fieldOccur);
 	}
 	
 	/**
@@ -648,9 +646,8 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public void syncValuesFromRecordToBean() {
 		for (String key : fieldsMap.keySet()) {
-			com.github.parmag.fixefid.record.field.Field field = fieldsMap.get(key);
-		    int occurIndex = field.getOccurIndex();
-			syncValueFromRecordFieldToBeanField(fieldNameForKey(key, occurIndex), occurIndex, bean, fieldsMap);
+		    int[] fieldOccurs = fieldOccursForKey(key);
+			syncValueFromRecordFieldToBeanField(fieldNameForKey(key, fieldOccurs), bean, fieldsMap, fieldOccurs);
 		} 
 	}
 	
@@ -822,9 +819,10 @@ public class BeanRecord extends AbstractRecord {
 	
 	@SuppressWarnings("rawtypes")
 	private void syncValueFromBeanFieldToRecordField(String parentFieldName, Field field, Object bean,
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int fieldOccur) {
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int... fieldOccur) {
 		field.setAccessible(true);
 		String fieldName = parentFieldName != null ? parentFieldName + CMP_FIELD_NAME_SEP + field.getName() : field.getName();
+		int fieldOccurIndex = fieldName.split("\\" + CMP_FIELD_NAME_SEP).length - 1;
 	    try {
 	    	Object value = field.get(bean);
 			if (isAnnotationPresentForBeanField(field) && value != null) {
@@ -840,12 +838,30 @@ public class BeanRecord extends AbstractRecord {
 									fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
 						}
 						
-						value = list.get(fieldOccur - 1);
+						value = list.get(fieldOccur[fieldOccurIndex] - 1);
 					}
 					
 					List<Field> cmpFields = retrieveAllFields(new ArrayList<Field>(), value.getClass());
+					int[] nextFieldOccur = new int[fieldOccur.length + 1];
+					for (int i = 0; i < fieldOccur.length; i++) {
+						nextFieldOccur[i] = fieldOccur[i];
+					}
 					for (Field cmpField : cmpFields) {
-						syncValueFromBeanFieldToRecordField(fieldName, cmpField, value, fieldsMap, fieldOccur);
+						if (JAVA_UTIL_LIST.equals(cmpField.getType().getName())) {
+							try {
+								field.setAccessible(true);
+								List list = (List) cmpField.get(value);
+								for (int i = 0; i < list.size(); i++) {
+									nextFieldOccur[nextFieldOccur.length - 1] = i + 1;
+									syncValueFromBeanFieldToRecordField(fieldName, cmpField, value, fieldsMap, nextFieldOccur);
+								}
+							} catch (Exception e) {
+								throw new RecordException(ErrorCode.RE4, e);
+							} 
+						} else {
+							nextFieldOccur[nextFieldOccur.length - 1] = DEF_OCCUR;
+							syncValueFromBeanFieldToRecordField(fieldName, cmpField, value, fieldsMap, nextFieldOccur);
+						}
 					}
 				} else if (FieldType.LIST.equals(fieldType)) {
 					List list = null;
@@ -856,12 +872,12 @@ public class BeanRecord extends AbstractRecord {
 								fieldType.name() + " must be an instance of " + JAVA_UTIL_LIST);
 					}
 					
-					if (list.size() >= (fieldOccur)) {
-						Object listValue = list.get(fieldOccur - 1);
-						syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, listValue.getClass().getName(), listValue, fieldsMap);
+					if (list.size() >= fieldOccur[fieldOccurIndex]) {
+						Object listValue = list.get(fieldOccur[fieldOccurIndex] - 1);
+						syncValueFromBeanFieldToRecordField(fieldName, listValue.getClass().getName(), listValue, fieldsMap, fieldOccur);
 					}
 				} else {
-				    syncValueFromBeanFieldToRecordField(fieldName, fieldOccur, field.getType().getName(), value, fieldsMap);
+				    syncValueFromBeanFieldToRecordField(fieldName, field.getType().getName(), value, fieldsMap, fieldOccur);
 				}
 			}
 	    } catch (Exception e) {
@@ -869,19 +885,14 @@ public class BeanRecord extends AbstractRecord {
 	    }
 	}
 	
-	private void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
-		syncValueFromRecordFieldToBeanField(fieldName, DEF_OCCUR, bean, fieldsMap); 
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void syncValueFromRecordFieldToBeanField(String fieldName, int fieldOccur, Object bean,
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+	private void syncValueFromRecordFieldToBeanField(String fieldName, Object bean,
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int... fieldOccur) {
 		if (FINAL_FILLER_NAME.equals(fieldName)) {
 			return;
 		}
 		
-		Object[] fieldAndBean = fieldAndBeanForName(fieldName, fieldOccur, bean); 
+		Object[] fieldAndBean = fieldAndBeanForName(fieldName, bean, fieldOccur); 
 		Field field = (Field) fieldAndBean[0];
 		bean = fieldAndBean[1];
 		field.setAccessible(true);
@@ -893,11 +904,12 @@ public class BeanRecord extends AbstractRecord {
 		    try {
 		    	if (JAVA_UTIL_LIST.equals(typeName)) {
 		    		List list = (List) field.get(bean);
-		    		int endIndex = fieldOccur - list.size();
+		    		int rightFieldOccur = fieldOccur[fieldOccur.length -1];
+		    		int endIndex = rightFieldOccur - list.size();
 		    		for (int i = 0; i < endIndex; i++) {
 						list.add(null);
 					}
-		    		list.set(fieldOccur - 1, value);
+		    		list.set(rightFieldOccur - 1, value);
 		    	} else {
 		    		field.set(bean, value);
 		    	}
@@ -907,8 +919,8 @@ public class BeanRecord extends AbstractRecord {
 		}
 	}
 	
-	private void syncValueFromBeanFieldToRecordField(String fieldName, int fieldOccur, String typeName, Object value, 
-			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap) {
+	private void syncValueFromBeanFieldToRecordField(String fieldName, String typeName, Object value, 
+			Map<String, com.github.parmag.fixefid.record.field.Field> fieldsMap, int... fieldOccur) {
 		boolean error = false;
 	    
 	    com.github.parmag.fixefid.record.field.Field rf = fieldsMap.get(keyForFieldNameAndFieldOccur(fieldName, fieldOccur));
@@ -981,7 +993,7 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	@SuppressWarnings({"rawtypes" })
-	private Object[] fieldAndBeanForName(String fieldName, int fieldOccur, Object bean) {
+	private Object[] fieldAndBeanForName(String fieldName, Object bean, int... fieldOccur) {
 		Object[] result = null;
 		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), bean.getClass());
 		try {
@@ -991,11 +1003,13 @@ public class BeanRecord extends AbstractRecord {
 					FieldType fieldType = typeForBeanField(field);
 					FieldType fieldTypeList = typeListForBeanField(field);
 					if (FieldType.CMP.equals(fieldType) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
-						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), fieldOccur, field.get(bean));
+						int[] nextFieldOccur = Arrays.copyOfRange(fieldOccur, 1, fieldOccur.length);
+						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), field.get(bean), nextFieldOccur);
 						break;
 					} else if (FieldType.LIST.equals(fieldType) && FieldType.CMP.equals(fieldTypeList) && fieldName.startsWith(field.getName() + CMP_FIELD_NAME_SEP)) {
 						List list = (List) field.get(bean);
-						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), fieldOccur, list.get(fieldOccur - 1));
+						int[] nextFieldOccur = Arrays.copyOfRange(fieldOccur, 1, fieldOccur.length);
+						result = fieldAndBeanForName(fieldName.substring(fieldName.indexOf(CMP_FIELD_NAME_SEP) + 1), list.get(fieldOccur[0] - 1), nextFieldOccur);
 					} else if (fieldName.equals(field.getName())) {
 						result = new Object[] {field, bean};
 						break;
@@ -1011,57 +1025,6 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * Returns the key of the fields map for the given params
-	 * 
-	 * @param fieldName the field name
-	 * @param fieldOccur the field occur
-	 * 
-	 * @return the key of the fieldsMap for the given params
-	 */
-	protected String keyForFieldNameAndFieldOccur(String fieldName, int fieldOccur) {
-		String key = null;
-		if (fieldName.contains(CMP_FIELD_NAME_SEP)) {
-			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
-			String[] fieldNameTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
-			for (int i = 0; i < fieldNameTokens.length; i++) {
-				// ATT => LIST SUPPORTS ONLY COMPOSITE WITHOUT A LIST INSIDE
-				sj.add(super.keyForFieldNameAndFieldOccur(fieldNameTokens[i], i == 0 ? fieldOccur : DEF_OCCUR));
-			}
-			
-			key = sj.toString();
-		} else {
-			key = super.keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
-		}
-		
-		return key;
-	}
-	
-	/**
-	 * Returns the field name of the field with the given fields map <code>key</code> param
-	 * 
-	 * @param key the key of the fields map
-	 * @param fieldOccur the field occur
-	 * 
-	 * @return the field name of the field with the given fields map <code>key</code> param
-	 */
-	protected String fieldNameForKey(String key, int fieldOccur) {
-		String fieldName = null;
-		if (key.contains(CMP_FIELD_NAME_SEP)) {
-			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
-			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
-			for (int i = 0; i < keyTokens.length; i++) {
-				sj.add(super.fieldNameForKey(keyTokens[i], i == 0 ? fieldOccur : DEF_OCCUR));
-			}
-			
-			fieldName = sj.toString();
-		} else {
-			fieldName = super.fieldNameForKey(key, fieldOccur);
-		}
-		
-		return fieldName;
 	}
 	
 	private Object valueForTypeName(Field field, com.github.parmag.fixefid.record.field.Field rf, String typeName) {

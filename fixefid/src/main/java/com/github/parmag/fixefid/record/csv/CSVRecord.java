@@ -608,11 +608,11 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, String value) {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, String value, int fieldOccur) {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -633,15 +633,15 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params. 
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the specified value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
 	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
 	 * field, the specified value will be truncated at the len od the field. 
+	 * @param fieldOccur the field occur to get the field
 	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
 	 * greater than the len of the field
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, String value, boolean truncate) throws RecordException {
-		setValue(csvFieldProperty.name(), fieldOccur, value, truncate);
+	public void setValue(CSVFieldProperty csvFieldProperty, String value, boolean truncate, int fieldOccur) throws RecordException {
+		setValue(csvFieldProperty.name(), value, truncate, fieldOccur);
 	}
 	
 	/**
@@ -659,12 +659,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Long
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Long value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty,Long value,  int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -682,12 +682,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not an Integer
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Integer value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, Integer value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -705,12 +705,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Double
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Double value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, Double value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -728,12 +728,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Float
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Float value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, Float value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -751,12 +751,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, BigDecimal value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, BigDecimal value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -774,12 +774,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Date
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Date value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, Date value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -797,12 +797,12 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 	 * Set the specified value to the field represented by the <code>csvFieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param csvFieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public void setValue(CSVFieldProperty csvFieldProperty, int fieldOccur, Boolean value) throws FieldException {
-		setValue(csvFieldProperty.name(), fieldOccur, value); 
+	public void setValue(CSVFieldProperty csvFieldProperty, Boolean value, int fieldOccur) throws FieldException {
+		setValue(csvFieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**

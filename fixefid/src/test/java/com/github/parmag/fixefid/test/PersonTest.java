@@ -201,24 +201,24 @@ public class PersonTest {
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("id", "0000000001");
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("tor", "00001.0001");
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("turnover", "0100000.00");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 1, "Bologna");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 1, "40128");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 1, "bo");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 1, "ITA");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 1, "Via Ugo Bassi");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 1, "77");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 2, "Modena");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 2, "41100");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 2, "mo");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 2, "ITA");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 2, "Via Modenese");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 2, "81");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", 3, "Piacenza");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", 3, "29121");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", 3, "pc");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", 3, "ITA");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", 3, "Via Piacentina");
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", 3, "34");
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", "Bologna", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", "40128", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", "bo", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", "ITA", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", "Via Ugo Bassi", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", "77", 1, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", "Modena", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", "41100", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", "mo", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", "ITA", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", "Via Modenese", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", "81", 2, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.location", "Piacenza", 3, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.postalCode", "29121", 3, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.district", "pc", 3, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.nationIso3", "ITA", 3, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.address", "Via Piacentina", 3, 1);
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.setValue("addresses.num", "34", 3, 1);
 		
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD.setFirstName("Paolo");
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD.setLastName("Rossi");
@@ -343,22 +343,22 @@ public class PersonTest {
 	
 	@Test
 	public void testPersonWithAddressOccursGetLocation1AsString() {  
-		Assert.assertTrue("Bologna                  ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 1)));
+		Assert.assertTrue("Bologna                  ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 1, 1)));
 	}
 	
 	@Test
 	public void testPersonWithAddressOccursGetLocation1AsStringValue() {  
-		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 1)));
+		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 1, 1)));
 	}
 	
 	@Test
 	public void testPersonWithAddressOccursGetLocation2AsString() {  
-		Assert.assertTrue("Modena                   ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 2)));
+		Assert.assertTrue("Modena                   ".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValue("addresses.location", 2, 1)));
 	}
 	
 	@Test
 	public void testPersonWithAddressOccursGetLocation2AsStringValue() {  
-		Assert.assertTrue("Modena".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 2)));
+		Assert.assertTrue("Modena".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD.getValueAsString("addresses.location", 2, 1)));
 	}
 	
 	@Test
@@ -410,7 +410,7 @@ public class PersonTest {
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD.getAddresses().get(1).setLocation("Vignola");
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
 		
-		Assert.assertTrue("Vignola".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.getValueAsString("addresses.location", 2))); 
+		Assert.assertTrue("Vignola".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.getValueAsString("addresses.location", 2, 1))); 
 		
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD.getAddresses().get(1).setLocation("Modena");
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
@@ -418,12 +418,12 @@ public class PersonTest {
 	
 	@Test
 	public void testPersonWithAddressOccursSyncValuesFromRecordToBean() {
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.setValue("addresses.location", 2, "Spilamberto"); 
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.setValue("addresses.location", "Spilamberto", 2, 1); 
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 		
 		Assert.assertTrue("Spilamberto".equals(PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD.getAddresses().get(1).getLocation())); 
 		
-		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.setValue("addresses.location", 2, "Modena"); 
+		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.setValue("addresses.location", "Modena", 2, 1); 
 		PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 	}
 	

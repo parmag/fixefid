@@ -2,6 +2,7 @@ package com.github.parmag.fixefid.record;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -27,6 +28,7 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
  *
  */
 public abstract class AbstractRecord {
+	protected static final String CMP_FIELD_NAME_SEP = ".";
 	private static final String KEY_SEP = "-";
 	protected static final String FINAL_FILLER_NAME = "finalFiller";
 	protected static final String NO_VALIDATION_INFO = "NO VALIDATION INFO";
@@ -334,7 +336,8 @@ public abstract class AbstractRecord {
 					value = value.replace(encString + encString, encString);
 				}
 				
-				setValue(fieldNameForKey(key, field.getOccurIndex()), field.getOccurIndex(), value);
+				int[] fieldOccursForKey = fieldOccursForKey(key);
+				setValue(fieldNameForKey(key, fieldOccursForKey), value, fieldOccursForKey);
 				valueIndex[0] = valueIndex[0] + 1;
 			}
 		});
@@ -378,18 +381,21 @@ public abstract class AbstractRecord {
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
 	protected Field getRecordField(String fieldName) throws RecordException {
-		return getRecordField(fieldName, DEF_OCCUR);
+		return getRecordField(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * Returns the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * Returns the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 *  
 	 * @param fieldName the field name to get the field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the field represented by the <code>fieldName</code> param
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
-	protected Field getRecordField(String fieldName, int fieldOccur) throws RecordException {
+	protected Field getRecordField(String fieldName, int... fieldOccur) throws RecordException {
 		String key = keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
 		if (!fieldsMap.containsKey(key)) {
 			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "] with key=[" + key + "]");
@@ -405,20 +411,21 @@ public abstract class AbstractRecord {
 	 * @return the len of the record represented by the <code>fieldName</code> param
 	 */
 	public int getFieldLen(String fieldName) {
-		return getFieldLen(fieldName, DEF_OCCUR);
+		return getFieldLen(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the len of the record represented by the <code>fieldName</code> 
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the property of the field to know the len
 	 * @param fieldOccur the field occur to get the field
 	 * @return the len of the record represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 */
-	public int getFieldLen(String fieldName, int fieldOccur) {
+	public int getFieldLen(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).getLen();
 	}
 	
@@ -583,14 +590,16 @@ public abstract class AbstractRecord {
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
 	public String prettyPrint(String fieldName) {
-		return prettyPrint(fieldName, DEF_OCCUR);
+		return prettyPrint(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * 
 	 * The pretty print is composed as following:
 	 * <p>
 	 * name=[index][subIndex][occurIndex][offset][len][value][validation status][validation msg (if present)]
@@ -601,7 +610,7 @@ public abstract class AbstractRecord {
 	 * @return the pretty print of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * @throws RecordException if the <code>fieldName</code> param doesn't represent any field of the record
 	 */
-	public String prettyPrint(String fieldName, int fieldOccur) {
+	public String prettyPrint(String fieldName, int... fieldOccur) {
 		String keyForFieldName = keyForFieldNameAndFieldOccur(fieldName, fieldOccur);
 		if (!fieldsMap.containsKey(keyForFieldName)) {
 			throw new RecordException(ErrorCode.RE9, "Unknown fieldName=[" + fieldName + "] with key=[" + keyForFieldName + "]");
@@ -898,19 +907,20 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is mandatory
 	 */
 	public boolean isMandatory(String fieldName) {
-		return isMandatory(fieldName, DEF_OCCUR);
+		return isMandatory(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field name to know if the relative field is mandatory
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory
 	 */
-	public boolean isMandatory(String fieldName, int fieldOccur) {
+	public boolean isMandatory(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isMandatory();
 	}
 	
@@ -922,20 +932,21 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>String</code>
 	 */
 	public boolean isString(String fieldName) {
-		return isString(fieldName, DEF_OCCUR);
+		return isString(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>.
-	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>String</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>
 	 */
-	public boolean isString(String fieldName, int fieldOccur) {
+	public boolean isString(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isString();
 	}
 	
@@ -948,21 +959,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Long</code>
 	 */
 	public boolean isLong(String fieldName) {
-		return isLong(fieldName, DEF_OCCUR);
+		return isLong(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Long</code>.
 	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Long</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Long</code>
 	 */
-	public boolean isLong(String fieldName, int fieldOccur) {
+	public boolean isLong(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isLong();
 	}
 	
@@ -975,21 +987,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Integer</code>
 	 */
 	public boolean isInteger(String fieldName) {
-		return isInteger(fieldName, DEF_OCCUR);
+		return isInteger(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Integer</code>.
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Integer</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Integer</code>
 	 */
-	public boolean isInteger(String fieldName, int fieldOccur) {
+	public boolean isInteger(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isInteger();
 	}
 	
@@ -1002,21 +1015,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>Date</code>
 	 */
 	public boolean isDate(String fieldName) {
-		return isDate(fieldName, DEF_OCCUR);
+		return isDate(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Date</code>.
 	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
-	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Date</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Date</code>
 	 */
-	public boolean isDate(String fieldName, int fieldOccur) {
+	public boolean isDate(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isDate();
 	}
 	
@@ -1029,21 +1043,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is a <code>Boolean</code>
 	 */
 	public boolean isBoolean(String fieldName) {
-		return isBoolean(fieldName, DEF_OCCUR);
+		return isBoolean(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Boolean</code>.
 	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
-	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Boolean</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>Boolean</code>
 	 */
-	public boolean isBoolean(String fieldName, int fieldOccur) {
+	public boolean isBoolean(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isBoolean();
 	}
 	
@@ -1056,21 +1071,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Double</code>
 	 */
 	public boolean isDouble(String fieldName) {
-		return isDouble(fieldName, DEF_OCCUR);
+		return isDouble(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>
 	 */
-	public boolean isDouble(String fieldName, int fieldOccur) {
+	public boolean isDouble(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isDouble();
 	}
 	
@@ -1083,21 +1099,22 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>Double</code>
 	 */
 	public boolean isFloat(String fieldName) {
-		return isFloat(fieldName, DEF_OCCUR);
+		return isFloat(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>.
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
-	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>Double</code>
 	 */
-	public boolean isFloat(String fieldName, int fieldOccur) {
+	public boolean isFloat(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isFloat();
 	}
 	
@@ -1109,20 +1126,21 @@ public abstract class AbstractRecord {
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> param is <code>BigDecimal</code>
 	 */
 	public boolean isBigDecimal(String fieldName) {
-		return isBigDecimal(fieldName, DEF_OCCUR);
+		return isBigDecimal(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
 	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>BigDecimal</code>
 	 * @param fieldOccur the field occur to get the field
 	 * @return <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>
 	 */
-	public boolean isBigDecimal(String fieldName, int fieldOccur) {
+	public boolean isBigDecimal(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).isBigDecimal();
 	}
 	
@@ -1133,20 +1151,21 @@ public abstract class AbstractRecord {
 	 * @return the formatted value of the field represented by the <code>fieldName</code> param
 	 */
 	public String getValue(String fieldName) {
-		return getValue(fieldName, DEF_OCCUR);
+		return getValue(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the formatted value of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the formatted value of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the formatted value of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 */
-	public String getValue(String fieldName, int fieldOccur) {
+	public String getValue(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).getValue();
 	}
 	
@@ -1158,21 +1177,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a String
 	 */
 	public String getValueAsString(String fieldName) throws FieldException {
-		return getValueAsString(fieldName, DEF_OCCUR);
+		return getValueAsString(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>String</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>String</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>String</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a String
 	 */
-	public String getValueAsString(String fieldName, int fieldOccur) throws FieldException {
+	public String getValueAsString(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsString();
 	}
 	
@@ -1184,21 +1204,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public Long getValueAsLong(String fieldName) throws FieldException {
-		return getValueAsLong(fieldName, DEF_OCCUR);
+		return getValueAsLong(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Long</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Long</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Long
 	 */
-	public Long getValueAsLong(String fieldName, int fieldOccur) throws FieldException {
+	public Long getValueAsLong(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsLong();
 	}
 	
@@ -1210,21 +1231,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Integer
 	 */
 	public Integer getValueAsInteger(String fieldName) throws FieldException {
-		return getValueAsInteger(fieldName, DEF_OCCUR);
+		return getValueAsInteger(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Integer</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Integer</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Integer</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Integer
 	 */
-	public Integer getValueAsInteger(String fieldName, int fieldOccur) throws FieldException {
+	public Integer getValueAsInteger(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsInteger();
 	}
 	
@@ -1236,21 +1258,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public Double getValueAsDouble(String fieldName) throws FieldException {
-		return getValueAsDouble(fieldName, DEF_OCCUR);
+		return getValueAsDouble(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Double</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Double</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Double
 	 */
-	public Double getValueAsDouble(String fieldName, int fieldOccur) throws FieldException {
+	public Double getValueAsDouble(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsDouble();
 	}
 	
@@ -1262,21 +1285,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public Float getValueAsFloat(String fieldName) throws FieldException {
-		return getValueAsFloat(fieldName, DEF_OCCUR);
+		return getValueAsFloat(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Float</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Float</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Float</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Float
 	 */
-	public Float getValueAsFloat(String fieldName, int fieldOccur) throws FieldException {
+	public Float getValueAsFloat(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsFloat();
 	}
 	
@@ -1288,21 +1312,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public BigDecimal getValueAsBigDecimal(String fieldName) throws FieldException {
-		return getValueAsBigDecimal(fieldName, DEF_OCCUR);
+		return getValueAsBigDecimal(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>BigDecimal</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public BigDecimal getValueAsBigDecimal(String fieldName, int fieldOccur) throws FieldException {
+	public BigDecimal getValueAsBigDecimal(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsBigDecimal();
 	}
 	
@@ -1314,21 +1339,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public Date getValueAsDate(String fieldName) throws FieldException {
-		return getValueAsDate(fieldName, DEF_OCCUR);
+		return getValueAsDate(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Date</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Date</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Date</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Date
 	 */
-	public Date getValueAsDate(String fieldName, int fieldOccur) throws FieldException {
+	public Date getValueAsDate(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsDate();
 	}
 	
@@ -1340,21 +1366,22 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public Boolean getValueAsBoolean(String fieldName) throws FieldException {
-		return getValueAsBoolean(fieldName, DEF_OCCUR);
+		return getValueAsBoolean(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Boolean</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
 	 * @return the value as <code>Boolean</code> of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public Boolean getValueAsBoolean(String fieldName, int fieldOccur) throws FieldException {
+	public Boolean getValueAsBoolean(String fieldName, int... fieldOccur) throws FieldException {
 		return getRecordField(fieldName, fieldOccur).getValueAsBoolean();
 	}
 	
@@ -1365,19 +1392,20 @@ public abstract class AbstractRecord {
 	 * @param value the value to set
 	 */
 	public void setValue(String fieldName, String value) {
-		setValue(fieldName, DEF_OCCUR, value); 
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 */
-	public void setValue(String fieldName, int fieldOccur, String value) {
+	public void setValue(String fieldName, String value, int... fieldOccur) {
 		getRecordField(fieldName, fieldOccur).setValue(value, true); 
 	}
 	
@@ -1392,13 +1420,14 @@ public abstract class AbstractRecord {
 	 * greater than the len of the field
 	 */
 	public void setValue(String fieldName, String value, boolean truncate) throws RecordException {
-		setValue(fieldName, DEF_OCCUR, value, truncate);
+		setValue(fieldName, value, truncate, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the specified value
 	 * @param fieldOccur the field occur to get the field
@@ -1408,7 +1437,7 @@ public abstract class AbstractRecord {
 	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
 	 * greater than the len of the field
 	 */
-	public void setValue(String fieldName, int fieldOccur, String value, boolean truncate) throws RecordException {
+	public void setValue(String fieldName, String value, boolean truncate, int... fieldOccur) throws RecordException {
 		int fieldLen = getFieldLen(fieldName, fieldOccur);
 		if (value != null && value.length() > fieldLen) { 
 			if (truncate) {
@@ -1418,7 +1447,7 @@ public abstract class AbstractRecord {
 			} 
 		}
 		
-		setValue(fieldName, fieldOccur, value);
+		setValue(fieldName, value, fieldOccur);
 	}
 	
 	/**
@@ -1429,20 +1458,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Long
 	 */
 	public void setValue(String fieldName, Long value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value); 
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Long
 	 */
-	public void setValue(String fieldName, int fieldOccur, Long value) throws FieldException {
+	public void setValue(String fieldName, Long value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
@@ -1454,7 +1484,7 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not an Integer
 	 */
 	public void setValue(String fieldName, Integer value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
@@ -1467,7 +1497,7 @@ public abstract class AbstractRecord {
 	 * @param value the value to set
 	 * @throws FieldException if the field is not an Integer
 	 */
-	public void setValue(String fieldName, int fieldOccur, Integer value) throws FieldException {
+	public void setValue(String fieldName, Integer value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value);
 	}
 	
@@ -1479,20 +1509,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Double
 	 */
 	public void setValue(String fieldName, Double value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value); 
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Double
 	 */
-	public void setValue(String fieldName, int fieldOccur, Double value) throws FieldException {
+	public void setValue(String fieldName, Double value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
@@ -1504,20 +1535,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Float
 	 */
 	public void setValue(String fieldName, Float value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value); 
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Float
 	 */
-	public void setValue(String fieldName, int fieldOccur, Float value) throws FieldException {
+	public void setValue(String fieldName, Float value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
@@ -1529,20 +1561,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
 	public void setValue(String fieldName, BigDecimal value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public void setValue(String fieldName, int fieldOccur, BigDecimal value) throws FieldException {
+	public void setValue(String fieldName, BigDecimal value,  int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value);
 	}
 	
@@ -1554,20 +1587,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Date
 	 */
 	public void setValue(String fieldName, Date value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value); 
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName)); 
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Date
 	 */
-	public void setValue(String fieldName, int fieldOccur, Date value) throws FieldException {
+	public void setValue(String fieldName, Date value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
@@ -1579,20 +1613,21 @@ public abstract class AbstractRecord {
 	 * @throws FieldException if the field is not a Boolean
 	 */
 	public void setValue(String fieldName, Boolean value) throws FieldException {
-		setValue(fieldName, DEF_OCCUR, value);
+		setValue(fieldName, value, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public void setValue(String fieldName, int fieldOccur, Boolean value) throws FieldException {
+	public void setValue(String fieldName, Boolean value, int... fieldOccur) throws FieldException {
 		getRecordField(fieldName, fieldOccur).setValue(value); 
 	}
 	
@@ -1603,7 +1638,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the upper case
 	 */
 	public void toUpperCase(String fieldName) {
-		toUpperCase(fieldName, DEF_OCCUR);
+		toUpperCase(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
@@ -1615,7 +1650,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the upper case
 	 * @param fieldOccur the field occur to get the field
 	 */
-	public void toUpperCase(String fieldName, int fieldOccur) {
+	public void toUpperCase(String fieldName, int... fieldOccur) {
 		getRecordField(fieldName, fieldOccur).toUpperCase();
 	}
 	
@@ -1629,7 +1664,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to removing accents
 	 */
 	public void toRemoveAccents(String fieldName) {
-		toRemoveAccents(fieldName, DEF_OCCUR);
+		toRemoveAccents(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
@@ -1644,7 +1679,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to removing accents
 	 * @param fieldOccur the field occur to get the field
 	 */
-	public void toRemoveAccents(String fieldName, int fieldOccur) {
+	public void toRemoveAccents(String fieldName, int... fieldOccur) {
 		getRecordField(fieldName, fieldOccur).toRemoveAccents();
 	}
 	
@@ -1658,7 +1693,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the encoding
 	 */
 	public void toAscii(String fieldName) {
-		toAscii(fieldName, DEF_OCCUR);
+		toAscii(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
@@ -1671,7 +1706,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the encoding
 	 * @param fieldOccur the field occur to get the field
 	 */
-	public void toAscii(String fieldName, int fieldOccur) {
+	public void toAscii(String fieldName, int... fieldOccur) {
 		getRecordField(fieldName, fieldOccur).toAscii();
 	}
 	
@@ -1682,7 +1717,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the normalize
 	 */
 	public void toNormalize(String fieldName) {
-		toNormalize(fieldName, DEF_OCCUR);
+		toNormalize(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
@@ -1694,7 +1729,7 @@ public abstract class AbstractRecord {
 	 * @param fieldName the field property of the field to apply the normalize
 	 * @param fieldOccur the field occur to get the field
 	 */
-	public void toNormalize(String fieldName, int fieldOccur) {
+	public void toNormalize(String fieldName, int... fieldOccur) {
 		getRecordField(fieldName, fieldOccur).toNormalize();
 	}
 	
@@ -1705,20 +1740,21 @@ public abstract class AbstractRecord {
 	 * @return the validation info of the field represented by the <code>fieldName</code> param
 	 */
 	public FieldValidationInfo getRecordFieldValidationInfo(String fieldName) {
-		return getRecordFieldValidationInfo(fieldName, DEF_OCCUR);
+		return getRecordFieldValidationInfo(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns the validion info of the field represented by the <code>fieldName</code>
-	 * and <code>fieldOccur</code> params. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to return the validation info
 	 * @param fieldOccur the field occur to get the field
 	 * @return the validation info of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 */
-	public FieldValidationInfo getRecordFieldValidationInfo(String fieldName, int fieldOccur) {
+	public FieldValidationInfo getRecordFieldValidationInfo(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).getValidationInfo();
 	}
 	
@@ -1731,21 +1767,22 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isErrorStatus(String fieldName) {
-		return isErrorStatus(fieldName, DEF_OCCUR);
+		return isErrorStatus(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
 	 * @return true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
-	public boolean isErrorStatus(String fieldName, int fieldOccur) {
+	public boolean isErrorStatus(String fieldName, int... fieldOccur) {
 		boolean result = false;
 		
 		Field rf = getRecordField(fieldName, fieldOccur);
@@ -1766,21 +1803,22 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 */
 	public boolean isWarnStatus(String fieldName) {
-		return isWarnStatus(fieldName, DEF_OCCUR);
+		return isWarnStatus(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
 	 * @return true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status
 	 */
-	public boolean isWarnStatus(String fieldName, int fieldOccur) {
+	public boolean isWarnStatus(String fieldName, int... fieldOccur) {
 		boolean result = false;
 		
 		Field rf = getRecordField(fieldName, fieldOccur);
@@ -1803,15 +1841,16 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
 	public boolean isInfoStatus(String fieldName) {
-		return isInfoStatus(fieldName, DEF_OCCUR);
+		return isInfoStatus(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has NOT
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
-	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status. 
-	 * If the <code>fieldName</code> is composite, for instance <code>addresses.location</code>, the field occurs has a
-	 * meaning only for the most left side of the name, in this case <code>addresses</code>
+	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1819,7 +1858,7 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 */
-	public boolean isInfoStatus(String fieldName, int fieldOccur) {
+	public boolean isInfoStatus(String fieldName, int... fieldOccur) {
 		return !isErrorStatus(fieldName, fieldOccur) && !isWarnStatus(fieldName, fieldOccur);
 	}
 	
@@ -1879,32 +1918,119 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the key of the fields map for the given params
+	 * Returns the key of the fields map for the given params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param fieldName the field name
 	 * @param fieldOccur the field occur
 	 * 
 	 * @return the key of the fieldsMap for the given params
 	 */
-	protected String keyForFieldNameAndFieldOccur(String fieldName, int fieldOccur) {
+	protected String keyForFieldNameAndFieldOccur(String fieldName, int... fieldOccur) {
+		String key = null;
+		if (fieldName.contains(CMP_FIELD_NAME_SEP)) {
+			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
+			String[] fieldNameTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
+			for (int i = 0; i < fieldNameTokens.length; i++) {
+				sj.add(keyForSimpleFieldNameAndOneFieldOccur(fieldNameTokens[i], fieldOccur[i]));
+			}
+			
+			key = sj.toString();
+		} else {
+			key = keyForSimpleFieldNameAndOneFieldOccur(fieldName, fieldOccur[0]);
+		}
+		
+		return key;
+	}
+	
+	private String keyForSimpleFieldNameAndOneFieldOccur(String fieldName, int fieldOccur) {
 		return FINAL_FILLER_NAME.equals(fieldName) ? fieldName : fieldName + KEY_SEP + fieldOccur;
 	}
 	
 	/**
-	 * Returns the field name of the field with the given fields map <code>key</code> param
+	 * Returns the field name of the field with the given fields map <code>key</code> param.
+	 * If the <code>key</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>key</code>. 
+	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param key the key of the fields map
 	 * @parama fieldOccur the field occur
 	 * 
 	 * @return the field name of the field with the given fields map <code>key</code> param
 	 */
-	protected String fieldNameForKey(String key, int fieldOccur) {
+	protected String fieldNameForKey(String key, int... fieldOccur) {
+		String fieldName = null;
+		if (key.contains(CMP_FIELD_NAME_SEP)) {
+			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
+			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
+			for (int i = 0; i < keyTokens.length; i++) {
+				sj.add(fieldNameForSimpleKey(keyTokens[i], fieldOccur[i]));
+			}
+			
+			fieldName = sj.toString();
+		} else {
+			fieldName = fieldNameForSimpleKey(key, fieldOccur[0]);
+		}
+		
+		return fieldName;
+	}
+	
+	private String fieldNameForSimpleKey(String key, int fieldOccur) {
 		String result = null;
 		
 		if (key.endsWith(KEY_SEP  + fieldOccur)) {
 			result = key.substring(0, key.lastIndexOf(KEY_SEP));
 		} else {
 			result = key;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @param fieldName the field name
+	 * @return the field occurs for the given <code>fieldName</code>
+	 */
+	protected int[] defaultFieldOccursForFieldName(String fieldName) {
+		int[] result = {DEF_OCCUR};
+		
+		if (fieldName.contains(CMP_FIELD_NAME_SEP)) {
+			String[] keyTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
+			result = new int[keyTokens.length + 1];
+			Arrays.fill(result, DEF_OCCUR);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * @param key the key of the fields map
+	 * @return the field occurs for the given <code>key</code>
+	 */
+	protected int[] fieldOccursForKey(String key) {
+		int[] result = new int[1];
+		
+		if (key.contains(CMP_FIELD_NAME_SEP)) {
+			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
+			result = new int[keyTokens.length];
+			for (int i = 0; i < keyTokens.length; i++) {
+				result[i] = fieldOccurForSimpleKey(keyTokens[i]);
+			}
+		} else {
+			result[0] = fieldOccurForSimpleKey(key);
+		}
+		
+		return result;
+	}
+	
+	private int fieldOccurForSimpleKey(String key) {
+		int result = DEF_OCCUR;
+		
+		int keySepIndex = key.lastIndexOf(KEY_SEP);
+		if (keySepIndex > 0) {
+			result = Integer.valueOf(key.substring(keySepIndex + 1));
 		}
 		
 		return result;

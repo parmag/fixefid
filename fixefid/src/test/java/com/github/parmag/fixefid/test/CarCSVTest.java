@@ -209,15 +209,15 @@ public class CarCSVTest {
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("speed", 183);
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("productionDate", PRODUCTION_DATE);
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("used", true);
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", 1, CHECKUP_DATE_1);
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", 1, BigDecimal.valueOf(350.00));
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", 1, "Tagliando dei 150.000 KM");
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", 2, CHECKUP_DATE_2);
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", 2, BigDecimal.valueOf(250.00));
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", 2, "Tagliando dei 100.000 KM");
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", 3, CHECKUP_DATE_3);
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", 3, BigDecimal.valueOf(150.00));
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", 3, "Tagliando dei 50.000 KM");
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", CHECKUP_DATE_1, 1, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", BigDecimal.valueOf(350.00), 1, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", "Tagliando dei 150.000 KM", 1, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", CHECKUP_DATE_2, 2, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", BigDecimal.valueOf(250.00), 2, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", "Tagliando dei 100.000 KM", 2, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.checkupDate", CHECKUP_DATE_3, 3, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.cost", BigDecimal.valueOf(150.00), 3, 1);
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD.setValue("checkups.description", "Tagliando dei 50.000 KM", 3, 1);
 		
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_STRING = new CSVBeanRecord(CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_FOR_STRING, CAR_WITH_CHECKUP_OCCURS_CSV_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_STRING = new CSVBeanRecord(CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
@@ -403,7 +403,7 @@ public class CarCSVTest {
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_FOR_INIT_FIELD.getCheckups().get(2).setDescription("NA");
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
 		
-		Assert.assertTrue("NA".equals(CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.getValueAsString("checkups.description", 3))); 
+		Assert.assertTrue("NA".equals(CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.getValueAsString("checkups.description", 3, 1))); 
 		
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_FOR_INIT_FIELD.getCheckups().get(2).setDescription("Tagliando dei 50.000 KM");
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromBeanToRecord();
@@ -411,12 +411,12 @@ public class CarCSVTest {
 	
 	@Test
 	public void testCarWithCheckupOccursSyncValuesFromRecordToBean() {
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("checkups.description", 3, "NA"); 
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("checkups.description", "NA", 3, 1); 
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 		
 		Assert.assertTrue("NA".equals(CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_FOR_INIT_FIELD.getCheckups().get(2).getDescription())); 
 		
-		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("checkups.description", 3, "Tagliando dei 50.000 KM"); 
+		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("checkups.description", "Tagliando dei 50.000 KM", 3, 1); 
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 	}
 

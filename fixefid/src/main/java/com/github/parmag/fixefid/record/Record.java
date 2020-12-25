@@ -594,11 +594,11 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, String value) {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty,String value,  int fieldOccur) {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -619,15 +619,15 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the specified value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
 	 * @param truncate If the <code>truncate</code> param is <code>true</code> and the len of the specified value is greater than the len of the 
 	 * field, the specified value will be truncated at the len od the field. 
+	 * @param fieldOccur the field occur to get the field
 	 * @throws RecordException If the <code>truncate</code> param is <code>false</code> and the len of the specified value is 
 	 * greater than the len of the field
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, String value, boolean truncate) throws RecordException {
-		setValue(fieldProperty.name(), fieldOccur, value, truncate);
+	public void setValue(FieldProperty fieldProperty, String value, boolean truncate, int fieldOccur) throws RecordException {
+		setValue(fieldProperty.name(), value, truncate, fieldOccur);
 	}
 	
 	/**
@@ -645,12 +645,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Long
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Long value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Long value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -668,12 +668,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not an Integer
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Integer value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Integer value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -691,12 +691,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Double
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Double value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Double value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -714,12 +714,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Float
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Float value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Float value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -737,12 +737,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field property of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a BigDecimal
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, BigDecimal value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, BigDecimal value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -760,12 +760,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Date
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Date value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Date value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**
@@ -783,12 +783,12 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	 * Set the specified value to the field represented by the <code>fieldProperty</code> and <code>fieldOccur</code> params
 	 * 
 	 * @param fieldProperty the field proerty of the field to set the value
-	 * @param fieldOccur the field occur to get the field
 	 * @param value the value to set
+	 * @param fieldOccur the field occur to get the field
 	 * @throws FieldException if the field is not a Boolean
 	 */
-	public void setValue(FieldProperty fieldProperty, int fieldOccur, Boolean value) throws FieldException {
-		setValue(fieldProperty.name(), fieldOccur, value); 
+	public void setValue(FieldProperty fieldProperty, Boolean value, int fieldOccur) throws FieldException {
+		setValue(fieldProperty.name(), value, fieldOccur); 
 	}
 	
 	/**

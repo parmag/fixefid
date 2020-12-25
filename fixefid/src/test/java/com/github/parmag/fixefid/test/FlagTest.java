@@ -20,16 +20,16 @@ public class FlagTest {
 	static {
 		FLAG_BEAN_RECORD = new BeanRecord(FLAG_BEAN);
 		FLAG_BEAN_RECORD.setValue("name", "Circuit"); 
-		FLAG_BEAN_RECORD.setValue("flags", 1, "S"); 
-		FLAG_BEAN_RECORD.setValue("flags", 2, "N"); 
-		FLAG_BEAN_RECORD.setValue("flags", 3, "S"); 
-		FLAG_BEAN_RECORD.setValue("flags", 4, "S"); 
-		FLAG_BEAN_RECORD.setValue("flags", 5, "N"); 
-		FLAG_BEAN_RECORD.setValue("flags", 6, "S"); 
-		FLAG_BEAN_RECORD.setValue("flags", 7, "S"); 
-		FLAG_BEAN_RECORD.setValue("flags", 8, "N"); 
-		FLAG_BEAN_RECORD.setValue("flags", 9, "N"); 
-		FLAG_BEAN_RECORD.setValue("flags", 10, "N"); 
+		FLAG_BEAN_RECORD.setValue("flags", "S", 1); 
+		FLAG_BEAN_RECORD.setValue("flags", "N", 2); 
+		FLAG_BEAN_RECORD.setValue("flags", "S", 3); 
+		FLAG_BEAN_RECORD.setValue("flags", "S", 4); 
+		FLAG_BEAN_RECORD.setValue("flags", "N", 5); 
+		FLAG_BEAN_RECORD.setValue("flags", "S", 6); 
+		FLAG_BEAN_RECORD.setValue("flags", "S", 7); 
+		FLAG_BEAN_RECORD.setValue("flags", "N", 8); 
+		FLAG_BEAN_RECORD.setValue("flags", "N", 9); 
+		FLAG_BEAN_RECORD.setValue("flags", "N", 10); 
 		FLAG_BEAN_RECORD.setValue("program", "CX34ZY7"); 
 		
 		FLAG_BEAN_RECORD_STRING = new BeanRecord(FLAG_BEAN_FOR_STRING, FLAG_RECORD_AS_STRING);

@@ -16,16 +16,16 @@ public class FlagCSVRecordFieldTest {
 	
 	static {
 		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.name, "Circuit"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 1, "S"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 2, "N"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 3, "S"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 4, "S"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 5, "N"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 6, "S"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 7, "S"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 8, "N"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 9, "N"); 
-		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, 10, "N"); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "S", 1); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "N", 2); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "S", 3); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "S", 4); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "N", 5); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "S", 6); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "S", 7); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "N", 8); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "N", 9); 
+		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.flags, "N", 10); 
 		FLAG_CSV_RECORD.setValue(FlagCSVRecordField.program, "CX34ZY7"); 
 	}
 

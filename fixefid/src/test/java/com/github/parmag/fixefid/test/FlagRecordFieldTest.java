@@ -16,16 +16,16 @@ public class FlagRecordFieldTest {
 	
 	static {
 		FLAG_RECORD.setValue(FlagRecordField.name, "Circuit"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 1, "S"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 2, "N"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 3, "S"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 4, "S"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 5, "N"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 6, "S"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 7, "S"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 8, "N"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 9, "N"); 
-		FLAG_RECORD.setValue(FlagRecordField.flags, 10, "N"); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "S", 1); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "N", 2); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "S", 3); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "S", 4); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "N", 5); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "S", 6); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "S", 7); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "N", 8); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "N", 9); 
+		FLAG_RECORD.setValue(FlagRecordField.flags, "N", 10); 
 		FLAG_RECORD.setValue(FlagRecordField.program, "CX34ZY7"); 
 	}
 
