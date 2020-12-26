@@ -4,6 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.parmag.fixefid.record.BeanRecord;
+import com.github.parmag.fixefid.record.ErrorCode;
+import com.github.parmag.fixefid.record.RecordException;
 import com.github.parmag.fixefid.test.bean.MultiFlag;
 
 public class MultiFlagTest {
@@ -55,6 +57,17 @@ public class MultiFlagTest {
 	@Test
 	public void testToStringConstructorGetStringNValueWithOccur() {
 		Assert.assertTrue("N".equals(MULTI_FLAG_BEAN_RECORD_STRING.getValueAsString("flag.flags", 1, 5)));
+	}
+	
+	@Test
+	public void testToStringConstructorGetStringNValueWithWrongOccur() {
+		ErrorCode errorCode = null;
+		try {
+			MULTI_FLAG_BEAN_RECORD_STRING.getValueAsString("flag.flags", 5);
+		} catch (RecordException re) {
+			errorCode = re.getErrorCode();
+		}
+		Assert.assertTrue(ErrorCode.RE35.equals(errorCode));
 	}
 	
 	@Test

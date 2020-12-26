@@ -387,8 +387,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Returns the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 *  
 	 * @param fieldName the field name to get the field
 	 * @param fieldOccur the field occur to get the field
@@ -418,8 +418,8 @@ public abstract class AbstractRecord {
 	 * Returns the len of the record represented by the <code>fieldName</code> 
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the property of the field to know the len
 	 * @param fieldOccur the field occur to get the field
@@ -597,8 +597,8 @@ public abstract class AbstractRecord {
 	 * Returns a <code>String</code> object representing the pretty print of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * The pretty print is composed as following:
 	 * <p>
@@ -913,8 +913,8 @@ public abstract class AbstractRecord {
 	/**
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is mandatory.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field name to know if the relative field is mandatory
 	 * @param fieldOccur the field occur to get the field
@@ -939,8 +939,8 @@ public abstract class AbstractRecord {
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is a <code>String</code>.
 	 * A field is a <code>String</code> if is of type <code>FieldType.AN</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>String</code>
 	 * @param fieldOccur the field occur to get the field
@@ -967,8 +967,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Long</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &ge; 10</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Long</code>
 	 * @param fieldOccur the field occur to get the field
@@ -995,8 +995,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Integer</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is not present and the <code>len &lt; 10</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Integer</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1023,8 +1023,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Date</code> if is of type <code>FieldType.AN</code> and the 
 	 * <code>FieldExtendedPropertyType.DATE_FORMAT</code> is present.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Date</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1051,8 +1051,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Boolean</code> if is of type <code>FieldType.AN</code> and the 
 	 * <code>FieldExtendedPropertyType.BOOLEAN_FORMAT</code> is present.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Boolean</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1079,8 +1079,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &ge; 10</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1107,8 +1107,8 @@ public abstract class AbstractRecord {
 	 * A field is a <code>Double</code> if is of type <code>FieldType.N</code>,
 	 * the <code>FieldExtendedPropertyType.DECIMAL_FORMAT</code> is present and the <code>len &lt; 10</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>Double</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1133,8 +1133,8 @@ public abstract class AbstractRecord {
 	 * The result is <code>true</code> if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params is <code>BigDecimal</code>.
 	 * A field is a <code>BigDecimal</code> if is <code>Double</code> or a <code>Float</code>.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to know if the relative field is a <code>BigDecimal</code>
 	 * @param fieldOccur the field occur to get the field
@@ -1158,8 +1158,8 @@ public abstract class AbstractRecord {
 	 * Returns the formatted value of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the formatted value of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1184,8 +1184,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>String</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>String</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1211,8 +1211,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Long</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Long</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1238,8 +1238,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Integer</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Integer</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1265,8 +1265,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Double</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Double</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1292,8 +1292,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Float</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Float</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1319,8 +1319,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>BigDecimal</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>BigDecimal</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1346,8 +1346,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Date</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Date</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1373,8 +1373,8 @@ public abstract class AbstractRecord {
 	 * Returns the value as <code>Boolean</code> of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property to get the value as <code>Boolean</code> of the relative field
 	 * @param fieldOccur the field occur to get the field
@@ -1398,8 +1398,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1426,8 +1426,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the specified value
 	 * @param fieldOccur the field occur to get the field
@@ -1464,8 +1464,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1515,8 +1515,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1541,8 +1541,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1567,8 +1567,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1593,8 +1593,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1619,8 +1619,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -1747,8 +1747,8 @@ public abstract class AbstractRecord {
 	 * Returns the validion info of the field represented by the <code>fieldName</code>
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to return the validation info
 	 * @param fieldOccur the field occur to get the field
@@ -1774,8 +1774,8 @@ public abstract class AbstractRecord {
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1810,8 +1810,8 @@ public abstract class AbstractRecord {
 	 * Returns true if the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> status.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1849,8 +1849,8 @@ public abstract class AbstractRecord {
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.WARN</code> and NOT
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field property of the field to check the validation status
 	 * @param fieldOccur the field occur to get the field
@@ -1920,8 +1920,8 @@ public abstract class AbstractRecord {
 	/**
 	 * Returns the key of the fields map for the given params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain 2 integers
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param fieldName the field name
 	 * @param fieldOccur the field occur
@@ -1933,6 +1933,10 @@ public abstract class AbstractRecord {
 		if (fieldName.contains(CMP_FIELD_NAME_SEP)) {
 			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
 			String[] fieldNameTokens = fieldName.split("\\" + CMP_FIELD_NAME_SEP);
+			if (fieldNameTokens.length > fieldOccur.length) {
+				throw new RecordException(ErrorCode.RE35, "The number of fieldOccurs " + fieldOccur.length + 
+					" is minor the number of components of the fieldName " + fieldName);
+			}
 			for (int i = 0; i < fieldNameTokens.length; i++) {
 				sj.add(keyForSimpleFieldNameAndOneFieldOccur(fieldNameTokens[i], fieldOccur[i]));
 			}
@@ -1952,7 +1956,7 @@ public abstract class AbstractRecord {
 	/**
 	 * Returns the field name of the field with the given fields map <code>key</code> param.
 	 * If the <code>key</code> is composite, the <code>fieldOccur</code> must
-	 * contain the same number of components of the given <code>key</code>. 
+	 * contain at least the same number of components of the given <code>key</code>. 
 	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain 2 integers
 	 * 
 	 * @param key the key of the fields map
@@ -1965,6 +1969,10 @@ public abstract class AbstractRecord {
 		if (key.contains(CMP_FIELD_NAME_SEP)) {
 			StringJoiner sj = new StringJoiner(CMP_FIELD_NAME_SEP);
 			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
+			if (keyTokens.length != fieldOccur.length) {
+				throw new RecordException(ErrorCode.RE36, "The number of fieldOccurs " + fieldOccur.length + 
+					" is diff from the number of components of the key" + key);
+			}
 			for (int i = 0; i < keyTokens.length; i++) {
 				sj.add(fieldNameForSimpleKey(keyTokens[i], fieldOccur[i]));
 			}

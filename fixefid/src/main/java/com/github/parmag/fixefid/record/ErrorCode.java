@@ -145,6 +145,18 @@ public enum ErrorCode {
 	 * The <code>FieldType.LIST</code> bean field must be an instance of <code>java.util.ArrayList</code>
 	 */
 	RE34,
+	/**
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain at least the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 */
+	RE35,
+	/**
+	 * If the <code>ley</code> is composite, the <code>fieldOccur</code> must
+	 * contain the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain 2 integers
+	 */
+	RE36,
 	
 	/**
 	 * NOT USED
