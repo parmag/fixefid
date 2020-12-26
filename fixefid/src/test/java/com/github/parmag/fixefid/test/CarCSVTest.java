@@ -419,5 +419,15 @@ public class CarCSVTest {
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.setValue("checkups.description", "Tagliando dei 50.000 KM", 3, 1); 
 		CAR_WITH_CHECKUP_OCCURS_CSV_BEAN_RECORD_INIT_WITH_FIELD.syncValuesFromRecordToBean();
 	}
+	
+	@Test
+	public void testCarSpeedDisplayName() { 
+		Assert.assertTrue("The Car's speed".contentEquals(CAR_CSV_BEAN_RECORD.getFieldDisplayName("speed"))); 
+	}
+	
+	@Test
+	public void testCarSpeedDescription() { 
+		Assert.assertTrue("The Car's speed must be minor of 200 KM/H".contentEquals(CAR_CSV_BEAN_RECORD.getFieldDescription("speed"))); 
+	}
 
 }

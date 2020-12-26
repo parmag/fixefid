@@ -52,4 +52,12 @@ public @interface FixefidCSVField {
 	 * @return the type of the java bean property <code>FieldType.LIST</code>
 	 */
 	public FieldType fieldTypeList() default FieldType.AN;
+	/**
+	 * @return the display name of the java bean property
+	 */
+	public String fieldDisplayName() default "";
+	/**
+	 * @return the description of the java bean property
+	 */
+	public String fieldDescritption() default "";
 }

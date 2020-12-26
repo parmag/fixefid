@@ -33,7 +33,7 @@ public interface FieldProperty {
 	}
 	
 	/**
-	 * @return the default value of the field. The default implementation returns <code>null</code>
+	 * @return the default value of the field. The default implementation returns empty string
 	 */
 	default String fieldDefaultValue() {
 		return "";
@@ -47,9 +47,23 @@ public interface FieldProperty {
 	}
 	
 	/**
-	 * @return the occurs of the field
+	 * @return the occurs of the field. The default implementation returns <code>1</code>
 	 */
 	default int fieldOccurs() {
 		return 1;
+	}
+	
+	/**
+	 * @return the display name of the field. The default implementation returns empty string
+	 */
+	default String fieldDisplayName() {
+		return "";
+	}
+	
+	/**
+	 * @return the description of the field. The default implementation returns empty string
+	 */
+	default String fieldDescription() {
+		return "";
 	}
 }

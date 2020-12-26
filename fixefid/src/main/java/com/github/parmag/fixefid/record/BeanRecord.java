@@ -342,7 +342,8 @@ public class BeanRecord extends AbstractRecord {
 					for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
 						fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur), new com.github.parmag.fixefid.record.field.Field (
 							fieldName, fieldOrdinal, fieldSubOrdinal, fieldOccur, fieldTypeList, lenForBeanField(field), 
-							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
+							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps, 
+							displayNameForBeanField(field), descriptionForBeanField(field)));
 						
 						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, fieldOccur);
 					}
@@ -358,7 +359,8 @@ public class BeanRecord extends AbstractRecord {
 					
 					fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, DEF_OCCUR), new com.github.parmag.fixefid.record.field.Field (
 						fieldName, fieldOrdinal, fieldSubOrdinal, DEF_OCCUR, fieldType, lenForBeanField(field), 
-						mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps));
+						mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps, 
+						displayNameForBeanField(field), descriptionForBeanField(field)));
 					
 					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
 				}
@@ -815,6 +817,38 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		return fieldTypeList;
+	}
+	
+	/**
+	 * The display name of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the display name of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotationn
+	 */
+	protected String displayNameForBeanField(Field f) {
+		String fieldDisplayName = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			fieldDisplayName = a.fieldDisplayName();
+		}
+		
+		return fieldDisplayName;
+	}
+	
+	/**
+	 * The description of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the descriptiont of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotationn
+	 */
+	protected String descriptionForBeanField(Field f) {
+		String fieldDescription = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			fieldDescription = a.fieldDescritption();
+		}
+		
+		return fieldDescription;
 	}
 	
 	@SuppressWarnings("rawtypes")

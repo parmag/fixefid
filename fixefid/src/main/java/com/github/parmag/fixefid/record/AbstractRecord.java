@@ -118,7 +118,7 @@ public abstract class AbstractRecord {
 		
 		if (fillerLen > 0) {
 			fieldsMap.put(keyForFieldNameAndFieldOccur(FINAL_FILLER_NAME, DEF_OCCUR), new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1, 
-				DEF_SUB_INDEX, DEF_OCCUR, FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null));
+				DEF_SUB_INDEX, DEF_OCCUR, FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null, "", ""));
 		}
 	}
 	
@@ -405,17 +405,17 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the len of the record represented by the <code>fieldName</code> param
+	 * Returns the len of the field represented by the <code>fieldName</code> param
 	 * 
 	 * @param fieldName the property of the field to know the len
-	 * @return the len of the record represented by the <code>fieldName</code> param
+	 * @return the len of the field represented by the <code>fieldName</code> param
 	 */
 	public int getFieldLen(String fieldName) {
 		return getFieldLen(fieldName, defaultFieldOccursForFieldName(fieldName));
 	}
 	
 	/**
-	 * Returns the len of the record represented by the <code>fieldName</code> 
+	 * Returns the len of the field represented by the <code>fieldName</code> 
 	 * and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
 	 * contain  the same number of components of the given <code>fieldName</code>. 
@@ -423,7 +423,7 @@ public abstract class AbstractRecord {
 	 * 
 	 * @param fieldName the property of the field to know the len
 	 * @param fieldOccur the field occur to get the field
-	 * @return the len of the record represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 * @return the len of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
 	 */
 	public int getFieldLen(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).getLen();
@@ -1863,9 +1863,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd map <code>fieldName, value</code> of this record's fields
+	 * Returns the ordered map <code>fieldName, value</code> of this record's fields
 	 * 
-	 * @return the orderd map <code>fieldName, value</code> of this record's fields
+	 * @return the ordered map <code>fieldName, value</code> of this record's fields
 	 */
 	public Map<String, String> valuesMap() {
 		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
@@ -1874,9 +1874,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd map <code>fieldName with occurs aware, value</code> of this record's fields
+	 * Returns the ordered map <code>fieldName with occurs aware, value</code> of this record's fields
 	 * 
-	 * @return the orderd map <code>fieldName with occurs aware, value</code> of this record's fields
+	 * @return the ordered map <code>fieldName with occurs aware, value</code> of this record's fields
 	 */
 	public Map<String, String> valuesMapWithOccursAware() {
 		Map<String, String> valuesMap = new LinkedHashMap<String, String>();
@@ -1885,9 +1885,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd list of the values of this record's fields
+	 * Returns the ordered list of the values of this record's fields
 	 * 
-	 * @return the orderd list of the values of this record's fields
+	 * @return the ordered list of the values of this record's fields
 	 */
 	public List<String> values() {
 		List<String> values = new ArrayList<String>();
@@ -1896,9 +1896,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd list of the names of this record's fields
+	 * Returns the ordered list of the names of this record's fields
 	 * 
-	 * @return the orderd list of the names of this record's fields
+	 * @return the ordered list of the names of this record's fields
 	 */
 	public List<String> names() {
 		List<String> names = new ArrayList<String>();
@@ -1907,9 +1907,9 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
-	 * Returns the orderd list of the names of this record's fields with occurs aware
+	 * Returns the ordered list of the names of this record's fields with occurs aware
 	 * 
-	 * @return the orderd list of the names of this record's fields with occurs aware
+	 * @return the ordered list of the names of this record's fields with occurs aware
 	 */
 	public List<String> namesWithOccursAware() {
 		List<String> names = new ArrayList<String>();
@@ -2042,5 +2042,55 @@ public abstract class AbstractRecord {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * Returns the display name of the field represented by the <code>fieldName</code> param
+	 * 
+	 * @param fieldName the property of the field to know the display name
+	 * @return the display name of the field represented by the <code>fieldName</code> param
+	 */
+	public String getFieldDisplayName(String fieldName) {
+		return getFieldDisplayName(fieldName, defaultFieldOccursForFieldName(fieldName));
+	}
+	
+	/**
+	 * Returns the display name of the field represented by the <code>fieldName</code> 
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
+	 * 
+	 * @param fieldName the property of the field to know the display name
+	 * @param fieldOccur the field occur to get the field
+	 * @return the display name of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 */
+	public String getFieldDisplayName(String fieldName, int... fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).getDisplayName();
+	}
+	
+	/**
+	 * Returns the description of the field represented by the <code>fieldName</code> param
+	 * 
+	 * @param fieldName the property of the field to know the description
+	 * @return the description of the field represented by the <code>fieldName</code> param
+	 */
+	public String getFieldDescription(String fieldName) {
+		return getFieldDescription(fieldName, defaultFieldOccursForFieldName(fieldName));
+	}
+	
+	/**
+	 * Returns the description of the field represented by the <code>fieldName</code> 
+	 * and <code>fieldOccur</code> params.
+	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
+	 * 
+	 * @param fieldName the property of the field to know the description
+	 * @param fieldOccur the field occur to get the field
+	 * @return the description of the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params
+	 */
+	public String getFieldDescription(String fieldName, int... fieldOccur) {
+		return getRecordField(fieldName, fieldOccur).getDescription();
 	}
 }

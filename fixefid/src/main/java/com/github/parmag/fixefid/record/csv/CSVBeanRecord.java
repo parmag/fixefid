@@ -325,6 +325,38 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
+	 * The display name of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the display name of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotationn
+	 */
+	protected String displayNameForBeanField(Field f) {
+		String fieldDisplayName = null;
+		FixefidCSVField a = f.getAnnotation(FixefidCSVField.class);
+		if (a != null) {
+			fieldDisplayName = a.fieldDisplayName();
+		}
+		
+		return fieldDisplayName;
+	}
+	
+	/**
+	 * The description of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the descriptiont of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotationn
+	 */
+	protected String descriptionForBeanField(Field f) {
+		String fieldDescription = null;
+		FixefidCSVField a = f.getAnnotation(FixefidCSVField.class);
+		if (a != null) {
+			fieldDescription = a.fieldDescritption();
+		}
+		
+		return fieldDescription;
+	}
+	
+	/**
 	 * Apply to the fields the formatted values present in the <code>csvRecord</code> parameter
 	 * 
 	 * @param csvRecord the formatted string

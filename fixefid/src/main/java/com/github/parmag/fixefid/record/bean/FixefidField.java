@@ -44,7 +44,6 @@ public @interface FixefidField {
 	 * @return the sub ordinal of the java bean property
 	 */
 	public int fieldSubOrdinal() default 0;
-	
 	/**
 	 * The occurs of the java bean property. It can be greater than 1 only if the bean property is a <code>java.util.List</code>
 	 * and the field type is <code>FieldType.LIST</code>. The impl of the <code>java.util.List</code> must guarantee the insert order,
@@ -59,4 +58,12 @@ public @interface FixefidField {
 	 * @return the type of the java bean property <code>FieldType.LIST</code>
 	 */
 	public FieldType fieldTypeList() default FieldType.AN;
+	/**
+	 * @return the display name of the java bean property
+	 */
+	public String fieldDisplayName() default "";
+	/**
+	 * @return the description of the java bean property
+	 */
+	public String fieldDescritption() default "";
 }

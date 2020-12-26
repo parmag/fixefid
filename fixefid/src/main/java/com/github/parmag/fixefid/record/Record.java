@@ -1064,7 +1064,7 @@ public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 			
 			for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
 				fieldsMap.put(keyForFieldNameAndFieldOccur(p.name(), fieldOccur), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 1, fieldOccur, 
-					fieldType, fieldLen, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+					fieldType, fieldLen, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps, p.fieldDisplayName(), p.fieldDescription()));
 			}
         }
 	}

@@ -55,6 +55,8 @@ public class Field {
 	private String padStr;
 	private List<FieldExtendedProperty> fieldExtendedProperties;
 	private boolean lenNormalized;
+	private String displayName;
+	private String description;
 	
 	/**
 	 * Constructs a new <code>Field</code> that represents the fixed field formatted text
@@ -70,16 +72,18 @@ public class Field {
 	 * @param fieldExtendedProperties the field extended properties of this <code>Field</code>
 	 */
 	public Field(String name, int index, int subIndex, int occurIndex, FieldType type, int len, FieldMandatory mandatory, RecordWay recordWay, 
-			String defaultValue, List<FieldExtendedProperty> fieldExtendedProperties) {
+			String defaultValue, List<FieldExtendedProperty> fieldExtendedProperties, String displayName, String description) {
 		this.name = name;
 		this.index = index; 
 		this.subIndex = subIndex;
 		this.occurIndex = occurIndex; 
 		this.type = type;
 		this.len = len;
-		this.mandatory = mandatory;
+		this.mandatory = mandatory; 
 		this.recordWay = recordWay; 
 		this.defaultValue = defaultValue;
+		this.displayName = displayName;
+		this.description = description;
 		this.validationInfo = new FieldValidationInfo();
 		this.padStrNum = 0;
 		this.fieldExtendedProperties = fieldExtendedProperties;
@@ -1200,6 +1204,38 @@ public class Field {
 	 */
 	public boolean isLenNormalized() {
 		return lenNormalized;
+	}
+
+	/**
+	 * @return the display name of the field
+	 */
+	public String getDisplayName() {
+		return displayName;
+	}
+
+	/**
+	 * Set the display name of the field
+	 * 
+	 * @param displayName the display name of the field
+	 */
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
+
+	/**
+	 * @return the description of the field
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Set the description of the field
+	 * 
+	 * @param description the description of the field
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

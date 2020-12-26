@@ -1072,7 +1072,7 @@ public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRec
 			
 			for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
 				fieldsMap.put(keyForFieldNameAndFieldOccur(p.name(), fieldOccur), new Field(p.name(), ((Enum<?>)p).ordinal() + 1, 1, fieldOccur, 
-					fieldType, 0, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps));
+					fieldType, 0, p.fieldMandatory(), recordWay, p.fieldDefaultValue(), eps, p.fieldDisplayName(), p.fieldDescription()));
 			}
         }
 	}

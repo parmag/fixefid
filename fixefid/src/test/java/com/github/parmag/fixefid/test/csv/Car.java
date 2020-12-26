@@ -20,7 +20,7 @@ public class Car {
 	private Integer width;
 	@FixefidCSVField(fieldOrdinal = 5, fieldType = FieldType.N)
 	private Integer height;
-	@FixefidCSVField(fieldOrdinal = 6, fieldType = FieldType.N)
+	@FixefidCSVField(fieldOrdinal = 6, fieldType = FieldType.N, fieldDisplayName = "The Car's speed", fieldDescritption = "The Car's speed must be minor of 200 KM/H")
 	private Integer speed;
 	@FixefidCSVField(fieldOrdinal = 7, fieldType = FieldType.AN)
 	private Date productionDate;
