@@ -396,8 +396,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -425,8 +425,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params. 
 	 *If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the specified value
 	 * @param value the value to set
@@ -455,8 +455,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -482,8 +482,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -509,8 +509,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -536,8 +536,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -563,8 +563,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 *If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field property of the field to set the value
 	 * @param value the value to set
@@ -590,8 +590,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
@@ -617,8 +617,8 @@ public class BeanRecord extends AbstractRecord {
 	/**
 	 * Set the specified value to the field represented by the <code>fieldName</code> and <code>fieldOccur</code> params.
 	 * If the <code>fieldName</code> is composite, the <code>fieldOccur</code> must
-	 * contain at least the same number of components of the given <code>fieldName</code>. 
-	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain at least 2 integers
+	 * contain  the same number of components of the given <code>fieldName</code>. 
+	 * For instance, if the <code>fieldName</code> is <code>addresses.location</code>, <code>fieldOccur</code> must contain  2 integers
 	 * 
 	 * @param fieldName the field proerty of the field to set the value
 	 * @param value the value to set
