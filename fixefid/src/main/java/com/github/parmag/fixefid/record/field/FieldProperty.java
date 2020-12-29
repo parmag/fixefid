@@ -18,12 +18,16 @@ public interface FieldProperty {
 	/**
 	 * @return the field type of the field
 	 */
-	FieldType fieldType();
+	default FieldType fieldType() {
+		return FieldType.AN;
+	}
 	
 	/**
 	 * @return the len of the field
 	 */
-	int fieldLen();
+	default int fieldLen() {
+		return 10;
+	}
 	
 	/**
 	 * @return the mandatory type of the field. The default implementation returns <code>FieldMandatory.NO</code>
