@@ -22,7 +22,9 @@ public interface CSVFieldProperty {
 	/**
 	 * @return the field type of the field
 	 */
-	FieldType fieldType();
+	default FieldType fieldType() {
+		return FieldType.AN;
+	}
 	
 	/**
 	 * @return the mandatory type of the field. The default implementation returns <code>FieldMandatory.NO</code>

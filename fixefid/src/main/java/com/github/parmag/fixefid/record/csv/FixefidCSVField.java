@@ -27,7 +27,7 @@ public @interface FixefidCSVField {
 	/**
 	 * @return the type of the java bean property
 	 */
-	public FieldType fieldType();
+	public FieldType fieldType() default FieldType.AN;
 	/**
 	 * @return the mandatory of the java bean property
 	 */
