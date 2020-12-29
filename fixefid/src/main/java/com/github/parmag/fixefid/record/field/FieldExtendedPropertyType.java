@@ -52,7 +52,7 @@ public enum FieldExtendedPropertyType {
 	 */
 	LPAD,
 	/**
-	 * Used to get control of the field padding. The LPAD force the right padding with the value provided with the 
+	 * Used to get control of the field padding. The RPAD force the right padding with the value provided with the 
 	 * <code>FieldExtendedProperty</code>
 	 */
 	RPAD,
