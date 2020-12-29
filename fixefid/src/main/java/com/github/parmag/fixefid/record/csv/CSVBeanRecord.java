@@ -162,6 +162,18 @@ public class CSVBeanRecord extends BeanRecord {
 	}
 	
 	/**
+	 * init the record properties type, name and description
+	 * 
+	 * @param clazz the class of the bean
+	 */
+	protected void initProperties(Class<?> clazz) {
+		FixefidCSVRecord fixefidCSVRecord = clazz.getAnnotation(FixefidCSVRecord.class);
+		setType(fixefidCSVRecord.recordType());
+		setName(fixefidCSVRecord.recordName());
+		setDescription(fixefidCSVRecord.recordDescription());
+	}
+	
+	/**
 	 * CSV Record has initial len equals to zero
 	 * 
 	 * @param clazz the class of the bean

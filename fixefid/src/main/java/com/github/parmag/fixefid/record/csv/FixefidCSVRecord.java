@@ -39,4 +39,16 @@ public @interface FixefidCSVRecord {
 	 * @return the way of the java bean property
 	 */
 	public RecordWay recordWay() default RecordWay.IN;
+	/**
+	 * @return the type of the record
+	 */
+	public String recordType() default "";
+	/**
+	 * @return the name of the record
+	 */
+	public String recordName() default "";
+	/**
+	 * @return the description of the record
+	 */
+	public String recordDescription() default "";
 }

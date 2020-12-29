@@ -153,6 +153,7 @@ public class BeanRecord extends AbstractRecord {
 
         Class<?> clazz = bean.getClass();
         checkBeanAnnotation(clazz);
+        initProperties(clazz);
     	initRecordLen(clazz);
     	initRecordWay(clazz, recordWay);
     	initFieldsMap();
@@ -162,6 +163,18 @@ public class BeanRecord extends AbstractRecord {
 		}
 	}
 	
+	/**
+	 * init the record properties type, name and description
+	 * 
+	 * @param clazz the class of the bean
+	 */
+	protected void initProperties(Class<?> clazz) {
+		FixefidRecord fixefidRecord = clazz.getAnnotation(FixefidRecord.class);
+		setType(fixefidRecord.recordType());
+		setName(fixefidRecord.recordName());
+		setDescription(fixefidRecord.recordDescription());
+	}
+
 	/**
 	 * Check if the bean is annotated with <code>FixefidRecord.class</code>
 	 * 

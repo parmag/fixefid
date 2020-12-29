@@ -40,6 +40,11 @@ public abstract class AbstractRecord {
 	protected int recordLen;
 	protected List<FieldExtendedProperty> fieldExtendedProperties;
 	
+	private Long id;
+	private String name;
+	private String type;
+	private String description;
+	
 	/**
 	 * Init the fields map
 	 * 
@@ -2092,5 +2097,61 @@ public abstract class AbstractRecord {
 	 */
 	public String getFieldDescription(String fieldName, int... fieldOccur) {
 		return getRecordField(fieldName, fieldOccur).getDescription();
+	}
+
+	/**
+	 * @return the record id
+	 */
+	public Long getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the record id
+	 */
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the record name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the record name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the record type
+	 */
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * @param type the record type
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	/**
+	 * @return the record description
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * @param description the record description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
