@@ -157,6 +157,10 @@ public enum ErrorCode {
 	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain 2 integers
 	 */
 	RE36,
+	/**
+	 * A field extended properties must be set via annotation or via hash map, never together
+	 */
+	RE37,
 	
 	/**
 	 * NOT USED

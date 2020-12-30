@@ -10,10 +10,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
+import com.github.parmag.fixefid.record.eps.FieldExtendedPropertyFactory;
+import com.github.parmag.fixefid.record.eps.FixefidDecimalFormat;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldMandatory;
@@ -133,10 +136,56 @@ public class BeanRecord extends AbstractRecord {
 			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties, RecordWay recordWay) {
 		this.mapFieldExtendedProperties = mapFieldExtendedProperties;
 		
+		initMapFieldExtendedProperties(bean);
 		initFieldExtendedProperties(fieldExtendedProperties); 
 		initBean(bean, record, recordWay);
 	}
 	
+	/**
+	 * Init the map field extended properties
+	 * 
+	 * @param bean the <code>bean</code> of this <code>BeanRecord</code>
+	 */
+	protected void initMapFieldExtendedProperties(Object bean) {
+		Class<?> clazz = bean.getClass();
+		List<Field> fields = retrieveAllFields(new ArrayList<Field>(), clazz);
+		for (Field field : fields) {
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            List<FieldExtendedProperty> fieldExtendedPropertyList = new ArrayList<FieldExtendedProperty>();
+            if (isAnnotationPresentForBeanField(field)) {
+            	if (field.isAnnotationPresent(FixefidDecimalFormat.class)) {
+            		FixefidDecimalFormat a = field.getAnnotation(FixefidDecimalFormat.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createDecimalFormat(a.pattern(), new Locale(a.locale())));
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createRemoveDecimalSeparator(Boolean.valueOf(a.removeDecimalSeparator())));
+            	}
+            }
+            
+            if (!fieldExtendedPropertyList.isEmpty()) {
+            	if (mapFieldExtendedProperties == null) {
+            		mapFieldExtendedProperties = new HashMap<String, List<FieldExtendedProperty>>();
+            	}
+            	
+            	if (mapFieldExtendedProperties.containsKey(fieldName)) {
+            		List<FieldExtendedProperty> feps = mapFieldExtendedProperties.get(fieldName);
+            		feps.forEach(fep -> {
+            			fieldExtendedPropertyList.forEach(fep1 -> {
+            				if (fep.getType().equals(fep1.getType())) {
+            					throw new RecordException(ErrorCode.RE37, "Found for the field " + fieldName + " extended property of type " + 
+            							fep.getType() + " set via annotation and via hash map");
+            				}
+            			});
+            		});
+            		
+            		feps.addAll(fieldExtendedPropertyList);
+            		mapFieldExtendedProperties.put(fieldName, feps);
+            	} else {
+            		mapFieldExtendedProperties.put(fieldName, fieldExtendedPropertyList);
+            	}
+            }
+		}
+	}
+
 	/**
 	 * Init the record bean
 	 * 

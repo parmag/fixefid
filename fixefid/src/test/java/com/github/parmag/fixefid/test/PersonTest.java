@@ -18,6 +18,7 @@ import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
 import com.github.parmag.fixefid.record.RecordException;
 import com.github.parmag.fixefid.record.RecordWay;
+import com.github.parmag.fixefid.record.eps.FieldExtendedPropertyFactory;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
@@ -96,8 +97,8 @@ public class PersonTest {
 		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDate", Arrays.asList(
 				new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH))));
 		MAP_FIELD_EXTENDED_PROPERTIES.put("stature", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH))),
-				new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, Boolean.valueOf(true))));
+				FieldExtendedPropertyFactory.createDecimalFormat("0.00", Locale.ENGLISH),
+				FieldExtendedPropertyFactory.createRemoveDecimalSeparator(Boolean.valueOf(true))));
 		
 		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDistrict", CUSTOM_FORMAT_LIST);
 		MAP_FIELD_EXTENDED_PROPERTIES.put("vip", Arrays.asList(
