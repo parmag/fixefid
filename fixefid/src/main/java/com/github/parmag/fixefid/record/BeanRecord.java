@@ -134,7 +134,10 @@ public class BeanRecord extends AbstractRecord {
 	 */
 	public BeanRecord(Object bean, String record, List<FieldExtendedProperty> fieldExtendedProperties, 
 			Map<String, List<FieldExtendedProperty>> mapFieldExtendedProperties, RecordWay recordWay) {
-		this.mapFieldExtendedProperties = mapFieldExtendedProperties;
+		if (mapFieldExtendedProperties != null) {
+			this.mapFieldExtendedProperties = new HashMap<String, List<FieldExtendedProperty>>();
+			this.mapFieldExtendedProperties.putAll(mapFieldExtendedProperties);
+		}
 		
 		initMapFieldExtendedProperties(bean);
 		initFieldExtendedProperties(fieldExtendedProperties); 

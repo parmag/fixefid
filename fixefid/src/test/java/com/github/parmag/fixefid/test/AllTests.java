@@ -22,6 +22,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	MultiFlagTest.class,
 	MultiMultiFlagTest.class,
 	MultiFlagWithFlagOccursTest.class,
+	PersonWithEPAnnotationTest.class,
 	
 	CarCSVTest.class,
 	CarCSVRecordFieldTest.class,
