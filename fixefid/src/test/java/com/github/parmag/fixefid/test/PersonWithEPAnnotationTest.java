@@ -1,12 +1,10 @@
 package com.github.parmag.fixefid.test;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -19,7 +17,6 @@ import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
 import com.github.parmag.fixefid.record.format.CustomFormat;
-import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 import com.github.parmag.fixefid.test.bean.PersonWithEPAnnotation;
 
 public class PersonWithEPAnnotationTest {
@@ -63,14 +60,7 @@ public class PersonWithEPAnnotationTest {
 		CAL.set(Calendar.SECOND, 0);
 		CAL.set(Calendar.MILLISECOND, 0);
 		
-		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDate", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH))));
-		
 		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDistrict", CUSTOM_FORMAT_LIST);
-		MAP_FIELD_EXTENDED_PROPERTIES.put("vip", Arrays.asList(
-				new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N"))));
-		MAP_FIELD_EXTENDED_PROPERTIES.put("address.district", CUSTOM_FORMAT_LIST);
-		MAP_FIELD_EXTENDED_PROPERTIES.put("addresses.district", CUSTOM_FORMAT_LIST);
 		
 		PERSON_BEAN_RECORD = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		PERSON_BEAN_RECORD.setValue("firstName", "Paolo");

@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
+import com.github.parmag.fixefid.record.eps.FixefidBooleanFormat;
+import com.github.parmag.fixefid.record.eps.FixefidDateFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDecimalFormat;
 import com.github.parmag.fixefid.record.field.FieldType;
 
@@ -19,6 +21,7 @@ public class PersonWithEPAnnotation {
 	@FixefidField(fieldOrdinal = 3, fieldLen = 3, fieldType = FieldType.N)
 	private Integer age;
 	
+	@FixefidDateFormat(pattern = "ddMMyyyy", locale = "en")
 	@FixefidField(fieldOrdinal = 4, fieldLen = 8, fieldType = FieldType.AN)
 	private Date birthDate;
 	
@@ -29,6 +32,7 @@ public class PersonWithEPAnnotation {
 	@FixefidField(fieldOrdinal = 6, fieldLen = 2, fieldType = FieldType.AN)
 	private String birthDistrict;
 	
+	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
 	@FixefidField(fieldOrdinal = 7, fieldLen = 1, fieldType = FieldType.AN)
 	private Boolean vip;
 	

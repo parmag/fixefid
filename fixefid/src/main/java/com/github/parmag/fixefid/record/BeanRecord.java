@@ -16,6 +16,8 @@ import java.util.Map;
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
 import com.github.parmag.fixefid.record.eps.FieldExtendedPropertyFactory;
+import com.github.parmag.fixefid.record.eps.FixefidBooleanFormat;
+import com.github.parmag.fixefid.record.eps.FixefidDateFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDecimalFormat;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
@@ -161,6 +163,12 @@ public class BeanRecord extends AbstractRecord {
             		FixefidDecimalFormat a = field.getAnnotation(FixefidDecimalFormat.class);
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createDecimalFormat(a.pattern(), new Locale(a.locale())));
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createRemoveDecimalSeparator(Boolean.valueOf(a.removeDecimalSeparator())));
+            	} else if (field.isAnnotationPresent(FixefidDateFormat.class)) {
+            		FixefidDateFormat a = field.getAnnotation(FixefidDateFormat.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createDateFormat(a.pattern(), new Locale(a.locale())));
+            	} else if (field.isAnnotationPresent(FixefidBooleanFormat.class)) {
+            		FixefidBooleanFormat a = field.getAnnotation(FixefidBooleanFormat.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createBooleanFormat(a.trueValue(), a.falseValue()));
             	}
             }
             
