@@ -1,11 +1,7 @@
 package com.github.parmag.fixefid.test;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,42 +10,30 @@ import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
 import com.github.parmag.fixefid.record.RecordWay;
 import com.github.parmag.fixefid.record.field.FieldException;
-import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
-import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
-import com.github.parmag.fixefid.record.format.CustomFormat;
+import com.github.parmag.fixefid.test.bean.PersonWithAddressWithEPAnnotation;
 import com.github.parmag.fixefid.test.bean.PersonWithEPAnnotation;
 
 public class PersonWithEPAnnotationTest {
 	private static final Calendar CAL = Calendar.getInstance();
-	
-	private static final List<FieldExtendedProperty> CUSTOM_FORMAT_LIST = Arrays.asList(
-			new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
-		@Override
-		public String format(String value) {
-			return value.toUpperCase();
-		}
-
-		@Override
-		public String parse(String value) {
-			return value.toLowerCase();
-		}
-	}));
-	
-	private static final Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
-			new HashMap<String, List<FieldExtendedProperty>>();
 	
 	private static final PersonWithEPAnnotation PERSON_BEAN = new PersonWithEPAnnotation();
 	private static final PersonWithEPAnnotation PERSON_BEAN_FOR_STRING = new PersonWithEPAnnotation();
 	private static final PersonWithEPAnnotation PERSON_BEAN_FOR_INIT_WITH_STRING = new PersonWithEPAnnotation();
 	private static final PersonWithEPAnnotation PERSON_BEAN_FOR_INIT_FIELD = new PersonWithEPAnnotation();
 	
+	private static final PersonWithAddressWithEPAnnotation PERSON_WITH_ADDRESS_BEAN = new PersonWithAddressWithEPAnnotation();
+	
 	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
+	public static final String ADDRESS1_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
+	public static final String PERSON_WITH_ADDRESS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_AS_STRING;
 	
 	private static final BeanRecord PERSON_BEAN_RECORD; 
 	private static final BeanRecord PERSON_BEAN_RECORD_WAY_OUT; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_FIELD;
+	
+	private static final BeanRecord PERSON_WITH_ADDRESS_BEAN_RECORD;
 	
 	static {
 		CAL.set(Calendar.DAY_OF_MONTH, 7);
@@ -60,9 +44,8 @@ public class PersonWithEPAnnotationTest {
 		CAL.set(Calendar.SECOND, 0);
 		CAL.set(Calendar.MILLISECOND, 0);
 		
-		MAP_FIELD_EXTENDED_PROPERTIES.put("birthDistrict", CUSTOM_FORMAT_LIST);
 		
-		PERSON_BEAN_RECORD = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		PERSON_BEAN_RECORD = new BeanRecord(PERSON_BEAN); 
 		PERSON_BEAN_RECORD.setValue("firstName", "Paolo");
 		PERSON_BEAN_RECORD.setValue("lastName", "Rossi");
 		PERSON_BEAN_RECORD.setValue("age", 51);
@@ -74,7 +57,7 @@ public class PersonWithEPAnnotationTest {
 		PERSON_BEAN_RECORD.setValue("tor", "00001.0001");
 		PERSON_BEAN_RECORD.setValue("turnover", "0100000.00");
 		
-		PERSON_BEAN_RECORD_WAY_OUT = new BeanRecord(PERSON_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES, RecordWay.OUT); 
+		PERSON_BEAN_RECORD_WAY_OUT = new BeanRecord(PERSON_BEAN, null, null, null, RecordWay.OUT); 
 		PERSON_BEAN_RECORD_WAY_OUT.setValue("firstName", "Paolo");
 		PERSON_BEAN_RECORD_WAY_OUT.setValue("lastName", "Rossi");
 		PERSON_BEAN_RECORD_WAY_OUT.setValue("age", 51);
@@ -86,8 +69,8 @@ public class PersonWithEPAnnotationTest {
 		PERSON_BEAN_RECORD_WAY_OUT.setValue("tor", "00001.0001");
 		PERSON_BEAN_RECORD_WAY_OUT.setValue("turnover", "0100000.00");
 		
-		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
-		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING);
+		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING);
 		
 		PERSON_BEAN_FOR_INIT_FIELD.setFirstName("Paolo");
 		PERSON_BEAN_FOR_INIT_FIELD.setLastName("Rossi");
@@ -100,7 +83,25 @@ public class PersonWithEPAnnotationTest {
 		PERSON_BEAN_FOR_INIT_FIELD.setTor(1.0001);
 		PERSON_BEAN_FOR_INIT_FIELD.setTurnover(BigDecimal.valueOf(100000.00)); 
 		
-		PERSON_BEAN_RECORD_INIT_WITH_FIELD = new BeanRecord(PERSON_BEAN_FOR_INIT_FIELD, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+		PERSON_BEAN_RECORD_INIT_WITH_FIELD = new BeanRecord(PERSON_BEAN_FOR_INIT_FIELD);
+		
+		PERSON_WITH_ADDRESS_BEAN_RECORD = new BeanRecord(PERSON_WITH_ADDRESS_BEAN); 
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("firstName", "Paolo");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("lastName", "Rossi");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("age", 51);
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("stature", 1.86f);
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("birthDistrict", "bo");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("vip", "N");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("id", "0000000001");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("tor", "00001.0001");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("turnover", "0100000.00");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.location", "Bologna");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.postalCode", "40128");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.district", "bo");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.nationIso3", "ITA");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.address", "Via Ugo Bassi");
+		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.num", "77");
 	}
 	
 	@Test
@@ -251,5 +252,25 @@ public class PersonWithEPAnnotationTest {
 	@Test
 	public void testPersonCreateRecordWay() { 
 		Assert.assertTrue(RecordWay.OUT.equals(PERSON_BEAN_RECORD_WAY_OUT.getRecordWay()));
+	}
+	
+	@Test
+	public void testPersonWithAddressToString() { 
+		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.contentEquals(PERSON_WITH_ADDRESS_BEAN_RECORD.toString()));
+	}
+	
+	@Test
+	public void testPersonWithAddressLen() {
+		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.length() == PERSON_WITH_ADDRESS_BEAN_RECORD.getRecordLen());
+	}
+	
+	@Test
+	public void testPersonWithAddressGetLocationAsString() {  
+		Assert.assertTrue("Bologna                  ".equals(PERSON_WITH_ADDRESS_BEAN_RECORD.getValue("address.location")));
+	}
+	
+	@Test
+	public void testPersonWithAddressGetLocationAsStringValue() {  
+		Assert.assertTrue("Bologna".equals(PERSON_WITH_ADDRESS_BEAN_RECORD.getValueAsString("address.location")));
 	}
 }

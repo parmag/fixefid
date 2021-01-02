@@ -6,6 +6,7 @@ import java.util.Date;
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
 import com.github.parmag.fixefid.record.eps.FixefidBooleanFormat;
+import com.github.parmag.fixefid.record.eps.FixefidCustomFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDateFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDecimalFormat;
 import com.github.parmag.fixefid.record.field.FieldType;
@@ -29,6 +30,7 @@ public class PersonWithEPAnnotation {
 	@FixefidField(fieldOrdinal = 5, fieldLen = 3, fieldType = FieldType.N)
 	private Float stature;
 	
+	@FixefidCustomFormat(className = "com.github.parmag.fixefid.test.format.UpperLowerCustomFormat")
 	@FixefidField(fieldOrdinal = 6, fieldLen = 2, fieldType = FieldType.AN)
 	private String birthDistrict;
 	

@@ -152,7 +152,7 @@ public enum ErrorCode {
 	 */
 	RE35,
 	/**
-	 * If the <code>ley</code> is composite, the <code>fieldOccur</code> must
+	 * If the <code>key</code> is composite, the <code>fieldOccur</code> must
 	 * contain the same number of components of the given <code>fieldName</code>. 
 	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain 2 integers
 	 */
@@ -161,6 +161,10 @@ public enum ErrorCode {
 	 * A field extended properties must be set via annotation or via hash map, never together
 	 */
 	RE37,
+	/**
+	 * If the initialization of a custom format fails
+	 */
+	RE38,
 	
 	/**
 	 * NOT USED
