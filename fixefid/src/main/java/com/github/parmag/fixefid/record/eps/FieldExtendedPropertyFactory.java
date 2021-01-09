@@ -99,5 +99,62 @@ public class FieldExtendedPropertyFactory {
 			throw new RecordException(ErrorCode.RE38, e);
 		} 
 	}
+	
+	/**
+	 * Create a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.LPAD</code>
+	 * and value the given <code>padChar</code>
+	 * 
+	 * @param padChar the pad char
+	 * 
+	 * @return a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.LPAD</code>
+	 * and value the given <code>padChar</code>
+	 */
+	public static FieldExtendedProperty createLPAD(String padChar) {
+		try {
+			return new FieldExtendedProperty(
+				FieldExtendedPropertyType.LPAD, 
+				padChar);
+		} catch (Exception e) {
+			throw new RecordException(ErrorCode.RE38, e);
+		} 
+	}
+	
+	/**
+	 * Create a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.RPAD</code>
+	 * and value the given <code>padChar</code>
+	 * 
+	 * @param padChar the pad char
+	 * 
+	 * @return a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.RPAD</code>
+	 * and value the given <code>padChar</code>
+	 */
+	public static FieldExtendedProperty createRPAD(String padChar) {
+		try {
+			return new FieldExtendedProperty(
+				FieldExtendedPropertyType.RPAD, 
+				padChar);
+		} catch (Exception e) {
+			throw new RecordException(ErrorCode.RE38, e);
+		} 
+	}
+	
+	/**
+	 * Create a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.VALIDATOR</code>
+	 * and value an implementation of the interface <code>com.github.parmag.fixefid.record.field.FieldValidator</code>
+	 * 
+	 * @param className the class name of the validator format
+	 * 
+	 * @return a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.VALIDATOR</code>
+	 * and value an implementation of the interface <code>com.github.parmag.fixefid.record.field.FieldValidator</code>
+	 */
+	public static FieldExtendedProperty createValidator(String className) {
+		try {
+			return new FieldExtendedProperty(
+				FieldExtendedPropertyType.VALIDATOR, 
+				Class.forName(className).newInstance());
+		} catch (Exception e) {
+			throw new RecordException(ErrorCode.RE38, e);
+		} 
+	}
 
 }

@@ -23,11 +23,13 @@ import org.junit.runners.Suite.SuiteClasses;
 	MultiMultiFlagTest.class,
 	MultiFlagWithFlagOccursTest.class,
 	PersonWithEPAnnotationTest.class,
+	Point3DTest.class,
 	
 	CarCSVTest.class,
+	FlagCSVTest.class,
+	
 	CarCSVRecordFieldTest.class,
-	FlagCSVRecordFieldTest.class,
-	FlagCSVTest.class
+	FlagCSVRecordFieldTest.class
 })
 public class AllTests {
 

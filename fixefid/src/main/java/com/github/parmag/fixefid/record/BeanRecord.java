@@ -20,6 +20,9 @@ import com.github.parmag.fixefid.record.eps.FixefidBooleanFormat;
 import com.github.parmag.fixefid.record.eps.FixefidCustomFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDateFormat;
 import com.github.parmag.fixefid.record.eps.FixefidDecimalFormat;
+import com.github.parmag.fixefid.record.eps.FixefidLPAD;
+import com.github.parmag.fixefid.record.eps.FixefidRPAD;
+import com.github.parmag.fixefid.record.eps.FixefidValidator;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldMandatory;
@@ -143,8 +146,31 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		initMapFieldExtendedProperties(bean);
+		
+		if (fieldExtendedProperties == null) {
+			fieldExtendedProperties = new ArrayList<FieldExtendedProperty>();
+		}
+		initFieldExtendedProperties(bean, fieldExtendedProperties); 
 		initFieldExtendedProperties(fieldExtendedProperties); 
 		initBean(bean, record, recordWay);
+	}
+	
+	protected void initFieldExtendedProperties(Object bean, List<FieldExtendedProperty> fieldExtendedProperties) {
+		Class<?> clazz = bean.getClass();
+		if (clazz.isAnnotationPresent(FixefidLPAD.class)) {
+    		FixefidLPAD a = clazz.getAnnotation(FixefidLPAD.class);
+    		fieldExtendedProperties.add(FieldExtendedPropertyFactory.createLPAD(a.padChar()));
+    	}
+    	
+    	if (clazz.isAnnotationPresent(FixefidRPAD.class)) {
+    		FixefidRPAD a = clazz.getAnnotation(FixefidRPAD.class);
+    		fieldExtendedProperties.add(FieldExtendedPropertyFactory.createRPAD(a.padChar()));
+    	}
+    	
+    	if (clazz.isAnnotationPresent(FixefidValidator.class)) {
+    		FixefidValidator a = clazz.getAnnotation(FixefidValidator.class);
+    		fieldExtendedProperties.add(FieldExtendedPropertyFactory.createValidator(a.className()));
+    	}
 	}
 	
 	/**
@@ -164,15 +190,36 @@ public class BeanRecord extends AbstractRecord {
             		FixefidDecimalFormat a = field.getAnnotation(FixefidDecimalFormat.class);
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createDecimalFormat(a.pattern(), new Locale(a.locale())));
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createRemoveDecimalSeparator(Boolean.valueOf(a.removeDecimalSeparator())));
-            	} else if (field.isAnnotationPresent(FixefidDateFormat.class)) {
+            	} 
+            	
+            	if (field.isAnnotationPresent(FixefidDateFormat.class)) {
             		FixefidDateFormat a = field.getAnnotation(FixefidDateFormat.class);
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createDateFormat(a.pattern(), new Locale(a.locale())));
-            	} else if (field.isAnnotationPresent(FixefidBooleanFormat.class)) {
+            	}
+            	
+            	if (field.isAnnotationPresent(FixefidBooleanFormat.class)) {
             		FixefidBooleanFormat a = field.getAnnotation(FixefidBooleanFormat.class);
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createBooleanFormat(a.trueValue(), a.falseValue()));
-            	} else if (field.isAnnotationPresent(FixefidCustomFormat.class)) {
+            	}
+            	
+            	if (field.isAnnotationPresent(FixefidCustomFormat.class)) {
             		FixefidCustomFormat a = field.getAnnotation(FixefidCustomFormat.class);
             		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createCustomFormat(a.className()));
+            	}
+            	
+            	if (field.isAnnotationPresent(FixefidLPAD.class)) {
+            		FixefidLPAD a = field.getAnnotation(FixefidLPAD.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createLPAD(a.padChar()));
+            	}
+            	
+            	if (field.isAnnotationPresent(FixefidRPAD.class)) {
+            		FixefidRPAD a = field.getAnnotation(FixefidRPAD.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createRPAD(a.padChar()));
+            	}
+            	
+            	if (field.isAnnotationPresent(FixefidValidator.class)) {
+            		FixefidValidator a = field.getAnnotation(FixefidValidator.class);
+            		fieldExtendedPropertyList.add(FieldExtendedPropertyFactory.createValidator(a.className()));
             	}
             }
             
