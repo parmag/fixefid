@@ -818,7 +818,7 @@ public class BeanRecord extends AbstractRecord {
 	}
 	
 	/**
-	 * The sub-ordinal of the bean field param, retrieved from its <code>FixefidField.class<c/ode> annotation
+	 * The sub-ordinal of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
 	 * 
 	 * @param f the bean field
 	 * @return the sub-ordinal of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotation
