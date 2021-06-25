@@ -54,7 +54,7 @@ public class FieldExtendedPropertyFactory {
 	 * and value <code>java.text.SimpleDateFormat</code>.
 	 * 
 	 * @param pattern  the pattern describing the date and time format of the <code>java.text.SimpleDateFormat</code>
-	 * @param the locale whose date format symbols should be used
+	 * @param locale the locale whose date format symbols should be used
 	 * 
 	 * @return a <code>FieldExtendedProperty</code> with type <code>FieldExtendedPropertyType.DATE_FORMAT</code>
 	 * and value <code>java.text.SimpleDateFormat</code>
