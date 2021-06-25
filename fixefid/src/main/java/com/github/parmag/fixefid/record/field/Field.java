@@ -64,6 +64,7 @@ public class Field {
 	 * @param name the name of this <code>Field</code>
 	 * @param index the index of this <code>Field</code>
 	 * @param subIndex the sub-index of this <code>Field</code>
+	 * @param occurIndex the occur index
 	 * @param type the type of this <code>Field</code>
 	 * @param len the len of this <code>Field</code>
 	 * @param mandatory the mandatory type of this <code>Field</code>
@@ -1011,7 +1012,7 @@ public class Field {
 	/**
 	 * Parse the error message according the <code>type</code> param
 	 * 
-	 * @param type 
+	 * @param type the type param
 	 * @return the error message according the <code>type</code> param 
 	 */
 	protected String parseTypeErrorMessage(String type) {
