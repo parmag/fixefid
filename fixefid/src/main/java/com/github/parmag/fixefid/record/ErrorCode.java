@@ -211,7 +211,7 @@ public enum ErrorCode {
 	 */
 	FE11,
 	/**
-	 * Field Numeric len < 19 error
+	 * Field Numeric len min 19 error
 	 */
 	FE12,
 	/**

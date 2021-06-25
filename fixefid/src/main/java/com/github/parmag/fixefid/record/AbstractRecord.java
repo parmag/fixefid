@@ -1965,7 +1965,7 @@ public abstract class AbstractRecord {
 	 * For instance, if the <code>key</code> is <code>addresses-2.location-1</code>, <code>fieldOccur</code> must contain at least 2 integers
 	 * 
 	 * @param key the key of the fields map
-	 * @parama fieldOccur the field occur
+	 * @param fieldOccur the field occur
 	 * 
 	 * @return the field name of the field with the given fields map <code>key</code> param
 	 */
