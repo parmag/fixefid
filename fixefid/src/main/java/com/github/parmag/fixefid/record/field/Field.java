@@ -71,6 +71,8 @@ public class Field {
 	 * @param recordWay the record way type of this <code>Field</code>
 	 * @param defaultValue the default value of this <code>Field</code>
 	 * @param fieldExtendedProperties the field extended properties of this <code>Field</code>
+	 * @param displayName the display name of this <code>Field</code>
+	 * @param description the description of this <code>Field</code>
 	 */
 	public Field(String name, int index, int subIndex, int occurIndex, FieldType type, int len, FieldMandatory mandatory, RecordWay recordWay, 
 			String defaultValue, List<FieldExtendedProperty> fieldExtendedProperties, String displayName, String description) {
