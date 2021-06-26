@@ -1,5 +1,5 @@
 # Fixefid
-Fixefid is a Java library for working with fixed fields formatted text files. 
+Fixefid is a Java library for working with fixed fields formatted text files and CSV files. 
 It differs from other tools focusing on:
 <ul>
   <li>Easy-to-use</li>
@@ -15,6 +15,20 @@ It differs from other tools focusing on:
   <li>Record definition with Java Bean or Java Enum</li>	
 </ul>
 
+## What's new 2.0.0
+
+The version 2.0.0 includes:
+
+<ul>
+	<li>Java 8</li>
+	<li>CSV Record</li>
+	<li>Annotations for record and field extended properties</li>
+	<li>Fields Occurrences and subOrdinal</li>
+	<li>Simple Boolean Format</li>
+	<li>Logging</li>
+	<li>Minor bug fixes and enhancements</li>
+</ul>
+
 ## What's new 1.1.0
 
 The version 1.1.0 includes:
@@ -27,15 +41,15 @@ The version 1.1.0 includes:
 </ul>
 
 ## Getting started
-The JDK compliance level is 1.6 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
+The JDK compliance level is 1.8 or greater. To include jar library in your java project, download or add dependency from <a href="https://mvnrepository.com/artifact/com.github.parmag/fixefid" target="_blank">MVN Repository</a>.
 
-To include maven dependency of fixefid version 1.1.0 in your pom.xml, add this:
+To include maven dependency of fixefid version 2.0.0 in your pom.xml, add this:
 
 ```
 <dependency>
     <groupId>com.github.parmag</groupId>
     <artifactId>fixefid</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 Every record can be defined by Enum or Java Bean. 
