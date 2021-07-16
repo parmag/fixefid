@@ -112,21 +112,6 @@ public enum PersonRecordField implements FieldProperty {
 	public FieldType fieldType() {
 		return fieldType;
 	}
-
-	@Override
-	public FieldMandatory fieldMandatory() {
-		return FieldMandatory.INOUT;
-	}
-
-	@Override
-	public String fieldDefaultValue() {
-		return null;
-	}
-
-	@Override
-	public List<FieldExtendedProperty> fieldExtendedProperties() {
-		return null;
-	}
 }
 ```
 
@@ -467,17 +452,7 @@ The alphanumeric data type FieldType.AN can be managed like a Java Date or Boole
 List<FieldExtendedProperty> birthDateFieldExtendedProperties = Arrays.asList(
 		new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)));
 List<FieldExtendedProperty> vipFieldExtendedProperties = Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new BooleanFormat() {
-			@Override
-			public String format(Boolean value) {
-				return (value != null && value.booleanValue()) ? "Y" : "N";
-			}
-
-			@Override
-			public Boolean parse(String value) {
-				return "Y".equals(value) ? true : false;
-			}
-		}));
+		new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N")));
 
 ```
 
