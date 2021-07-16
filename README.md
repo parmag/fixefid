@@ -840,7 +840,18 @@ br.setValue("colors", "red", 3);
 String thirdColor = br.getValueAsString("colors", 3)
 
  ```
+## Field subOrdinal
 
+For a java bean with several fields, subOrdinal is usefull if during a refactoring you have the need to add a field without re-indexing the fields ordinal. The subOrdinal can be used like this:
+
+```
+@FixefidField(fieldOrdinal = 12, fieldSubOrdinal = 1, fieldLen = 50, fieldType = FieldType.AN)
+private String email;
+
+@FixefidField(fieldOrdinal = 12, fieldSubOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+private String phone;
+```
+in the case above, we have added the phone field after the email field without modifying the fieldOrdinal, but using the field subOrdinal
 
 ## Record status and custom validator
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
