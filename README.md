@@ -133,7 +133,7 @@ Paul                     Robinson                 051
 
 by default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. This default behavior can be changed with the extended properties.
 
-If you have the record as string (read for example from a file), create a record with the string e read the fields:
+If you have the record as string (read for example from a file), create a record with the string and read the fields:
 
 ```
 Record<PersonRecordField> record = new Record<PersonRecordField>(recordAsString, PersonRecordField.class);
@@ -968,9 +968,24 @@ CSVRecord<CarRecordField> carCsvRecord = new CSVRecord<CarRecordField>(CarRecord
 carCsvRecord.setValue("name", "Citroen");
 carCsvRecord.setValue("model", "C3 Picasso");
 carCsvRecord.setValue("productionDate", new Date());
-
-String name = carCsvRecord.getValueAsString(CarRecordField.name)
+String recordAsString = carCsvRecord.toString();
 ```
+
+The system out of the recordAsString is as follow:
+
+```
+Citroen,C3 Picasso,07102002
+```
+
+If you have the record as string (read for example from a file), create a record with the string and read the fields:
+
+```
+CSVRecord<CarRecordField> carCsvRecord = new CSVRecord<CarRecordField>(recordAsString, CarRecordField.class);
+String name = carCsvRecord.getValueAsString(CarRecordField.name);
+```
+this is a very simple example for getting started.
+
+You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the field separator, create custom validators and many others features.
 
 ## CSV record with Java Bean
 
@@ -1015,7 +1030,35 @@ CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, null, null, MAP_FIELD_EXTEN
 carCsvRecord.setValue("name", "Citroen");
 carCsvRecord.setValue("model", "C3 Picasso");
 carCsvRecord.setValue("productionDate", new Date());
+String recordAsString = carCsvRecord.toString();
+```
+or you can fill the fields directly to java bean:
 
+```
+Car car = new Car();
+car.setName("Citroen");
+car.setModel("C3 Picasso");
+car.setproductionDate(new Date());
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+String recordAsString = carCsvRecord.toString();
+```
+
+The system out of the recordAsString is as follow:
+
+```
+Citroen,C3 Picasso,07102002
+```
+
+If you have the record as string (read for example from a file), create a record with the string and read the fields:
+
+```
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, recordAsString, null, MAP_FIELD_EXTENDED_PROPERTIES);
+String name = csvBeanRecord.getValueAsString("name")
+```
+
+or you can get data directly from java bean:
+
+```
 String name = car.getName();
 ```
 
