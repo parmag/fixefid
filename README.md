@@ -1062,5 +1062,11 @@ or you can get data directly from java bean:
 String name = car.getName();
 ```
 
+this is a very simple example for getting started.
+
+You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the field separator, create custom validators and many others features.
+
+The advantage respect enum style is the java inheritance, composition, etc etc… that you can use with java bean, that’s mean a more compact record representation. But bear in mind that every csv record can be represented by enum or java bean.
+
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
