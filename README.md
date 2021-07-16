@@ -541,6 +541,22 @@ record.setValue("birthDate", new Date());
 record.setValue("vip", true);
 ```
 
+Another way to using extended properties for java bean are annotations:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	
+	@FixefidDateFormat(pattern = "ddMMyyyy", locale = "en")
+	@FixefidField(fieldOrdinal = 4, fieldLen = 8, fieldType = FieldType.AN)
+	private Date birthDate;
+	
+	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
+	@FixefidField(fieldOrdinal = 5, fieldLen = 1, fieldType = FieldType.AN)
+	private Boolean vip;
+```
+
 ## Alphanumeric data type with Custom Formatter
 The alphanumeric data type FieldType.AN can be used with a custom formatter:
 
@@ -606,6 +622,18 @@ Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new Has
 MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+```
+
+or using annotation:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidCustomFormat(className = "com.github.parmag.fixefid.test.format.UpperLowerCustomFormat")
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastName;
+	....
 ```
 
 ## Numeric data type
@@ -710,6 +738,20 @@ Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new Has
 MAP_FIELD_EXTENDED_PROPERTIES.put("amount", amountFieldExtendedProperties);
 
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+```
+
+or using annotation:
+
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidDecimalFormat(pattern = "0.00", locale = "en", removeDecimalSeparator = false)
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private String amount;
 ```
 
 ## Field padding
