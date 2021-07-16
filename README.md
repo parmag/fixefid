@@ -917,5 +917,96 @@ is formatted like this (for every field of the record):
 name=[index][offset][len][value][validation status][validation msg (if present)]
  ```
 
+## CSV record with Enum
+
+To define a CSV record with an enum, create an enum like this:
+
+```
+public enum CarRecordField implements CSVFieldProperty {
+	name(FieldType.AN, null),
+	model(FieldType.AN, null),
+	productionDate(FieldType.AN, Arrays.asList(
+			new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)))
+	);
+	
+	private FieldType fieldType;
+	private List<FieldExtendedProperty> recordFieldExtendedProperties;
+	
+	private CarRecordField(FieldType fieldType, List<FieldExtendedProperty> recordFieldExtendedProperties) {
+		this.fieldType = fieldType; 
+		this.recordFieldExtendedProperties = recordFieldExtendedProperties;
+	}
+
+	@Override
+	public FieldType fieldType() {
+		return fieldType;
+	}
+	
+	@Override
+	public List<FieldExtendedProperty> fieldExtendedProperties() {
+		return recordFieldExtendedProperties;
+	}
+
+}
+```
+
+then you can create a csv record like this:
+
+```
+CSVRecord<CarRecordField> carCsvRecord = new CSVRecord<CarRecordField>(CarRecordField.class);
+carCsvRecord.setValue("name", "Citroen");
+carCsvRecord.setValue("model", "C3 Picasso");
+carCsvRecord.setValue("productionDate", new Date());
+
+String name = carCsvRecord.getValueAsString(CarRecordField.name)
+```
+
+## CSV record with Java Bean
+
+To define a CSV record with a java bean, create a java bean like this:
+
+```
+@FixefidCSVRecord
+public class Car {
+	@FixefidCSVField(fieldOrdinal = 0, fieldType = FieldType.AN)
+	private String name;
+	@FixefidCSVField(fieldOrdinal = 1, fieldType = FieldType.AN)
+	private String model;
+	@FixefidCSVField(fieldOrdinal = 2, fieldType = FieldType.AN)
+	private Date productionDate;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getModel() {
+		return model;
+	}
+	public void setModel(String model) {
+		this.model = model;
+	}
+	public Date getProductionDate() {
+		return productionDate;
+	}
+	public void setProductionDate(Date productionDate) {
+		this.productionDate = productionDate;
+	}
+}
+```
+
+then you can create a csv record like this:
+
+```
+Car car = new Car();
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+carCsvRecord.setValue("name", "Citroen");
+carCsvRecord.setValue("model", "C3 Picasso");
+carCsvRecord.setValue("productionDate", new Date());
+
+String name = car.getName();
+```
+
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
