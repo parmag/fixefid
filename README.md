@@ -796,6 +796,52 @@ all those normalizations can be applyed with the method record.toNormalize. For 
 
 if the value is "àx@°§12", after normalization is "AX@??12"
 
+## Field occurrences
+For java bean fields, we can specify the relative occurrence:
+
+```
+ @FixefidRecord
+public class Flag {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 20, fieldType = FieldType.AN)
+	private String name;
+	@FixefidField(fieldOrdinal = 2, fieldLen = 20, fieldType = FieldType.LIST, fieldOccurs = 10)
+	private List<String> colors = new ArrayList<String>();
+	@FixefidField(fieldOrdinal = 3, fieldLen = 10, fieldType = FieldType.AN)
+	private String nation;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public List<String> getColors() {
+		return colors;
+	}
+	public void setColors(List<String> colors) {
+		this.colors = colors;
+	}
+	public String getNation() {
+		return nation;
+	}
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+
+}
+ ```
+
+it's a convenience method to avoid the declarations of n fields (in this case 10 color fields...). We can manage the field occurs in this way:
+
+```
+BeanRecord br = new BeanRecord(new Flag());
+br.setValue("colors", "red", 3); 
+....
+String thirdColor = br.getValueAsString("colors", 3)
+
+ ```
+
+
 ## Record status and custom validator
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
 
