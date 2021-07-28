@@ -100,7 +100,7 @@ public class Field {
 		}
 		
 		if (FieldType.N.equals(type) && len > 19) {
-			throw new FieldException(ErrorCode.FE12, "The field name=[" + name + "] type=[" + type.name() + " has wrong length=[" + len + "]. Len <= 19 expected.");
+			throw new FieldException(ErrorCode.FE12, "The field name=[" + name + "] type=[" + type.name() + "] has wrong length=[" + len + "]. Len <= 19 expected.");
 		}
 		
 		if (defaultValue != null) {
