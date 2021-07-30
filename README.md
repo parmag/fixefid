@@ -132,7 +132,7 @@ person.setFirstName("Paul");
 BeanRecord record = new BeanRecord(person);
 String recordAsString = record.toString();
 ```
-or if you have the recordAsString, create a bean record wwith the string and obtain the single fields value:
+or if you have the recordAsString, you can create the bean record with the string and obtain the single fields value:
 ```
 Person person = new Person();
 BeanRecord record = new BeanRecord(person, recordAsString);
