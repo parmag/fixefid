@@ -1976,7 +1976,7 @@ public abstract class AbstractRecord {
 			String[] keyTokens = key.split("\\" + CMP_FIELD_NAME_SEP);
 			if (keyTokens.length != fieldOccur.length) {
 				throw new RecordException(ErrorCode.RE36, "The number of fieldOccurs " + fieldOccur.length + 
-					" is diff from the number of components of the key" + key);
+					" is diff from the number of components of the key " + key);
 			}
 			for (int i = 0; i < keyTokens.length; i++) {
 				sj.add(fieldNameForSimpleKey(keyTokens[i], fieldOccur[i]));
