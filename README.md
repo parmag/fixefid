@@ -52,7 +52,172 @@ To include maven dependency of fixefid version 2.0.0 in your pom.xml, add this:
     <version>2.0.0</version>
 </dependency>
 ```
-Every record can be defined by Enum or Java Bean. 
+Every record can be defined by Enum or Java Bean. The most simple way to define a flat record is by Java Bean like this:
+```
+@FixefidRecord
+public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 20, fieldType = FieldType.AN)
+	private String fiscalCode;
+	
+	@FixefidField(fieldOrdinal = 2, fieldLen = 50, fieldType = FieldType.AN)
+	private String firstName;
+	
+	@FixefidField(fieldOrdinal = 3, fieldLen = 50, fieldType = FieldType.AN)
+	private String lastName;
+	
+	@FixefidDateFormat(pattern = "yyyy-MM-dd")
+	@FixefidField(fieldOrdinal = 4, fieldLen = 10, fieldType = FieldType.AN)
+	private Date birthDate;
+	
+	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
+	@FixefidField(fieldOrdinal = 5, fieldLen = 10, fieldType = FieldType.N)
+	private Long amount;
+	
+	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
+	@FixefidField(fieldOrdinal = 6, fieldLen = 1, fieldType = FieldType.AN)
+	private Boolean vip;
+	
+	@FixefidField(fieldOrdinal = 7, fieldLen = 3, fieldType = FieldType.N)
+	private Integer age;
+
+	public String getFiscalCode() {
+		return fiscalCode;
+	}
+	public void setFiscalCode(String fiscalCode) {
+		this.fiscalCode = fiscalCode;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	public Long getAmount() {
+		return amount;
+	}
+	public void setAmount(Long amount) {
+		this.amount = amount;
+	}
+	public Boolean getVip() {
+		return vip;
+	}
+	public void setVip(Boolean vip) {
+		this.vip = vip;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+}
+```
+then you can set the fields values and create a bean record to obtain the string representation of the bean:
+```
+Person person = new Person();
+person.setFirstName("Paul");
+
+BeanRecord record = new BeanRecord(person);
+String recordAsString = record.toString();
+```
+or if you have the recordAsString, you can create the bean record with the string and obtain the single fields value:
+```
+Person person = new Person();
+BeanRecord record = new BeanRecord(person, recordAsString);
+Sring firstName = person.getFirstName();
+```
+
+if you want to represent a CSV record, the most simple way is always by Java Bean:
+
+```
+@FixefidCSVRecord
+public class Person {
+	@FixefidCSVField(fieldOrdinal = 1, fieldType = FieldType.AN)
+	private String fiscalCode;
+	
+	@FixefidCSVField(fieldOrdinal = 2, fieldType = FieldType.AN)
+	private String firstName;
+	
+	@FixefidCSVField(fieldOrdinal = 3, fieldType = FieldType.AN)
+	private String lastName;
+	
+	@FixefidDateFormat(pattern = "yyyy-MM-dd")
+	@FixefidCSVField(fieldOrdinal = 4, fieldType = FieldType.AN)
+	private Date birthDate;
+	
+	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
+	@FixefidCSVField(fieldOrdinal = 5, fieldType = FieldType.N)
+	private Long amount;
+	
+	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
+	@FixefidCSVField(fieldOrdinal = 6, fieldType = FieldType.AN)
+	private Boolean vip;
+
+	public String getFiscalCode() {
+		return fiscalCode;
+	}
+	public void setFiscalCode(String fiscalCode) {
+		this.fiscalCode = fiscalCode;
+	}
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	public Long getAmount() {
+		return amount;
+	}
+	public void setAmount(Long amount) {
+		this.amount = amount;
+	}
+	public Boolean getVip() {
+		return vip;
+	}
+	public void setVip(Boolean vip) {
+		this.vip = vip;
+	}
+}
+```
+then you can set the fields values and create a bean CSV record to obtain the string representation of the bean:
+```
+Person person = new Person();
+person.setFirstName("Paul");
+
+CSVBeanRecord record = new CSVBeanRecord(person);
+String recordAsString = record.toString();
+```
+or if you have the recordAsString, you can create the bean CSV record with the string and obtain the single fields value:
+```
+Person person = new Person();
+CSVBeanRecord record = new CSVBeanRecord(person, recordAsString);
+Sring firstName = person.getFirstName();
+```
+but let's going on the details.
 
 ## Getting started by examples
 
@@ -751,7 +916,7 @@ public class Person {
 	....
 	@FixefidDecimalFormat(pattern = "0.00", locale = "en", removeDecimalSeparator = false)
 	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
-	private String amount;
+	private Long amount;
 ```
 
 ## Field padding
@@ -770,7 +935,7 @@ Paul                                      Robinson0510000150099
 moreover the padding behavior can be set at Record level like this:
 
 ```
-Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, );
+Record<PersonRecordField> record = new Record<PersonRecordField>(RecordWay.IN, null, PersonRecordField.class, null, Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")));
 ```
 in this case all the fields of the record are left padded with spaces. Anyway, the extended property set by field level, always win vs the same extended property set by record level.
 
