@@ -71,7 +71,7 @@ public class Person {
 	
 	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
 	@FixefidField(fieldOrdinal = 5, fieldLen = 10, fieldType = FieldType.N)
-	private Long amount;
+	private Double amount;
 	
 	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
 	@FixefidField(fieldOrdinal = 6, fieldLen = 1, fieldType = FieldType.AN)
@@ -104,10 +104,10 @@ public class Person {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	public Long getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public Boolean getVip() {
@@ -128,9 +128,19 @@ then you can set the fields values and create a bean record to obtain the string
 ```
 Person person = new Person();
 person.setFirstName("Paul");
-
+person.setLastName("Robinson");
+person.setAge(23);
+person.setAmount(50000.00);
+person.setBirthDate(birthDate); 
+person.setFiscalCode("FISCALE_CODE");
+person.setVip(true);
+		
 BeanRecord record = new BeanRecord(person);
 String recordAsString = record.toString();
+```
+where the system out of recordAsString is like:
+```
+FISCALE_CODE        Paul                                              Robinson                                          1967-08-040005000000Y023
 ```
 or if you have the recordAsString, you can create the bean record with the string and obtain the single fields value:
 ```
@@ -159,11 +169,14 @@ public class Person {
 	
 	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
 	@FixefidCSVField(fieldOrdinal = 5, fieldType = FieldType.N)
-	private Long amount;
+	private Double amount;
 	
 	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
 	@FixefidCSVField(fieldOrdinal = 6, fieldType = FieldType.AN)
 	private Boolean vip;
+	
+	@FixefidCSVField(fieldOrdinal = 7, fieldType = FieldType.N)
+	private Integer age;
 
 	public String getFiscalCode() {
 		return fiscalCode;
@@ -189,10 +202,10 @@ public class Person {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	public Long getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public Boolean getVip() {
@@ -200,6 +213,12 @@ public class Person {
 	}
 	public void setVip(Boolean vip) {
 		this.vip = vip;
+	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
 	}
 }
 ```
@@ -210,6 +229,10 @@ person.setFirstName("Paul");
 
 CSVBeanRecord record = new CSVBeanRecord(person);
 String recordAsString = record.toString();
+```
+where the system out of recordAsString is like:
+```
+FISCALE_CODE,Paul,Robinson,2021-08-04,5000000,Y,23
 ```
 or if you have the recordAsString, you can create the bean CSV record with the string and obtain the single fields value:
 ```
