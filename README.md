@@ -226,6 +226,12 @@ then you can set the fields values and create a bean CSV record to obtain the st
 ```
 Person person = new Person();
 person.setFirstName("Paul");
+person.setLastName("Robinson");
+person.setAge(23);
+person.setAmount(50000.00);
+person.setBirthDate(birthDate); 
+person.setFiscalCode("FISCALE_CODE");
+person.setVip(true);
 
 CSVBeanRecord record = new CSVBeanRecord(person);
 String recordAsString = record.toString();
