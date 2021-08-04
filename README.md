@@ -238,7 +238,7 @@ String recordAsString = record.toString();
 ```
 where the system out of recordAsString is like:
 ```
-FISCALE_CODE,Paul,Robinson,2021-08-04,5000000,Y,23
+FISCALE_CODE,Paul,Robinson,1967-08-04,5000000,Y,23
 ```
 or if you have the recordAsString, you can create the bean CSV record with the string and obtain the single fields value:
 ```
