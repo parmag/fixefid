@@ -10,6 +10,7 @@ It differs from other tools focusing on:
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
   <li>Default fields values</li>
+  <li>Record validation</li>
   <li>Record status and custom validators</li>
   <li>Record pretty print</li>
   <li>Record definition with Java Bean or Java Enum</li>	
@@ -1046,6 +1047,44 @@ private String email;
 private String phone;
 ```
 in the case above, we have added the phone field after the email field without modifying the fieldOrdinal, but using the field subOrdinal
+
+## Record validation
+A record validation can be obtained in various ways. For instance, before to generate the output representation of the record via toString method, we can check the record status like this:
+```
+OutputRecord or = new OutputRecord();
+or.setReservedData("XXXXXXXXXXXXXXXXXXXX"); 
+or.setData("YYYYYYYYYYYYY");
+BeanRecord br = new BeanRecord(or);
+boolean isRecordError = br.isErrorStatus();
+```
+or we can check the error status for a particular field:
+```
+boolean isReservedDataFieldError = br.isErrorStatus("reservedData")
+```
+or obtained the field validation info for a particolar field:
+```
+FieldValidationInfo functionUserIdValidationInfo = br.getRecordFieldValidationInfo("functionUserId");
+RecordFieldValidationStatus validationStatus = functionUserIdValidationInfo.getValidationStatus();
+int validationCode = functionUserIdValidationInfo.getValidationCode();
+String validationMessage = functionUserIdValidationInfo.getValidationMessage();
+```
+if the record status is in error and we do the toString, a RecordException is thrown with all errors present in the record. This is the print of the record exception message:
+```
+RE10 - Record has Error status. Cause: key-1=[ERROR][key=[           ] not valid (is mandatory)]
+prg-1=[ERROR][prg=[      ] not valid (is mandatory)]
+data-1=[ERROR][data=[YYYYYYYYYYYYY] not valid lenght. Expected lenght=[10].]
+reservedData-1=[ERROR][reservedData=[XXXXXXXXXXXXXXXXXXXX] not valid lenght. Expected lenght=[17].]
+```
+If we are reading from a string, and the string is not a valid representation of the bean, a FieldExpcetion is thrown. For instance:
+```
+OutputHeaderRecord ohr = new OutputHeaderRecord();
+new BeanRecord(ohr, S1_HEADER_ERROR);
+```
+this is the print of the field exception message:
+```
+FE10 - Validation Code 0 - Field personId has status ERROR. Cause: FE23 - Field name=[personId] value=[38000010A] is not Integer
+```
+The same for the enum, of course;
 
 ## Record status and custom validator
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
