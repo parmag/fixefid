@@ -1068,6 +1068,18 @@ RecordFieldValidationStatus validationStatus = functionUserIdValidationInfo.getV
 int validationCode = functionUserIdValidationInfo.getValidationCode();
 String validationMessage = functionUserIdValidationInfo.getValidationMessage();
 ```
+or obtain the pretty print of all fields in error status:
+```
+br.prettyPrintErrorValidationInfo();
+```
+This is the pretty print:
+```
+key-1=[ERROR][key=[           ] not valid (is mandatory)]
+prg-1=[ERROR][prg=[      ] not valid (is mandatory)]
+data-1=[ERROR][data=[YYYYYYYYYYYYY] not valid lenght. Expected lenght=[10]
+reservedData-1=[ERROR][reservedData=[XXXXXXXXXXXXXXXXXXXX] not valid lenght. Expected lenght=[17].]
+```
+
 if the record status is in error and we do the toString, a RecordException is thrown with all errors present in the record. This is the print of the record exception message:
 ```
 RE10 - Record has Error status. Cause: key-1=[ERROR][key=[           ] not valid (is mandatory)]
