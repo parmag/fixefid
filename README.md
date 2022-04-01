@@ -1099,9 +1099,20 @@ MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
+or you can use the @FixefidValidator annotation like this
+```
+@FixefidValidator(className = "com.github.example.NameValidator")
+@FixefidField(fieldOrdinal = 3, fieldLen = 50, fieldType = FieldType.AN) private String lastName;
+```
+where com.github.example.NameValidator must be an instance of FieldValidator.
+
 if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
 ```
 boolean isError = record.isErrorStatus(PersonRecordField.lastName);
+ ```
+or for all fields:
+```
+boolean isError = record.isErrorStatus();
  ```
 
 moreover the validation info can be retrieved like this:
