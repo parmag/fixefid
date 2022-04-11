@@ -570,7 +570,8 @@ public abstract class AbstractRecord {
 		for (String key : fieldsMap.keySet()) {
 			Field rf = fieldsMap.get(key);
 			int len = rf.getLen(); 
-			sb.append(fieldNameForKey(key, rf.getOccurIndex()) + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
+			int[] fieldOccurs = fieldOccursForKey(key);
+			sb.append(fieldNameForKey(key, fieldOccurs) + "=[" + rf.getIndex() + "][" + rf.getSubIndex() + "][" + rf.getOccurIndex() + "][" + offset + "][" + len + "][" + rf.getValue() + "]");
 			FieldValidationInfo vi = rf.getValidationInfo();
 			if (vi != null) {
 				sb.append("[" + vi.getValidationStatus().name() + "][" + vi.getValidationMessage() + "]\n");

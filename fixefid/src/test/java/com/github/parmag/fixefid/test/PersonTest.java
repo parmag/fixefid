@@ -594,4 +594,10 @@ public class PersonTest {
 		Map<String, FieldValidationInfo> recordFieldErrorValidationInfoMap = PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.getRecordFieldErrorValidationInfo();
 		Assert.assertTrue(0 == recordFieldErrorValidationInfoMap.size());
 	}
+	
+	@Test
+	public void testPrettyPrint() {
+		String prettyPrint = PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.prettyPrint();
+		Assert.assertTrue(0 < prettyPrint.length()); 
+	}
 }

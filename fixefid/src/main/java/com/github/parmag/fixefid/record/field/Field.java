@@ -1060,7 +1060,7 @@ public class Field {
      */
 	@Override
 	public String toString() {
-		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", name=" + name + ", type="
+		return "RecordField [value=" + value + ", defaultValue=" + defaultValue + ", fixedValues=" + fixedValues + ", name=" + name + ", type="
 				+ type + ", index=" + index + ", subIndex=" + subIndex + ", occurIndex=" + occurIndex + ", len=" 
 				+ len + ", mandatory=" + mandatory + ", recordWay=" 
 				+ recordWay + ", validationInfo=" + validationInfo + ", validator=" + validator + ", removeDecimalSeparator=" 
