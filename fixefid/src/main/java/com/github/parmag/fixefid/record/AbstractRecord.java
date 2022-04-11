@@ -1764,6 +1764,40 @@ public abstract class AbstractRecord {
 	}
 	
 	/**
+	 * Returns the validion info map <code>fieldName, fieldValidationInfo</code> of all fields 
+	 * 
+	 * @return the validion info map <code>fieldName, fieldValidationInfo</code> of all fields 
+	 */
+	public Map<String, FieldValidationInfo> getRecordFieldValidationInfo() {
+		Map<String, FieldValidationInfo> result = new LinkedHashMap<>();
+		for (String key : fieldsMap.keySet()) {
+			Field rf = fieldsMap.get(key); 
+			FieldValidationInfo vi = rf.getValidationInfo();
+			result.put(rf.getName(), vi);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Returns the validion info map <code>fieldName, fieldValidationInfo</code> of all fields with <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 * 
+	 * @return the validion info map <code>fieldName, fieldValidationInfo</code> of all fields with <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
+	 */
+	public Map<String, FieldValidationInfo> getRecordFieldErrorValidationInfo() {
+		Map<String, FieldValidationInfo> result = new LinkedHashMap<>();
+		for (String key : fieldsMap.keySet()) {
+			Field rf = fieldsMap.get(key); 
+			FieldValidationInfo vi = rf.getValidationInfo();
+			if (vi != null && FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(vi.getValidationStatus())) {
+				result.put(rf.getName(), vi);
+			} 
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * Returns true if the field represented by the <code>fieldName</code> param has 
 	 * <code>FieldValidationInfo.RecordFieldValidationStatus.ERROR</code> status
 	 * 

@@ -22,6 +22,7 @@ import com.github.parmag.fixefid.record.eps.FieldExtendedPropertyFactory;
 import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldExtendedPropertyType;
+import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 import com.github.parmag.fixefid.record.format.CustomFormat;
 import com.github.parmag.fixefid.record.format.SimpleBooleanFormat;
 import com.github.parmag.fixefid.test.bean.Address;
@@ -580,5 +581,17 @@ public class PersonTest {
 	@Test
 	public void testPersonCreateRecordWay() { 
 		Assert.assertTrue(RecordWay.OUT.equals(PERSON_BEAN_RECORD_WAY_OUT.getRecordWay()));
+	}
+	
+	@Test
+	public void testRecordFieldValidationInfo() {
+		Map<String, FieldValidationInfo> recordFieldValidationInfoMap = PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.getRecordFieldValidationInfo();
+		Assert.assertTrue(21 == recordFieldValidationInfoMap.size());
+	}
+	
+	@Test
+	public void testRecordFieldErrorValidationInfo() {
+		Map<String, FieldValidationInfo> recordFieldErrorValidationInfoMap = PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.getRecordFieldErrorValidationInfo();
+		Assert.assertTrue(0 == recordFieldErrorValidationInfoMap.size());
 	}
 }
