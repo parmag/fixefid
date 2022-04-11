@@ -10,6 +10,7 @@ It differs from other tools focusing on:
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
   <li>Default fields values</li>
+  <li>Record validation</li>
   <li>Record status and custom validators</li>
   <li>Record pretty print</li>
   <li>Record definition with Java Bean or Java Enum</li>	
@@ -71,7 +72,7 @@ public class Person {
 	
 	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
 	@FixefidField(fieldOrdinal = 5, fieldLen = 10, fieldType = FieldType.N)
-	private Long amount;
+	private Double amount;
 	
 	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
 	@FixefidField(fieldOrdinal = 6, fieldLen = 1, fieldType = FieldType.AN)
@@ -104,10 +105,10 @@ public class Person {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	public Long getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public Boolean getVip() {
@@ -128,9 +129,19 @@ then you can set the fields values and create a bean record to obtain the string
 ```
 Person person = new Person();
 person.setFirstName("Paul");
-
+person.setLastName("Robinson");
+person.setAge(23);
+person.setAmount(50000.00);
+person.setBirthDate(birthDate); 
+person.setFiscalCode("FISCALE_CODE");
+person.setVip(true);
+		
 BeanRecord record = new BeanRecord(person);
 String recordAsString = record.toString();
+```
+where the system out of recordAsString is like:
+```
+FISCALE_CODE        Paul                                              Robinson                                          1967-08-040005000000Y023
 ```
 or if you have the recordAsString, you can create the bean record with the string and obtain the single fields value:
 ```
@@ -159,11 +170,14 @@ public class Person {
 	
 	@FixefidDecimalFormat(pattern = "0.00", removeDecimalSeparator = true)
 	@FixefidCSVField(fieldOrdinal = 5, fieldType = FieldType.N)
-	private Long amount;
+	private Double amount;
 	
 	@FixefidBooleanFormat(trueValue = "Y", falseValue = "N")
 	@FixefidCSVField(fieldOrdinal = 6, fieldType = FieldType.AN)
 	private Boolean vip;
+	
+	@FixefidCSVField(fieldOrdinal = 7, fieldType = FieldType.N)
+	private Integer age;
 
 	public String getFiscalCode() {
 		return fiscalCode;
@@ -189,10 +203,10 @@ public class Person {
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
-	public Long getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
-	public void setAmount(Long amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	public Boolean getVip() {
@@ -201,15 +215,31 @@ public class Person {
 	public void setVip(Boolean vip) {
 		this.vip = vip;
 	}
+	public Integer getAge() {
+		return age;
+	}
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 }
 ```
 then you can set the fields values and create a bean CSV record to obtain the string representation of the bean:
 ```
 Person person = new Person();
 person.setFirstName("Paul");
+person.setLastName("Robinson");
+person.setAge(23);
+person.setAmount(50000.00);
+person.setBirthDate(birthDate); 
+person.setFiscalCode("FISCALE_CODE");
+person.setVip(true);
 
 CSVBeanRecord record = new CSVBeanRecord(person);
 String recordAsString = record.toString();
+```
+where the system out of recordAsString is like:
+```
+FISCALE_CODE,Paul,Robinson,1967-08-04,5000000,Y,23
 ```
 or if you have the recordAsString, you can create the bean CSV record with the string and obtain the single fields value:
 ```
@@ -1018,6 +1048,56 @@ private String phone;
 ```
 in the case above, we have added the phone field after the email field without modifying the fieldOrdinal, but using the field subOrdinal
 
+## Record validation
+A record validation can be obtained in various ways. For instance, before to generate the output representation of the record via toString method, we can check the record status like this:
+```
+OutputRecord or = new OutputRecord();
+or.setReservedData("XXXXXXXXXXXXXXXXXXXX"); 
+or.setData("YYYYYYYYYYYYY");
+BeanRecord br = new BeanRecord(or);
+boolean isRecordError = br.isErrorStatus();
+```
+or we can check the error status for a particular field:
+```
+boolean isReservedDataFieldError = br.isErrorStatus("reservedData")
+```
+or obtained the field validation info for a particolar field:
+```
+FieldValidationInfo functionUserIdValidationInfo = br.getRecordFieldValidationInfo("functionUserId");
+RecordFieldValidationStatus validationStatus = functionUserIdValidationInfo.getValidationStatus();
+int validationCode = functionUserIdValidationInfo.getValidationCode();
+String validationMessage = functionUserIdValidationInfo.getValidationMessage();
+```
+or obtain the pretty print of all fields in error status:
+```
+br.prettyPrintErrorValidationInfo();
+```
+This is the pretty print:
+```
+key-1=[ERROR][key=[           ] not valid (is mandatory)]
+prg-1=[ERROR][prg=[      ] not valid (is mandatory)]
+data-1=[ERROR][data=[YYYYYYYYYYYYY] not valid lenght. Expected lenght=[10]
+reservedData-1=[ERROR][reservedData=[XXXXXXXXXXXXXXXXXXXX] not valid lenght. Expected lenght=[17].]
+```
+
+if the record status is in error and we do the toString, a RecordException is thrown with all errors present in the record. This is the print of the record exception message:
+```
+RE10 - Record has Error status. Cause: key-1=[ERROR][key=[           ] not valid (is mandatory)]
+prg-1=[ERROR][prg=[      ] not valid (is mandatory)]
+data-1=[ERROR][data=[YYYYYYYYYYYYY] not valid lenght. Expected lenght=[10].]
+reservedData-1=[ERROR][reservedData=[XXXXXXXXXXXXXXXXXXXX] not valid lenght. Expected lenght=[17].]
+```
+If we are reading from a string, and the string is not a valid representation of the bean, a FieldExpcetion is thrown. For instance:
+```
+OutputHeaderRecord ohr = new OutputHeaderRecord();
+new BeanRecord(ohr, S1_HEADER_ERROR);
+```
+this is the print of the field exception message:
+```
+FE10 - Validation Code 0 - Field personId has status ERROR. Cause: FE23 - Field name=[personId] value=[38000010A] is not Integer
+```
+The same for the enum, of course;
+
 ## Record status and custom validator
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
 
@@ -1070,9 +1150,20 @@ MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
+or you can use the @FixefidValidator annotation like this
+```
+@FixefidValidator(className = "com.github.example.NameValidator")
+@FixefidField(fieldOrdinal = 3, fieldLen = 50, fieldType = FieldType.AN) private String lastName;
+```
+where com.github.example.NameValidator must be an instance of FieldValidator.
+
 if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
 ```
 boolean isError = record.isErrorStatus(PersonRecordField.lastName);
+ ```
+or for all fields:
+```
+boolean isError = record.isErrorStatus();
  ```
 
 moreover the validation info can be retrieved like this:
