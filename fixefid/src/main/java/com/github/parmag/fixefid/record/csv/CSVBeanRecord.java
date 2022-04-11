@@ -3,8 +3,6 @@ package com.github.parmag.fixefid.record.csv;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
