@@ -30,6 +30,7 @@ import com.github.parmag.fixefid.test.bean.Person;
 import com.github.parmag.fixefid.test.bean.Person1000;
 import com.github.parmag.fixefid.test.bean.PersonWithAddress;
 import com.github.parmag.fixefid.test.bean.PersonWithAddressOccurs;
+import com.github.parmag.fixefid.test.bean.PersonWithAddressWithFixedValues;
 import com.github.parmag.fixefid.test.bean.PersonWithNotUniqueOrdinal;
 
 public class PersonTest {
@@ -60,6 +61,7 @@ public class PersonTest {
 	private static final Person1000 PERSON_1000_BEAN_FOR_STRING = new Person1000();
 	
 	private static final PersonWithAddress PERSON_WITH_ADDRESS_BEAN = new PersonWithAddress();
+	private static final PersonWithAddressWithFixedValues PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN = new PersonWithAddressWithFixedValues();
 	private static final PersonWithAddress PERSON_WITH_ADDRESS_BEAN_FOR_INIT_FIELD = new PersonWithAddress();
 	
 	private static final PersonWithAddressOccurs PERSON_WITH_ADDRESS_OCCURS_BEAN = new PersonWithAddressOccurs();
@@ -67,10 +69,12 @@ public class PersonTest {
 	
 	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
 	public static final String ADDRESS1_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
+	public static final String ADDRESS1_WITH_FIXED_VALUES_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77                0000010000001,0000002.00Y2022-04-11";
 	public static final String ADDRESS2_AS_STRING = "Modena                   41100MOITAVia Modenese                  81        ";
 	public static final String ADDRESS3_AS_STRING = "Piacenza                 29121PCITAVia Piacentina                34        ";
 	
 	public static final String PERSON_WITH_ADDRESS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_AS_STRING;
+	public static final String PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_WITH_FIXED_VALUES_AS_STRING;
 	public static final String PERSON_WITH_ADDRESS_OCCURS_RECORD_AS_STRING = PERSON_RECORD_AS_STRING + ADDRESS1_AS_STRING + ADDRESS2_AS_STRING + ADDRESS3_AS_STRING;
 			
 	private static final BeanRecord PERSON_BEAN_RECORD; 
@@ -81,6 +85,7 @@ public class PersonTest {
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_FIELD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_BEAN_RECORD;
+	private static final BeanRecord PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_BEAN_RECORD_INIT_WITH_FIELD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_OCCURS_BEAN_RECORD_INIT_WITH_FIELD;
@@ -170,6 +175,28 @@ public class PersonTest {
 		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.nationIso3", "ITA");
 		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.address", "Via Ugo Bassi");
 		PERSON_WITH_ADDRESS_BEAN_RECORD.setValue("address.num", "77");
+		
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD = new BeanRecord(PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN, null, null, MAP_FIELD_EXTENDED_PROPERTIES); 
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("firstName", "Paolo");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("lastName", "Rossi");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("age", 51);
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("birthDate", CAL.getTime()); 
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("stature", 1.86f);
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("birthDistrict", "bo");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("vip", "N");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("id", "0000000001");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("tor", "00001.0001");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("turnover", "0100000.00");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.location", "Bologna");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.postalCode", "40128");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.district", "bo");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.nationIso3", "ITA");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.address", "Via Ugo Bassi");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.num", "77");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.addressId2", "1,00");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.addressId3", "2.00");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.vip", "Y");
+		PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.setValue("address.addressDate", "2022-04-11");
 		
 		PERSON_WITH_ADDRESS_BEAN_FOR_INIT_FIELD.setFirstName("Paolo");
 		PERSON_WITH_ADDRESS_BEAN_FOR_INIT_FIELD.setLastName("Rossi");
@@ -265,6 +292,11 @@ public class PersonTest {
 	@Test
 	public void testPersonWithAddressToString() { 
 		Assert.assertTrue(PERSON_WITH_ADDRESS_RECORD_AS_STRING.contentEquals(PERSON_WITH_ADDRESS_BEAN_RECORD.toString()));
+	}
+	
+	@Test
+	public void testPersonWithAddressWithFixedValuesToString() { 
+		Assert.assertTrue(PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_RECORD_AS_STRING.contentEquals(PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.toString()));
 	}
 	
 	@Test

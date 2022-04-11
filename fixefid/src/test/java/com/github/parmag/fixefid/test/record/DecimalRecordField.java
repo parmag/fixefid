@@ -41,7 +41,7 @@ public enum DecimalRecordField implements FieldProperty {
 		Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
 				@Override
 				public FieldValidationInfo valid(String name, int index, int subIndex, int occurIndex, FieldType type, FieldMandatory mandatory, String value,
-						List<FieldExtendedProperty> fieldExtendedProperties) {
+						List<FieldExtendedProperty> fieldExtendedProperties, List<String> fixedValues) {
 					
 					if (value.contains("-")) {
 						return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "value cannot be negative");

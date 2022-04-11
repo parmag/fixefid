@@ -123,7 +123,7 @@ public abstract class AbstractRecord {
 		
 		if (fillerLen > 0) {
 			fieldsMap.put(keyForFieldNameAndFieldOccur(FINAL_FILLER_NAME, DEF_OCCUR), new Field(FINAL_FILLER_NAME, fieldsMap.size() + 1, 
-				DEF_SUB_INDEX, DEF_OCCUR, FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null, "", ""));
+				DEF_SUB_INDEX, DEF_OCCUR, FieldType.AN, fillerLen, FieldMandatory.NO, recordWay, null, null, null, "", ""));
 		}
 	}
 	

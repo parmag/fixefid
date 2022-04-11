@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.github.parmag.fixefid.record.bean.FixefidField;
 import com.github.parmag.fixefid.record.bean.FixefidRecord;
@@ -466,7 +468,7 @@ public class BeanRecord extends AbstractRecord {
 					for (int fieldOccur = 1; fieldOccur <= fieldOccurs; fieldOccur++) {
 						fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, fieldOccur), new com.github.parmag.fixefid.record.field.Field (
 							fieldName, fieldOrdinal, fieldSubOrdinal, fieldOccur, fieldTypeList, lenForBeanField(field), 
-							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps, 
+							mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), fixedValuesForBeanField(field), eps, 
 							displayNameForBeanField(field), descriptionForBeanField(field)));
 						
 						syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, fieldOccur);
@@ -483,7 +485,7 @@ public class BeanRecord extends AbstractRecord {
 					
 					fieldsMap.put(keyForFieldNameAndFieldOccur(fieldName, DEF_OCCUR), new com.github.parmag.fixefid.record.field.Field (
 						fieldName, fieldOrdinal, fieldSubOrdinal, DEF_OCCUR, fieldType, lenForBeanField(field), 
-						mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), eps, 
+						mandatoryForBeanField(field), recordWay, defaultValueForBeanField(field), fixedValuesForBeanField(field), eps, 
 						displayNameForBeanField(field), descriptionForBeanField(field)));
 					
 					syncValueFromBeanFieldToRecordField(null, field, bean, fieldsMap, DEF_OCCUR);
@@ -973,6 +975,33 @@ public class BeanRecord extends AbstractRecord {
 		}
 		
 		return fieldDescription;
+	}
+	
+	/**
+	 * The fixed values of the bean field param, retrieved from its <code>FixefidField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the fixed values of the <code>f</code> param, retrieved from its <code>FixefidField.class</code> annotationn
+	 */
+	protected List<String> fixedValuesForBeanField(Field f) {
+		List<String> fixedValues = null;
+		FixefidField a = f.getAnnotation(FixefidField.class);
+		if (a != null) {
+			String fieldFixedValues = a.fieldFixedValues();
+			if (!"".equals(fieldFixedValues)) {
+				fixedValues = splitFixedValues(fieldFixedValues);
+			}
+		}
+		
+		return fixedValues;
+	}
+	
+	/**
+	 * @param fieldFixedValues a pipe separeted list of fixed values
+	 * @return the fixed values
+	 */
+	protected List<String> splitFixedValues(String fieldFixedValues) {
+		return Stream.of(fieldFixedValues.split("\\|")).map(String::trim).collect(Collectors.toList());
 	}
 	
 	@SuppressWarnings("rawtypes")

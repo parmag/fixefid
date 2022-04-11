@@ -22,8 +22,9 @@ public interface FieldValidator {
 	 * @param mandatory the mandatory type of the field to validate
 	 * @param value the value of the field to validate
 	 * @param fieldExtendedProperties the field extended properties of the field to validate
+	 * @param fixedValues the pipe separated list of valid values
 	 * @return the validation info which represents the validation of the <code>value</code> param of the field with <code>name</code> param
 	 */
 	FieldValidationInfo valid(String name, int index, int subIndex, int occurIndex, FieldType type, FieldMandatory mandatory, String value,
-			List<FieldExtendedProperty> fieldExtendedProperties);
+			List<FieldExtendedProperty> fieldExtendedProperties, List<String> fixedValues);
 } 

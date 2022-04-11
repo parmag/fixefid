@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class Field {
 	private int subIndex;
 	private int occurIndex;
 	private String defaultValue;
+	private List<String> fixedValues;
 	private FieldValidator validator;
 	private FieldValidationInfo validationInfo;
 	private int padStrNum;
@@ -70,12 +72,14 @@ public class Field {
 	 * @param mandatory the mandatory type of this <code>Field</code>
 	 * @param recordWay the record way type of this <code>Field</code>
 	 * @param defaultValue the default value of this <code>Field</code>
+	 * @param fixedValues the pipe separated list of valid values of this <code>Field</code>
 	 * @param fieldExtendedProperties the field extended properties of this <code>Field</code>
 	 * @param displayName the display name of this <code>Field</code>
 	 * @param description the description of this <code>Field</code>
 	 */
 	public Field(String name, int index, int subIndex, int occurIndex, FieldType type, int len, FieldMandatory mandatory, RecordWay recordWay, 
-			String defaultValue, List<FieldExtendedProperty> fieldExtendedProperties, String displayName, String description) {
+			String defaultValue, List<String> fixedValues, List<FieldExtendedProperty> fieldExtendedProperties, String displayName, 
+			String description) {
 		this.name = name;
 		this.index = index; 
 		this.subIndex = subIndex;
@@ -85,6 +89,7 @@ public class Field {
 		this.mandatory = mandatory; 
 		this.recordWay = recordWay; 
 		this.defaultValue = defaultValue;
+		this.fixedValues = fixedValues != null ? fixedValues : new ArrayList<>();
 		this.displayName = displayName;
 		this.description = description;
 		this.validationInfo = new FieldValidationInfo();
@@ -942,10 +947,15 @@ public class Field {
 			return;
 		}
 		
+		validFixedValues();
+		if (FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(validationInfo.getValidationStatus())) {
+			return;
+		}
+		
 		String notValidMsg = "";
 		if (FieldType.N.equals(type)) {
 			if (validator != null) {
-				validationInfo = validator.valid(name, index, subIndex, occurIndex, type, mandatory, value, fieldExtendedProperties);
+				validationInfo = validator.valid(name, index, subIndex, occurIndex, type, mandatory, value, fieldExtendedProperties, fixedValues);
 			} else {
 				if (isDouble()) {
 					try {
@@ -975,7 +985,7 @@ public class Field {
 			}
 		} else if (FieldType.AN.equals(type)) {
 			if (validator != null) {
-				validationInfo = validator.valid(name, index, subIndex, occurIndex, type, mandatory, value, fieldExtendedProperties);
+				validationInfo = validator.valid(name, index, subIndex, occurIndex, type, mandatory, value, fieldExtendedProperties, fixedValues);
 			} else {
 				if (isDate()) {
 					try {
@@ -991,6 +1001,23 @@ public class Field {
 					}
 				}
 			}
+		}
+		
+		if (notValidMsg.length() > 0) {
+			validationInfo.setValidationStatus(RecordFieldValidationStatus.ERROR);
+			validationInfo.setValidationMessage(notValidMsg);
+		}
+	}
+	
+	/**
+	 * Valid value
+	 */
+	protected void validFixedValues() {
+		String notValidMsg = "";
+		
+		String trimmedValueAsString = undoPad(value).trim();
+		if (!fixedValues.isEmpty() && !trimmedValueAsString.isEmpty() && !fixedValues.contains(trimmedValueAsString)) {
+			notValidMsg = name + "=[" + value + "] not valid. Expected valid values=" + fixedValues;
 		}
 		
 		if (notValidMsg.length() > 0) {
@@ -1239,6 +1266,14 @@ public class Field {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public List<String> getFixedValues() {
+		return fixedValues;
+	}
+
+	public void setFixedValues(List<String> fixedValues) {
+		this.fixedValues = fixedValues;
 	}
 
 }

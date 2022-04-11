@@ -3,6 +3,8 @@ package com.github.parmag.fixefid.record.csv;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.github.parmag.fixefid.record.BeanRecord;
 import com.github.parmag.fixefid.record.ErrorCode;
@@ -366,6 +368,25 @@ public class CSVBeanRecord extends BeanRecord {
 		}
 		
 		return fieldDescription;
+	}
+	
+	/**
+	 * The fixed values of the bean field param, retrieved from its <code>FixefidCSVField.class</code> annotation
+	 * 
+	 * @param f the bean field
+	 * @return the fixed values of the <code>f</code> param, retrieved from its <code>FixefidCSVField.class</code> annotationn
+	 */
+	protected List<String> fixedValuesForBeanField(Field f) {
+		List<String> fixedValues = null;
+		FixefidCSVField a = f.getAnnotation(FixefidCSVField.class);
+		if (a != null) {
+			String fieldFixedValues = a.fieldFixedValues();
+			if (!"".equals(fieldFixedValues)) {
+				fixedValues = splitFixedValues(fieldFixedValues);
+			}
+		}
+		
+		return fixedValues;
 	}
 	
 	/**

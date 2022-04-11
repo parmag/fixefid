@@ -37,6 +37,10 @@ public @interface FixefidCSVField {
 	 */
 	public String fieldDefaultValue() default "";
 	/**
+	 * @return the pipe separated fixed values of the java bean property
+	 */
+	public String fieldFixedValues() default "";
+	/**
 	 * @return the sub ordinal of the java bean property
 	 */
 	public int fieldSubOrdinal() default 0;
