@@ -11,6 +11,7 @@ It differs from other tools focusing on:
   <li>LPad/RPad fields</li>
   <li>Automatic record filler</li>
   <li>Default fields values</li>
+  <li>Valid field values list</li>
   <li>Record validation</li>
   <li>Record status and custom validators</li>
   <li>Record pretty print</li>
@@ -530,7 +531,29 @@ Every field can have a default value. In the Person example above, all the field
 	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN, fieldDefaultValue = "Unknown")
 	private String firstName;
  ```
+## Field valid values list
+Every field can have a list of valid values. In the Person example above, for example, we can accept only three names:
 
+```
+ public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN, fieldDefaultValue = "Unknown", fieldFixedValues = "Peter|Jack|Oliver")
+	private String firstName;
+ ```
+if the first name contains "Jacob", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
+```
+boolean isError = record.isErrorStatus("firstName");
+ ```
+or for all fields:
+```
+boolean isError = record.isErrorStatus();
+ ```
+
+moreover the validation info can be retrieved like this:
+
+```
+FieldValidationInfo validInfo = record.getRecordFieldValidationInfo("firstName");
+ ```
+ 
 ## Alphanumeric data type with Date and Boolean formatters
 The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. To do that you need a date and a boolean formatter like these:
 
@@ -957,7 +980,7 @@ where com.github.example.NameValidator must be an instance of FieldValidator.
 
 if the last name contains "-", the custom validator returns an ERROR validation info and if you try to get the value, an exception is thrown. The field or record validation info can be tested before to get the exception with the method isErrorStatus:
 ```
-boolean isError = record.isErrorStatus(PersonRecordField.lastName);
+boolean isError = record.isErrorStatus("lastName");
  ```
 or for all fields:
 ```
