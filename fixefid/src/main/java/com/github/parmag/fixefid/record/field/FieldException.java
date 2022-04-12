@@ -14,6 +14,7 @@ public class FieldException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	
 	private ErrorCode errorCode;
+	private String fieldName;
 	
 	/**
      * Constructs an <code>FieldException</code> with the 
@@ -22,8 +23,9 @@ public class FieldException extends RuntimeException {
      * @param   errorCode   the error code.
      * @param   message  the  message.
      */
-	public FieldException(ErrorCode errorCode, String message) {
+	public FieldException(String fieldName, ErrorCode errorCode, String message) {
 		super(message);
+		this.setFieldName(fieldName); 
 		this.errorCode = errorCode;
 	}
 
@@ -34,8 +36,9 @@ public class FieldException extends RuntimeException {
      * @param   errorCode   the error code.
      * @param   cause   the specified cause.
      */
-	public FieldException(ErrorCode errorCode, Throwable cause) {
+	public FieldException(String fieldName, ErrorCode errorCode, Throwable cause) {
 		super(cause);
+		this.fieldName = fieldName;
 		this.errorCode = errorCode;
 	}
 
@@ -47,9 +50,10 @@ public class FieldException extends RuntimeException {
      * @param   message   the message.
      * @param   cause   the specified cause.
      */
-	public FieldException(ErrorCode errorCode, String message, Throwable cause) {
+	public FieldException(String fieldName, ErrorCode errorCode, String message, Throwable cause) {
 		super(message, cause);
-		this.errorCode = errorCode;
+		this.fieldName = fieldName;
+		this.errorCode = errorCode; 
 	}
 	
 	@Override
@@ -74,5 +78,13 @@ public class FieldException extends RuntimeException {
 	 */
 	public void setErrorCode(ErrorCode errorCode) {
 		this.errorCode = errorCode;
+	}
+
+	public String getFieldName() {
+		return fieldName;
+	}
+
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
 	}
 }

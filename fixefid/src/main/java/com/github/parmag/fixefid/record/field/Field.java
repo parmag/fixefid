@@ -105,7 +105,7 @@ public class Field {
 		}
 		
 		if (FieldType.N.equals(type) && len > 19) {
-			throw new FieldException(ErrorCode.FE12, "The field name=[" + name + "] type=[" + type.name() + "] has wrong length=[" + len + "]. Len <= 19 expected.");
+			throw new FieldException(name, ErrorCode.FE12, "The field name=[" + name + "] type=[" + type.name() + "] has wrong length=[" + len + "]. Len <= 19 expected.");
 		}
 		
 		if (defaultValue != null) {
@@ -139,33 +139,33 @@ public class Field {
 		}
 		
 		if (!FieldType.N.equals(type) && decimalFormat != null) {
-			throw new FieldException(ErrorCode.FE13, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property decimal format. Type " + FieldType.N.name() + " expected.");
+			throw new FieldException(name, ErrorCode.FE13, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property decimal format. Type " + FieldType.N.name() + " expected.");
 		}
 		
 		if (!FieldType.AN.equals(type) && dateFormat != null) {
-			throw new FieldException(ErrorCode.FE14, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property date format. Type " + FieldType.AN.name() + " expected.");
+			throw new FieldException(name, ErrorCode.FE14, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property date format. Type " + FieldType.AN.name() + " expected.");
 		}
 		
 		if (!FieldType.AN.equals(type) && booleanFormat != null) {
-			throw new FieldException(ErrorCode.FE15, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property boolean format. Type " + FieldType.AN.name() + " expected.");
+			throw new FieldException(name, ErrorCode.FE15, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property boolean format. Type " + FieldType.AN.name() + " expected.");
 		}
 		
 		if (!FieldType.AN.equals(type) && customFormat != null) {
-			throw new FieldException(ErrorCode.FE16, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property custom format. Type " + FieldType.AN.name() + " expected.");
+			throw new FieldException(name, ErrorCode.FE16, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property custom format. Type " + FieldType.AN.name() + " expected.");
 		}
 		
 		if ((dateFormat != null && booleanFormat != null) || (customFormat != null && booleanFormat != null)
 				 || (customFormat != null && dateFormat != null) || (customFormat != null && dateFormat != null && booleanFormat != null)) {
-			throw new FieldException(ErrorCode.FE17, "The field name=[" + name + "] type=[" + type.name() + " has wrong too much extended properties boolean format, date format and custom format. Only one is expected.");
+			throw new FieldException(name, ErrorCode.FE17, "The field name=[" + name + "] type=[" + type.name() + " has wrong too much extended properties boolean format, date format and custom format. Only one is expected.");
 		}
 		
 		if ((!FieldType.N.equals(type) || decimalFormat == null) && removeDecimalSeparator) {
-			throw new FieldException(ErrorCode.FE18, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property=[" + 
+			throw new FieldException(name, ErrorCode.FE18, "The field name=[" + name + "] type=[" + type.name() + " has wrong extended property=[" + 
 					FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR + "]. Type " + FieldType.N.name() + " expected.");
 		}
 		
 		if (padStr.length() != 1) {
-			throw new FieldException(ErrorCode.FE19, "The field name=[" + name + "] type=[" + type.name() + " has extended property=[" + 
+			throw new FieldException(name, ErrorCode.FE19, "The field name=[" + name + "] type=[" + type.name() + " has extended property=[" + 
 				FieldExtendedPropertyType.RPAD + " or " + FieldExtendedPropertyType.LPAD + "] with wrong pad string=[" + 
 					padStr + "] . Pad String Len=[1} is expected.");
 		}
@@ -212,7 +212,7 @@ public class Field {
 			
 			return valueAsString;
 		} else {
-			throw new FieldException(ErrorCode.FE20, parseTypeErrorMessage("String"));
+			throw new FieldException(name, ErrorCode.FE20, parseTypeErrorMessage("String"));
 		}
 	}
 	
@@ -237,10 +237,10 @@ public class Field {
 						return Long.valueOf(longValueAsString);
 					}
 				} catch (NumberFormatException nfe) {
-					throw new FieldException(ErrorCode.FE21, parseTypeErrorMessage("Long"));
+					throw new FieldException(name, ErrorCode.FE21, parseTypeErrorMessage("Long"));
 				}
 			} else {
-				throw new FieldException(ErrorCode.FE22, parseTypeErrorMessage("Long"));
+				throw new FieldException(name, ErrorCode.FE22, parseTypeErrorMessage("Long"));
 			}
 		}
 	}
@@ -266,10 +266,10 @@ public class Field {
 						return Integer.valueOf(intValueAsString);
 					}
 				} catch (NumberFormatException nfe) {
-					throw new FieldException(ErrorCode.FE23, parseTypeErrorMessage("Integer"));
+					throw new FieldException(name, ErrorCode.FE23, parseTypeErrorMessage("Integer"));
 				}
 			} else {
-				throw new FieldException(ErrorCode.FE24, parseTypeErrorMessage("Integer"));
+				throw new FieldException(name, ErrorCode.FE24, parseTypeErrorMessage("Integer"));
 			}
 		}
 	}
@@ -304,10 +304,10 @@ public class Field {
 						return new Double(decimalFormat.parse(doubleValueAsString).doubleValue());
 					}
 				} catch (ParseException e) {
-					throw new FieldException(ErrorCode.FE25, parseTypeErrorMessage("Double"));
+					throw new FieldException(name, ErrorCode.FE25, parseTypeErrorMessage("Double"));
 				}
 			} else {
-				throw new FieldException(ErrorCode.FE26, parseTypeErrorMessage("Double"));
+				throw new FieldException(name, ErrorCode.FE26, parseTypeErrorMessage("Double"));
 			}
 		}
 	}
@@ -342,10 +342,10 @@ public class Field {
 						return new Float(decimalFormat.parse(floatValueAsString).floatValue());
 					}
 				} catch (ParseException e) {
-					throw new FieldException(ErrorCode.FE27, parseTypeErrorMessage("Float"));
+					throw new FieldException(name, ErrorCode.FE27, parseTypeErrorMessage("Float"));
 				}
 			} else {
-				throw new FieldException(ErrorCode.FE28, parseTypeErrorMessage("Float"));
+				throw new FieldException(name, ErrorCode.FE28, parseTypeErrorMessage("Float"));
 			}
 		}
 	}
@@ -382,14 +382,14 @@ public class Field {
 					}
 					
 				} catch (ParseException e) {
-					throw new FieldException(ErrorCode.FE29, parseTypeErrorMessage("BigDecimal"));
+					throw new FieldException(name, ErrorCode.FE29, parseTypeErrorMessage("BigDecimal"));
 				}
 				
 				int fractionDigits = decimalFormat.getMaximumFractionDigits();
 				bigDecimal = bigDecimal.setScale(fractionDigits, RoundingMode.HALF_DOWN);
 				return bigDecimal;
 			} else {
-				throw new FieldException(ErrorCode.FE30, parseTypeErrorMessage("BigDecimal"));
+				throw new FieldException(name, ErrorCode.FE30, parseTypeErrorMessage("BigDecimal"));
 			}
 		}
 	}
@@ -412,10 +412,10 @@ public class Field {
 					return dateFormat.parse(dateAsString);
 				}
 			} catch (ParseException e) { 
-				throw new FieldException(ErrorCode.FE31, parseTypeErrorMessage("Date"));
+				throw new FieldException(name, ErrorCode.FE31, parseTypeErrorMessage("Date"));
 			}
 		} else {
-			throw new FieldException(ErrorCode.FE32, parseTypeErrorMessage("Date"));
+			throw new FieldException(name, ErrorCode.FE32, parseTypeErrorMessage("Date"));
 		}
 	}
 	
@@ -431,7 +431,7 @@ public class Field {
 		if (isBoolean()) {
 			return booleanFormat.parse(undoPad(value));
 		} else {
-			throw new FieldException(ErrorCode.FE33, parseTypeErrorMessage("Boolean"));
+			throw new FieldException(name, ErrorCode.FE33, parseTypeErrorMessage("Boolean"));
 		}
 	}
 
@@ -477,7 +477,7 @@ public class Field {
 		if (isLong() || isLenNormalized()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE34, parseTypeErrorMessage("Long"));
+			throw new FieldException(name, ErrorCode.FE34, parseTypeErrorMessage("Long"));
 		}
 	}
 	
@@ -500,7 +500,7 @@ public class Field {
 		if (isInteger()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE35, parseTypeErrorMessage("Integer"));
+			throw new FieldException(name, ErrorCode.FE35, parseTypeErrorMessage("Integer"));
 		}
 	}
 	
@@ -530,7 +530,7 @@ public class Field {
 		if (isDouble() || isLenNormalized()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE36, parseTypeErrorMessage("Double"));
+			throw new FieldException(name, ErrorCode.FE36, parseTypeErrorMessage("Double"));
 		} 
 	}
 	
@@ -560,7 +560,7 @@ public class Field {
 		if (isFloat()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE37, parseTypeErrorMessage("Float"));
+			throw new FieldException(name, ErrorCode.FE37, parseTypeErrorMessage("Float"));
 		} 
 	}
 	
@@ -590,7 +590,7 @@ public class Field {
 		if (isBigDecimal()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE38, parseTypeErrorMessage("BigDecimal"));
+			throw new FieldException(name, ErrorCode.FE38, parseTypeErrorMessage("BigDecimal"));
 		} 
 	}
 	
@@ -617,7 +617,7 @@ public class Field {
 		if (isDate()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE39, parseTypeErrorMessage("Date"));
+			throw new FieldException(name, ErrorCode.FE39, parseTypeErrorMessage("Date"));
 		}
 	}
 	
@@ -644,7 +644,7 @@ public class Field {
 		if (isBoolean()) {
 			setValue(valueAsString, false);
 		} else {
-			throw new FieldException(ErrorCode.FE40, parseTypeErrorMessage("Boolean"));
+			throw new FieldException(name, ErrorCode.FE40, parseTypeErrorMessage("Boolean"));
 		}
 	}
 
@@ -1124,7 +1124,7 @@ public class Field {
 		validLenAnMandatory();
 		
 		if (FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(validationInfo.getValidationStatus())) {
-			throw new FieldException(ErrorCode.FE10, "Validation Code " + validationInfo.getValidationCode() +
+			throw new FieldException(name, ErrorCode.FE10, "Validation Code " + validationInfo.getValidationCode() +
 					" - Field " + name + " has status " + validationInfo.getValidationStatus().name() + 
 					". Cause: " + validationInfo.getValidationMessage());
 		}
