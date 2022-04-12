@@ -14,11 +14,16 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 /**
  * The <code>Record</code> represents a fixed fields formatted text.
  * 
+ * @deprecated
+ * This class is no longer acceptable since version 3.0 and will be removed in the future.
+ * <p> Use {@link BeanRecord} instead.
+ * 
  * @author Giancarlo Parma
  *
  * 
  * @since 1.0
  */
+@Deprecated
 public class Record<T extends Enum<T> & FieldProperty> extends AbstractRecord {
 	private Class<T> fields; 
 	

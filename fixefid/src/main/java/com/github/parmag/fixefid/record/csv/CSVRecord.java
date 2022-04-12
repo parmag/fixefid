@@ -18,11 +18,16 @@ import com.github.parmag.fixefid.record.field.FieldValidationInfo;
 /**
  * The <code>CSVRecord</code> represents a CSV text.
  * 
+ * @deprecated
+ * This class is no longer acceptable since version 3.0 and will be removed in the future.
+ * <p> Use {@link CSVBeanRecord} instead.
+ * 
  * @author Giancarlo Parma
  *
  * 
  * @since 2.0
  */
+@Deprecated
 public class CSVRecord<T extends Enum<T> & CSVFieldProperty> extends AbstractRecord {
 	private Class<T> fields; 
 	
