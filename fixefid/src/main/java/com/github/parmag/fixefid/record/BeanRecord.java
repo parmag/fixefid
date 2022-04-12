@@ -29,6 +29,8 @@ import com.github.parmag.fixefid.record.field.FieldException;
 import com.github.parmag.fixefid.record.field.FieldExtendedProperty;
 import com.github.parmag.fixefid.record.field.FieldMandatory;
 import com.github.parmag.fixefid.record.field.FieldType;
+import com.github.parmag.fixefid.record.field.FieldValidationInfo;
+import com.github.parmag.fixefid.record.field.FieldValidationInfo.RecordFieldValidationStatus;
 
 /**
  * The <code>BeanRecord</code> represents a fixed fields formatted text backed by a java bean.
@@ -775,7 +777,17 @@ public class BeanRecord extends AbstractRecord {
 	public void syncValuesFromRecordToBean() {
 		for (String key : fieldsMap.keySet()) {
 		    int[] fieldOccurs = fieldOccursForKey(key);
-			syncValueFromRecordFieldToBeanField(fieldNameForKey(key, fieldOccurs), bean, fieldsMap, fieldOccurs);
+		    
+			try {
+				syncValueFromRecordFieldToBeanField(fieldNameForKey(key, fieldOccurs), bean, fieldsMap, fieldOccurs);
+			} catch (FieldException fe) {
+				com.github.parmag.fixefid.record.field.Field f = fieldsMap.get(key);
+				FieldValidationInfo vi = f.getValidationInfo();
+				if (!FieldValidationInfo.RecordFieldValidationStatus.ERROR.equals(vi.getValidationStatus())) {
+					vi.setValidationStatus(RecordFieldValidationStatus.ERROR);
+					vi.setValidationMessage(fe.getLocalizedMessage());
+				}
+			}
 		} 
 	}
 	

@@ -55,6 +55,7 @@ public class PersonTest {
 	
 	private static final Person PERSON_BEAN = new Person();
 	private static final Person PERSON_BEAN_FOR_STRING = new Person();
+	private static final Person PERSON_BEAN_FOR_STRING_WITH_ERROR = new Person();
 	private static final Person PERSON_BEAN_FOR_INIT_WITH_STRING = new Person();
 	private static final Person PERSON_BEAN_FOR_INIT_FIELD = new Person();
 	
@@ -69,6 +70,7 @@ public class PersonTest {
 	private static final PersonWithAddressOccurs PERSON_WITH_ADDRESS_OCCURS_BEAN_FOR_INIT_FIELD = new PersonWithAddressOccurs();
 	
 	public static final String PERSON_RECORD_AS_STRING = "Paolo                    Rossi                    05107102002186BON000000000100001.00010100000.00";
+	public static final String PERSON_RECORD_AS_STRING_WITH_ERROR = "Paolo                    Rossi                    05A07102002AAABON000000000100001.00010100000.00";
 	public static final String ADDRESS1_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77        ";
 	public static final String ADDRESS1_WITH_FIXED_VALUES_AS_STRING = "Bologna                  40128BOITAVia Ugo Bassi                 77                0000010000001,0000002.00Y2022-04-11";
 	public static final String ADDRESS2_AS_STRING = "Modena                   41100MOITAVia Modenese                  81        ";
@@ -83,6 +85,7 @@ public class PersonTest {
 	private static final BeanRecord PERSON_1000_BEAN_RECORD; 
 	private static final BeanRecord PERSON_1000_BEAN_RECORD_STRING; 
 	private static final BeanRecord PERSON_BEAN_RECORD_STRING;
+	private static final BeanRecord PERSON_BEAN_RECORD_STRING_WITH_ERROR;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_STRING;
 	private static final BeanRecord PERSON_BEAN_RECORD_INIT_WITH_FIELD;
 	private static final BeanRecord PERSON_WITH_ADDRESS_BEAN_RECORD;
@@ -144,6 +147,7 @@ public class PersonTest {
 		PERSON_1000_BEAN_RECORD_STRING = new BeanRecord(PERSON_1000_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES); 
 		
 		PERSON_BEAN_RECORD_STRING = new BeanRecord(PERSON_BEAN_FOR_STRING, PERSON_RECORD_AS_STRING, null, MAP_FIELD_EXTENDED_PROPERTIES);
+		PERSON_BEAN_RECORD_STRING_WITH_ERROR = new BeanRecord(PERSON_BEAN_FOR_STRING_WITH_ERROR, PERSON_RECORD_AS_STRING_WITH_ERROR, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		PERSON_BEAN_RECORD_INIT_WITH_STRING = new BeanRecord(PERSON_BEAN_FOR_INIT_WITH_STRING, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 		
 		PERSON_BEAN_FOR_INIT_FIELD.setFirstName("Paolo");
@@ -599,5 +603,11 @@ public class PersonTest {
 	public void testPrettyPrint() {
 		String prettyPrint = PERSON_WITH_ADDRESS_WITH_FIXED_VALUES_BEAN_RECORD.prettyPrint();
 		Assert.assertTrue(0 < prettyPrint.length()); 
+	}
+	
+	@Test
+	public void testPersonToStringConstructorWithError() {
+		Map<String, FieldValidationInfo> recordFieldErrorValidationInfoMap = PERSON_BEAN_RECORD_STRING_WITH_ERROR.getRecordFieldErrorValidationInfo();
+		Assert.assertTrue(2 == recordFieldErrorValidationInfoMap.size());
 	}
 }

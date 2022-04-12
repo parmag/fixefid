@@ -165,9 +165,11 @@ public abstract class AbstractRecord {
 		
 		doFill(record);
 		
-		String toStringRecord = toString();
-		if (!toStringRecord.equals(record)) {
-			throw new RecordException(ErrorCode.RE7, "Input record=[" + record + "] diff from toString record=[" + toStringRecord + "]");
+		if (!isErrorStatus()) {
+			String toStringRecord = toString();
+			if (!toStringRecord.equals(record)) {
+				throw new RecordException(ErrorCode.RE7, "Input record=[" + record + "] diff from toString record=[" + toStringRecord + "]");
+			}
 		}
 	}
 	
