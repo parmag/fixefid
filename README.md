@@ -1,19 +1,22 @@
 # Fixefid
 Fixefid is a Java library for working with fixed fields formatted text files and CSV files. 
 It differs from other tools focusing on:
-- Easy-to-use</li>
-- Record definition by Java Bean</li>
-- Numeric and Alphanumeric data types</li>
-- Custom formatters</li>  
-- In/Out fields mandatory awareness</li>
-- Fields normalization</li>
-- LPad/RPad fields</li>
-- Automatic record filler</li>
-- Default fields values</li>
-- Valid field values list</li>
-- [Record validation](./README.md#record-validation)</li>
-- Record status and custom validators</li>
-- Record pretty print</li>
+- [Easy-to-use](./README.md#getting-started)
+- [Record definition by Java Bean](./README.md#getting-started-with-java-bean)
+- [Alphanumeric data types](./README.md#alphanumeric-data-type-with-date-and-boolean-formatters)
+- [Numeric data types](./README.md#numeric-data-type)
+- [Custom formatters](./README.md#alphanumeric-data-type-with-custom-formatter)
+- [In/Out fields mandatory awareness](./README.md#field-mandatory)
+- [Fields normalization](./README.md#field-normalizationn)
+- [LPad/RPad fields](./README.md#field-padding)
+- [Automatic record filler](./README.md#record-len)
+- [Default fields values](./README.md#field-default-value)
+- [Valid field values list](./README.md#field-valid-values-list)
+- [Field occurrences](./README.md#field-occurrences)
+- [Record validation](./README.md#record-validation)
+- [Record status and custom validators](./README.md#record-status-and-custom-validator)
+- [Record pretty print](./README.md#record-pretty-print)
+- [CSV Record definition by Java Bean](./README.md#csv-record-with-javabean)
 
 ## What's new 3.0.0
 
