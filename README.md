@@ -21,7 +21,7 @@ It differs from other tools focusing on:
 The version 3.0.0 includes:
 
 <ul>
-	<li>Record validation improvement in terms of the possibility to obtain validation status for all field</li>
+	<li>Record validation improvement in terms of the possibility to obtain validation status for all fields</li>
 	<li>Fixed values accepted list in field annotation</li>
 	<li>Deprecated record representation by Java Enum (class Record and CSVRecord)</li>
 	<li>Minor bug fixes and enhancements</li>
@@ -627,7 +627,23 @@ BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPER
 ```
 
 or using annotation:
+```
+public class UpperLowerCustomFormat implements CustomFormat {
 
+	public UpperLowerCustomFormat() {
+	}
+
+	@Override
+	public String format(String value) {
+		return value.toUpperCase();
+	}
+
+	@Override
+	public String parse(String value) {
+		return value.toLowerCase();
+	}
+}
+```
 ```
 @FixefidRecord
 public class Person {
@@ -730,6 +746,34 @@ BeanRecord record = new BeanRecord(person, null, Arrays.asList(
 	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")), MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 
+the same result can be obtained via annotations. For example for the lastName field:
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidLPAD(padChar = " ")
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidDecimalFormat(pattern = "0.00", locale = "en", removeDecimalSeparator = false)
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private Long amount;
+```
+or at record level:
+```
+@FixefidLPAD(padChar = " ")
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidDecimalFormat(pattern = "0.00", locale = "en", removeDecimalSeparator = false)
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private Long amount;
+```
+
+
 ## Field normalization
 There are three types of normalization to apply at field or record level:
 <ul>
@@ -745,6 +789,11 @@ all those normalizations can be applyed with the method record.toNormalize. For 
  ```
 
 if the value is "àx@°§12", after normalization is "AX@??12"
+
+The same for all record fields:
+```
+ record.toNormalize();
+ ```
 
 ## Field occurrences
 For java bean fields, we can specify the relative occurrence:
@@ -885,6 +934,21 @@ BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPER
 ```
 
 or you can use the @FixefidValidator annotation like this
+```
+public class NameValidator implements FieldValidator {
+
+	@Override
+	public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
+			List<FieldExtendedProperty> fieldExtendedProperties) {
+		if (value.contains("-") || value.contains("_")) {
+			return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "The field " + name + " with value=[" + value + "] cannot contains - or _");
+		} else {
+			return new FieldValidationInfo();
+		}
+	}
+
+}
+```
 ```
 @FixefidValidator(className = "com.github.example.NameValidator")
 @FixefidField(fieldOrdinal = 3, fieldLen = 50, fieldType = FieldType.AN) private String lastName;
