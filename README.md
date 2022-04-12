@@ -12,7 +12,7 @@ It differs from other tools focusing on:
   <li>Automatic record filler</li>
   <li>Default fields values</li>
   <li>Valid field values list</li>
-  <li>[Record validation](#Record-validation)</li>
+  <li>[Record validation](#record-validation)</li>
   <li>Record status and custom validators</li>
   <li>Record pretty print</li>
 </ul>
