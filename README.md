@@ -1048,7 +1048,7 @@ then you can create a csv record like this:
 
 ```
 Car car = new Car();
-CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car);
 csvBeanRecord.setValue("name", "Citroen");
 csvBeanRecord.setValue("model", "C3 Picasso");
 csvBeanRecord.setValue("productionDate", new Date());
@@ -1063,7 +1063,7 @@ Car car = new Car();
 car.setName("Citroen");
 car.setModel("C3 Picasso");
 car.setproductionDate(new Date());
-CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car);
 if (!csvBeanRecord.isErrorStatus()) {
 	String recordAsString = carCsvRecord.toString();
 }
@@ -1078,7 +1078,7 @@ Citroen,C3 Picasso,07102002
 If you have the record as string (read for example from a file), create a record with the string and read the fields:
 
 ```
-CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, recordAsString, null, MAP_FIELD_EXTENDED_PROPERTIES);
+CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, recordAsString);
 if (!csvBeanRecord.isErrorStatus()) {
 	String name = csvBeanRecord.getValueAsString("name")
 }
@@ -1089,11 +1089,27 @@ or you can get data directly from java bean:
 ```
 String name = car.getName();
 ```
+To change the field character separator to semicolon, you can set it to the recordSep annotation attribute like this:
+```
+@FixefidCSVRecord(recordSep = CSVSep.SEMICOLON)
+public class Car {
+	@FixefidCSVField(fieldOrdinal = 0, fieldType = FieldType.AN)
+	private String name;
+	...
+}
+```
+then decide to enclose all fields with double quotes:
+```
+@FixefidCSVRecord(recordSep = CSVSep.SEMICOLON, recordEnc = CSVEnc.DOUBLE_QUOTE, encloseAllFields = true)
+public class Car {
+	@FixefidCSVField(fieldOrdinal = 0, fieldType = FieldType.AN)
+	private String name;
+	...
+}
+```
+this is a very simple example for getting started. 
 
-this is a very simple example for getting started.
-
-You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, change the default behavior for the field separator, create custom validators and many others features (see above sections).
-
+You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, custom validators and many others features (see above sections).
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
