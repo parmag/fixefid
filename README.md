@@ -894,15 +894,17 @@ FieldValidationInfo functionUserIdValidationInfo = br.getRecordFieldValidationIn
 RecordFieldValidationStatus validationStatus = functionUserIdValidationInfo.getValidationStatus();
 String validationMessage = functionUserIdValidationInfo.getValidationMessage();
 ```
-or obtained the field validation info for all fields:
+or obtain the field validation info for all fields:
 ```
 Map<String, FieldValidationInfo> fieldvalidationInfoMap = br.getRecordFieldValidationInfo();
 ```
-or obtained the field validation info for all fields with error status:
+or obtain the field validation info for all fields with error status:
 ```
 Map<String, FieldValidationInfo> fieldvalidationInfoMap = br.getRecordFieldErrorValidationInfo();
 ```
-or obtain the pretty print of all fields with error status:
+where the key of the two maps above is the field name.
+
+Another way is the pretty print of all fields with error status:
 ```
 br.prettyPrintErrorValidationInfo();
 ```
@@ -921,6 +923,7 @@ prg-1=[ERROR][prg=[      ] not valid (is mandatory)]
 data-1=[ERROR][data=[YYYYYYYYYYYYY] not valid lenght. Expected lenght=[10].]
 reservedData-1=[ERROR][reservedData=[XXXXXXXXXXXXXXXXXXXX] not valid lenght. Expected lenght=[17].]
 ```
+
 If we are reading from a string, we have to check the error status of the record before to get a field value. For instance:
 ```
 OutputHeaderRecord ohr = new OutputHeaderRecord();
