@@ -1,21 +1,19 @@
 # Fixefid
 Fixefid is a Java library for working with fixed fields formatted text files and CSV files. 
 It differs from other tools focusing on:
-<ul>
-  <li>Easy-to-use</li>
-  <li>Record definition by Java Bean</li>
-  <li>Numeric and Alphanumeric data types</li>
-  <li>Custom formatters</li>  
-  <li>In/Out fields mandatory awareness</li>
-  <li>Fields normalization</li>
-  <li>LPad/RPad fields</li>
-  <li>Automatic record filler</li>
-  <li>Default fields values</li>
-  <li>Valid field values list</li>
-  <li>[Record validation](./README.md#record-validation)</li>
-  <li>Record status and custom validators</li>
-  <li>Record pretty print</li>
-</ul>
+- Easy-to-use</li>
+- Record definition by Java Bean</li>
+- Numeric and Alphanumeric data types</li>
+- Custom formatters</li>  
+- In/Out fields mandatory awareness</li>
+- Fields normalization</li>
+- LPad/RPad fields</li>
+- Automatic record filler</li>
+- Default fields values</li>
+- Valid field values list</li>
+- [Record validation](./README.md#record-validation)</li>
+- Record status and custom validators</li>
+- Record pretty print</li>
 
 ## What's new 3.0.0
 
