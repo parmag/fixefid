@@ -7,7 +7,7 @@ It differs from other tools focusing on:
 - [Numeric data types](./README.md#numeric-data-type)
 - [Custom formatters](./README.md#alphanumeric-data-type-with-custom-formatter)
 - [In/Out fields mandatory awareness](./README.md#field-mandatory)
-- [Fields normalization](./README.md#field-normalizationn)
+- [Fields normalization](./README.md#field-normalization)
 - [LPad/RPad fields](./README.md#field-padding)
 - [Automatic record filler](./README.md#record-len)
 - [Default fields values](./README.md#field-default-value)
@@ -16,7 +16,7 @@ It differs from other tools focusing on:
 - [Record validation](./README.md#record-validation)
 - [Record status and custom validators](./README.md#record-status-and-custom-validator)
 - [Record pretty print](./README.md#record-pretty-print)
-- [CSV Record definition by Java Bean](./README.md#csv-record-with-javabean)
+- [CSV Record definition by Java Bean](./README.md#csv-record-with-java-bean)
 
 ## What's new 3.0.0
 
