@@ -152,6 +152,8 @@ person.setVip(true);
 BeanRecord record = new BeanRecord(person);
 if (!record.isErrorStatus()) {
 	String recordAsString = record.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 where the system out of recordAsString is like:
@@ -164,6 +166,8 @@ Person person = new Person();
 BeanRecord record = new BeanRecord(person, recordAsString);
 if (!record.isErrorStatus()) {
 	Sring firstName = person.getFirstName();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -254,6 +258,8 @@ person.setVip(true);
 CSVBeanRecord record = new CSVBeanRecord(person);
 if (!record.isErrorStatus()) {
 	String recordAsString = record.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 where the system out of recordAsString is like:
@@ -266,6 +272,8 @@ Person person = new Person();
 CSVBeanRecord record = new CSVBeanRecord(person, recordAsString);
 if (!record.isErrorStatus()) {
 	Sring firstName = person.getFirstName();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 but let's going on the details.
@@ -338,12 +346,15 @@ public class Person {
 then create a new empty record, fill the fields and get the string representation:
 
 ```
-BeanRecord record = new BeanRecord(new Person());
+Person person = new Person();
+BeanRecord record = new BeanRecord(person);
 record.setValue("firstName", "Paul");
 record.setValue("lastName", "Robinson");
 record.setValue("age", 51);
 if (!record.isErrorStatus()) {
 	String recordAsString = record.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -357,6 +368,8 @@ person.setAge(51);
 BeanRecord record = new BeanRecord(person);
 if (!record.isErrorStatus()) {
 	String recordAsString = record.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -371,11 +384,14 @@ by default the alphanumeric fields are right padded with spaces, whereas the num
 If you have the record as string (read for example from a file), create a record with the string e read the fields:
 
 ```
-BeanRecord record = new BeanRecord(new Person(), recordAsString);
+Person person = new Person();
+BeanRecord record = new BeanRecord(person, recordAsString);
 if (!record.isErrorStatus()) {
 	String firstName = record.getValueAsString("firstName");
 	String lastName = record.getValueAsString("lastName");
 	Integer age = record.getValueAsInteger("age");
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -388,6 +404,8 @@ if (!record.isErrorStatus()) {
 	String firstName = person.getFirstName();
 	String lastName = person.getLastName();
 	Integer age = person.getAge();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -460,7 +478,8 @@ public class Student extends Person {
 and create a Student record
 
 ```
-BeanRecord record = new BeanRecord(new Student());
+Student student = new Student();
+BeanRecord record = new BeanRecord(student);
 record.setValue("firstName", "Peter");
 record.setValue("lastName", "Rossi");
 record.setValue("age", 20);
@@ -471,6 +490,8 @@ record.setValue("level", 1);
 record.setValue("active", true);
 if (!record.isErrorStatus()) {
 	String recordAsString = record.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -556,47 +577,7 @@ FieldValidationInfo validInfo = record.getRecordFieldValidationInfo("firstName")
  ```
  
 ## Alphanumeric data type with Date and Boolean formatters
-The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean. To do that you need a date and a boolean formatter like these:
-
-```
-List<FieldExtendedProperty> birthDateFieldExtendedProperties = Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.DATE_FORMAT, new SimpleDateFormat("ddMMyyyy", Locale.ENGLISH)));
-List<FieldExtendedProperty> vipFieldExtendedProperties = Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.BOOLEAN_FORMAT, new SimpleBooleanFormat("Y", "N")));
-
-```
-and add to java bean:
-
-```
-@FixefidRecord
-public class Person {
-	.....
-	
-	@FixefidField(fieldOrdinal = 4, fieldLen = 8, fieldType = FieldType.AN)
-	private Date birthDate;
-	
-	@FixefidField(fieldOrdinal = 5, fieldLen = 1, fieldType = FieldType.AN)
-	private Boolean vip;
-```
-
-and create the record
-
-```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = 
-			new HashMap<String, List<FieldExtendedProperty>>();
-MAP_FIELD_EXTENDED_PROPERTIES.put("birthDate", birthDateFieldExtendedProperties);
-MAP_FIELD_EXTENDED_PROPERTIES.put("vip", vipFieldExtendedProperties);
-
-BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
-record.setValue("firstName", "Peter");
-record.setValue("lastName", "Rossi");
-...
-record.setValue("birthDate", new Date());
-record.setValue("vip", true);
-```
-
-Another way to using extended properties are annotations:
-
+The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean:
 ```
 @FixefidRecord
 public class Person {
@@ -610,47 +591,17 @@ public class Person {
 	@FixefidField(fieldOrdinal = 5, fieldLen = 1, fieldType = FieldType.AN)
 	private Boolean vip;
 ```
+then you can set the values like this:
+```
+Person person = new Person();
+BeanRecord record = new BeanRecord(person);
+...
+record.setValue("birthDate", new Date());
+record.setValue("vip", true);
+```
 
 ## Alphanumeric data type with Custom Formatter
 The alphanumeric data type FieldType.AN can be used with a custom formatter:
-
-```
-List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
-		new FieldExtendedProperty(FieldExtendedPropertyType.CUSTOM_FORMAT, new CustomFormat() {
-			@Override
-			public String format(String value) {
-				// do something
-				return value;
-			}
-
-			@Override
-			public String parse(String value) {
-				// do something
-				return value;
-			}
-		}));
-
-```
-
-for the java bean:
-
-```
-@FixefidRecord
-public class Person {
-	.....
-	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
-	private String lastName;
-	....
-```
-and create the record:
-```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
-MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
-
-BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
-```
-
-or using annotation:
 ```
 public class UpperLowerCustomFormat implements CustomFormat {
 
@@ -668,6 +619,7 @@ public class UpperLowerCustomFormat implements CustomFormat {
 	}
 }
 ```
+and add the annotation to the Java Bean:
 ```
 @FixefidRecord
 public class Person {
@@ -679,65 +631,16 @@ public class Person {
 ```
 
 ## Numeric data type
-The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal. Fot the last three, a DecimalFormat must be used. All can be positive or negative. With the DecimalFormat, can be used the extended property REMOVE_DECIMAL_SEPARATOR to be compliant with the COBOL numeric data type. 
-
-The len of the field and the DecimalFormat determines the Java type:
-
+The numeric data type FieldType.N can be managed like a Java Integer, Long, Float, Double and BigDecimal.
+The len of the field and the presence of the annotation @FixefidDecimalFormat determines the Java type:
 <ul>
-	<li>Len < 10 and no DecimalFormat: Integer</li>
-	<li>Len >= 10 and no DecimalFormat: Long</li>
-	<li>Len < 10 and DecimalFormat: Float</li>
-	<li>Len >= 10 and DecimalFormat: Double</li>	
+	<li>Len < 10 and no @FixefidDecimalFormat: Integer</li>
+	<li>Len >= 10 and no @FixefidDecimalFormat: Long</li>
+	<li>Len < 10 and @FixefidDecimalFormat: Float</li>
+	<li>Len >= 10 and @FixefidDecimalFormat: Double</li>	
 </ul>
 
-moreover if the DecimalFormat is present, the field can always be managed like a BigDecimal, no matter its len.
-
-To define an extended property for a Decimal Format, you can do like this:
-
-```
-List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH))));
-
-```
-
-and the result is:
-```
-Paul                     Robinson                 0510001500.99
-```
-you can add the extended proporty REMOVE_DECIMAL_SEPARATOR to the field amount like this:
-```
-List<FieldExtendedProperty> amountFieldExtendedProperties = Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.REMOVE_DECIMAL_SEPARATOR, true),
-	new FieldExtendedProperty(FieldExtendedPropertyType.DECIMAL_FORMAT, new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.ENGLISH)))
-);
-```
-the result is:
- ```
-Paul                     Robinson                 0510000150099
-```
-
-for the java bean:
-
-```
-@FixefidRecord
-public class Person {
-	.....
-	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
-	private String lastname;
-	....
-	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
-	private String amount;
-```
-and create the record:
-```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
-MAP_FIELD_EXTENDED_PROPERTIES.put("amount", amountFieldExtendedProperties);
-
-BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
-```
-
-or using annotation:
-
+For example:
 ```
 @FixefidRecord
 public class Person {
@@ -747,30 +650,31 @@ public class Person {
 	....
 	@FixefidDecimalFormat(pattern = "0.00", locale = "en", removeDecimalSeparator = false)
 	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
+	private Double amount;
+```
+in this case the field amount must be decalared Double cause the presence of the annotation @FixefidDecimalFormat. The toString will be like this:
+```
+Paul                     Robinson                 0510001500.99
+```
+if the decimal separator is se to true, the toString will be like this:
+```
+Paul                     Robinson                 0510000150099
+```
+If the annootation @FixefidDecimalFormat is not present, the field must be declared Integer or Long. For instance:
+```
+@FixefidRecord
+public class Person {
+	.....
+	@FixefidField(fieldOrdinal = 2, fieldLen = 25, fieldType = FieldType.AN)
+	private String lastname;
+	....
+	@FixefidField(fieldOrdinal = 8, fieldLen = 10, fieldType = FieldType.N)
 	private Long amount;
 ```
 
+
 ## Field padding
-The field padding can be managed with the relative extended property. By default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. For instance to change the default padding behavior of the field lastName of the Person example above, do like this:
-```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
-MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", Arrays.asList(new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")));
-
-BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
-```
-the result is:
- ```
-Paul                                      Robinson0510000150099
-```
-
-moreover the padding behavior can be set at Record level like this:
-
-```
-BeanRecord record = new BeanRecord(person, null, Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.LPAD, " ")), MAP_FIELD_EXTENDED_PROPERTIES);
-```
-
-the same result can be obtained via annotations. For example for the lastName field:
+The field padding can be managed with the relative annotation. By default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. For instance to change the default padding behavior of the field lastName of the Person example above, do like this:
 ```
 @FixefidRecord
 public class Person {
@@ -935,32 +839,7 @@ if (!br.isErrorStatus()) {
 ```
 
 ## Record status and custom validator
-A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the PersonRecordField example above, change the enum like this:
-
-```
-List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
-	new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new FieldValidator() {
-		@Override
-		public FieldValidationInfo valid(String name, int index, FieldType type, FieldMandatory mandatory, String value,
-				List<FieldExtendedProperty> fieldExtendedProperties) {
-			if (value.contains("-")) {
-				return new FieldValidationInfo(RecordFieldValidationStatus.ERROR, "lastName cannot contains -");
-			} else {
-				return new FieldValidationInfo();
-			}
-		}
-	}));
-
-```
-for java bean
-```
-Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
-MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
-
-BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
-```
-
-or you can use the @FixefidValidator annotation like this
+A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the Person example above, add the annotation @FixefidValidator like this:
 ```
 public class NameValidator implements FieldValidator {
 
@@ -1054,6 +933,8 @@ csvBeanRecord.setValue("model", "C3 Picasso");
 csvBeanRecord.setValue("productionDate", new Date());
 if (!csvBeanRecord.isErrorStatus()) {
 	String recordAsString = carCsvRecord.toString();
+} else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = csvBeanRecord.getRecordFieldErrorValidationInfo();
 }
 ```
 or you can fill the fields directly to java bean:
@@ -1066,6 +947,8 @@ car.setproductionDate(new Date());
 CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car);
 if (!csvBeanRecord.isErrorStatus()) {
 	String recordAsString = carCsvRecord.toString();
+}else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = csvBeanRecord.getRecordFieldErrorValidationInfo();
 }
 ```
 
@@ -1081,6 +964,8 @@ If you have the record as string (read for example from a file), create a record
 CSVBeanRecord csvBeanRecord = new CSVBeanRecord(car, recordAsString);
 if (!csvBeanRecord.isErrorStatus()) {
 	String name = csvBeanRecord.getValueAsString("name")
+}else {
+	Map<String, FieldValidationInfo> fieldvalidationInfoMap = csvBeanRecord.getRecordFieldErrorValidationInfo();
 }
 ```
 
