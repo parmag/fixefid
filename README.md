@@ -18,6 +18,7 @@ It differs from other tools focusing on:
 - [Record pretty print](./README.md#record-pretty-print)
 - [CSV Record definition by Java Bean](./README.md#csv-record-with-java-bean)
 - [Extended Properties](./README.md#extended-properties)
+- [Sync values record bean](./README.md#sync-values-record-bean)
 
 ## What's new 3.0.0
 
@@ -1016,6 +1017,24 @@ MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
 BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
 ```
 where NameValidator must be an instance of a FieldValidator
+
+## Sync values record bean
+If the value of a bean field is modified after the BeanRecord has been created, before to invoke the toString method, a sync must be performed. For example:
+```
+person.setAge(25);
+record.syncValuesFromBeanToRecord();
+if (!record.isErrorStatus()) {
+	String recordAsString = record.toString();
+}
+```
+the same if the value of a record field is modified after the BeanRecord has been created, before to invoke the bean getter method, a sync must be performed. For example:
+```
+record.setAge("age", 25);
+record.syncValuesFromRecordToBean();
+if (!record.isErrorStatus()) {
+	Integer age = person.getAge();
+}
+```
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
