@@ -3,7 +3,7 @@ Fixefid is a Java library for working with fixed fields formatted text files and
 It differs from other tools focusing on:
 - [Easy-to-use](./README.md#getting-started)
 - [Record definition by Java Bean](./README.md#getting-started-with-java-bean)
-- [Alphanumeric data types](./README.md#alphanumeric-data-type-with-date-and-boolean-formatters)
+- [Alphanumeric data types](./README.md#alphanumeric-data-type)
 - [Numeric data types](./README.md#numeric-data-type)
 - [Custom formatters](./README.md#alphanumeric-data-type-with-custom-formatter)
 - [In/Out fields mandatory awareness](./README.md#field-mandatory)
@@ -14,7 +14,7 @@ It differs from other tools focusing on:
 - [Valid field values list](./README.md#field-valid-values-list)
 - [Field occurrences](./README.md#field-occurrences)
 - [Record validation](./README.md#record-validation)
-- [Record status and custom validators](./README.md#record-status-and-custom-validator)
+- [Custom validators](./README.md#custom-validator)
 - [Record pretty print](./README.md#record-pretty-print)
 - [CSV Record definition by Java Bean](./README.md#csv-record-with-java-bean)
 
@@ -357,8 +357,9 @@ if (!record.isErrorStatus()) {
 	Map<String, FieldValidationInfo> fieldvalidationInfoMap = record.getRecordFieldErrorValidationInfo();
 }
 ```
+The map fieldvalidationInfoMap contains the validation info of all fields with error status (the key of the map is the name of the field).
 
-or you can fill the fields directly to java bean:
+You can fill the fields directly to java bean:
 
 ```
 Person person = new Person();
@@ -379,7 +380,7 @@ The system out of the recordAsString is as follow:
 Paul                     Robinson                 051
 ```
 
-by default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. This default behavior can be changed with the extended properties.
+by default the alphanumeric fields are right padded with spaces, whereas the numeric fields are left padded with zeroes. This default behavior can be changed with the relative annotations.
 
 If you have the record as string (read for example from a file), create a record with the string e read the fields:
 
@@ -576,8 +577,15 @@ moreover the validation info can be retrieved like this:
 FieldValidationInfo validInfo = record.getRecordFieldValidationInfo("firstName");
  ```
  
-## Alphanumeric data type with Date and Boolean formatters
-The alphanumeric data type FieldType.AN can be managed like a Java Date or Boolean:
+## Alphanumeric data type
+The alphanumeric data type FieldType.AN must be declared as String:
+```
+ public class Person {
+	@FixefidField(fieldOrdinal = 1, fieldLen = 25, fieldType = FieldType.AN)
+	private String firstName;
+ ```
+
+The alphanumeric data type FieldType.AN can be also managed like a Java Date or Boolean:
 ```
 @FixefidRecord
 public class Person {
@@ -660,7 +668,7 @@ if the decimal separator is se to true, the toString will be like this:
 ```
 Paul                     Robinson                 0510000150099
 ```
-If the annootation @FixefidDecimalFormat is not present, the field must be declared Integer or Long. For instance:
+If the annotation @FixefidDecimalFormat is not present, the field must be declared Integer or Long. For instance:
 ```
 @FixefidRecord
 public class Person {
@@ -838,7 +846,7 @@ if (!br.isErrorStatus()) {
 }
 ```
 
-## Record status and custom validator
+## Custom validator
 A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the Person example above, add the annotation @FixefidValidator like this:
 ```
 public class NameValidator implements FieldValidator {
