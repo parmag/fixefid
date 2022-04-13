@@ -17,6 +17,7 @@ It differs from other tools focusing on:
 - [Custom validators](./README.md#custom-validator)
 - [Record pretty print](./README.md#record-pretty-print)
 - [CSV Record definition by Java Bean](./README.md#csv-record-with-java-bean)
+- [Extended Properties](./README.md#extended-properties)
 
 ## What's new 3.0.0
 
@@ -847,7 +848,7 @@ if (!br.isErrorStatus()) {
 ```
 
 ## Custom validator
-A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the Person example above, add the annotation @FixefidValidator like this:
+A custom validator can be added at field or record level. For instance to apply a custom validator to the lastName field of the Person example above, we can define a cusotm validator like this:
 ```
 public class NameValidator implements FieldValidator {
 
@@ -863,6 +864,7 @@ public class NameValidator implements FieldValidator {
 
 }
 ```
+and add the annotation @FixefidValidator like this:
 ```
 @FixefidValidator(className = "com.github.example.NameValidator")
 @FixefidField(fieldOrdinal = 3, fieldLen = 50, fieldType = FieldType.AN) private String lastName;
@@ -1003,6 +1005,17 @@ public class Car {
 this is a very simple example for getting started. 
 
 You can create more complex records with formatters for decimal, date, boolean. You can create custom formatters, custom validators and many others features (see above sections).
+
+## Extended properties
+All record configuration can be manage with the extended properties feature. The advice is to using the annotations, but in same case could be usefull using extended properties, for example to manage call back. We can define a custom validator and using like this:
+```
+List<FieldExtendedProperty> lastNameFieldExtendedProperties = Arrays.asList(
+	new FieldExtendedProperty(FieldExtendedPropertyType.VALIDATOR, new NameValidator());
+Map<String, List<FieldExtendedProperty>> MAP_FIELD_EXTENDED_PROPERTIES = new HashMap<String, List<FieldExtendedProperty>>();
+MAP_FIELD_EXTENDED_PROPERTIES.put("lastName", lastNameFieldExtendedProperties);
+BeanRecord record = new BeanRecord(person, null, null, MAP_FIELD_EXTENDED_PROPERTIES);
+```
+where NameValidator must be an instance of a FieldValidator
 
 ## Javadoc
 Here the <a href="./fixefid/doc" target="_blank">Javadoc</a>
